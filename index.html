@@ -4,430 +4,156 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Regras do Dia</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Regras do Dia Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f1117;
-    --bg2: #181c27;
-    --bg3: #1f2433;
-    --border: rgba(255,255,255,0.08);
-    --border2: rgba(255,255,255,0.14);
-    --text: #e8eaf0;
-    --text2: #8b90a0;
-    --text3: #5a5f70;
-    --green: #1D9E75;
-    --green-dim: rgba(29,158,117,0.15);
-    --blue: #378ADD;
-    --blue-dim: rgba(55,138,221,0.15);
-    --red: #E24B4A;
-    --red-dim: rgba(226,75,74,0.15);
-    --yellow: #E2A84B;
-    --yellow-dim: rgba(226,168,75,0.15);
-    --purple: #9B6FE2;
-    --purple-dim: rgba(155,111,226,0.15);
-    --radius: 10px;
+    --bg: #0f1117; --bg2: #181c27; --bg3: #1f2433;
+    --border: rgba(255,255,255,0.08); --text: #e8eaf0;
+    --text2: #8b90a0; --text3: #5a5f70; --green: #1D9E75;
+    --blue: #378ADD; --red: #E24B4A; --radius: 12px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-  }
-  .container { max-width: 480px; margin: 0 auto; padding: 24px 16px 48px; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; padding: 20px; }
+  .container { max-width: 480px; margin: 0 auto; }
+  
+  /* Cronômetro Style */
+  .timer-display { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--green); background: rgba(29,158,117,0.1); padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
+  .play-btn { background: none; border: none; color: var(--text2); cursor: pointer; font-size: 18px; transition: 0.2s; }
+  .play-btn.active { color: var(--red); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-  header { margin-bottom: 28px; }
-  .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-  h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
-  .week-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--text2);
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 5px 10px;
-  }
-
-  /* Day tabs */
-  .day-tabs {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    margin-bottom: 20px;
-  }
-  .day-tab {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 8px 4px;
-    border-radius: 10px;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.15s;
-    background: var(--bg2);
-  }
-  .day-tab:hover { border-color: var(--border2); }
-  .day-tab.active {
-    background: var(--bg3);
-    border-color: var(--green);
-  }
-  .day-tab.today .dt-label { color: var(--green); }
-  .dt-label {
-    font-size: 10px;
-    font-weight: 500;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .dt-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--bg3);
-    transition: background 0.2s;
-  }
-  .day-tab.active .dt-dot { background: var(--green); }
-  .dt-pct {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--text3);
-  }
-
-  /* Activity cards */
-  .activities-section { margin-bottom: 20px; }
-  .section-label {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 10px;
-  }
-  .act-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: all 0.15s;
-    user-select: none;
-  }
-  .act-card:hover { border-color: var(--border2); }
-  .act-card.done { opacity: 0.6; }
-  .act-card.done .act-name { text-decoration: line-through; color: var(--text3); }
-
-  .act-check {
-    width: 26px; height: 26px;
-    border-radius: 8px;
-    border: 1.5px solid var(--border2);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.15s;
-    background: var(--bg);
-  }
-  .act-card.done .act-check {
-    background: var(--green);
-    border-color: var(--green);
-  }
-  .act-card.done .act-check::after {
-    content: '';
-    display: block;
-    width: 6px; height: 10px;
-    border: 2px solid white;
-    border-top: none; border-left: none;
-    transform: rotate(45deg) translateY(-1px);
-  }
-
-  .act-body { flex: 1; min-width: 0; }
-  .act-name { font-size: 14px; font-weight: 500; margin-bottom: 2px; transition: all 0.15s; }
-  .act-meta { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
-
-  .act-tag {
-    font-size: 10px;
-    font-weight: 500;
-    padding: 3px 8px;
-    border-radius: 20px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  /* Progress */
-  .progress-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 20px;
-  }
-  .week-track { margin-top: 12px; }
-  .day-bar-row {
-    display: grid;
-    grid-template-columns: 30px 1fr 34px;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  .day-bar-row:last-child { margin-bottom: 0; }
-  .dbl { font-size: 11px; font-weight: 500; color: var(--text2); text-align: right; }
-  .db-track { height: 6px; background: var(--bg3); border-radius: 99px; overflow: hidden; }
-  .db-fill { height: 100%; border-radius: 99px; background: var(--green); transition: width 0.4s cubic-bezier(.4,0,.2,1); }
-  .db-pct { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); text-align: right; }
-
-  /* Summary */
-  .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-  .s-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 14px 10px; text-align: center; }
-  .s-num { font-size: 22px; font-weight: 600; }
-  .s-lbl { font-size: 10px; color: var(--text3); margin-top: 4px; line-height: 1.4; }
-
-  .reset-btn {
-    display: block;
-    width: 100%;
-    background: transparent;
-    border: 1px solid var(--border2);
-    color: var(--text3);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .reset-btn:hover { border-color: var(--red); color: var(--red); }
-
-  .empty-day {
-    text-align: center;
-    padding: 32px 16px;
-    color: var(--text3);
-    font-size: 13px;
-    background: var(--bg2);
-    border: 1px dashed var(--border2);
-    border-radius: 14px;
-  }
-  .empty-day span { display: block; font-size: 28px; margin-bottom: 8px; }
+  /* New UI Elements */
+  .act-card { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; }
+  .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+  button { padding: 12px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; font-family: inherit; font-weight: 500; }
+  .btn-add { background: var(--bg3); color: var(--text); width: 100%; margin-top: 10px; border: 1px dashed var(--text3); }
+  .btn-save { background: var(--green); color: white; border: none; }
+  
+  /* Modal de Edição */
+  #edit-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; }
+  .modal-content { background: var(--bg2); padding: 20px; border-radius: var(--radius); width: 90%; max-width: 400px; }
+  input, select { width: 100%; padding: 10px; margin: 8px 0; background: var(--bg3); border: 1px solid var(--border); color: white; border-radius: 6px; }
 </style>
 </head>
 <body>
+
 <div class="container">
-  <header>
-    <div class="header-top">
-      <div>
-        <h1>Regras do Dia</h1>
-        <div style="margin-top:4px;font-size:13px;color:var(--text3)">Marque as atividades concluídas</div>
-      </div>
-      <div class="week-badge" id="week-range"></div>
-    </div>
-  </header>
+  <h1 id="day-title">Carregando...</h1>
+  <div id="activities-list"></div>
+  
+  <button class="btn-add" onclick="openAddModal()">+ Adicionar Atividade</button>
 
-  <div class="day-tabs" id="day-tabs"></div>
-
-  <div class="activities-section">
-    <div class="section-label" id="day-title">Atividades</div>
-    <div id="activities-list"></div>
+  <div class="btn-group">
+    <button onclick="resetWeek()">Resetar Semana</button>
+    <button class="btn-save" onclick="location.reload()">Salvar e Atualizar</button>
   </div>
+</div>
 
-  <div class="progress-card">
-    <div class="section-label">Progresso da semana</div>
-    <div class="week-track" id="day-bars"></div>
+<div id="edit-modal">
+  <div class="modal-content">
+    <h2 id="modal-title">Atividade</h2>
+    <input type="text" id="edit-name" placeholder="Nome da atividade">
+    <input type="text" id="edit-meta" placeholder="Horário ou Detalhe">
+    <select id="edit-color">
+        <option value="var(--blue)">Azul (Estudo)</option>
+        <option value="var(--red)">Vermelho (Trabalho)</option>
+        <option value="var(--green)">Verde (Hábito)</option>
+        <option value="var(--purple)">Roxo (Lazer)</option>
+    </select>
+    <button class="btn-save" style="width: 100%" onclick="saveActivity()">Confirmar</button>
+    <button onclick="closeModal()" style="width: 100%; margin-top: 8px; background: none; color: var(--text3)">Cancelar</button>
   </div>
-
-  <div class="summary-grid">
-    <div class="s-card"><div class="s-num" id="total-done">0</div><div class="s-lbl">Feitas esta semana</div></div>
-    <div class="s-card"><div class="s-num" id="best-day">—</div><div class="s-lbl">Melhor dia</div></div>
-    <div class="s-card"><div class="s-num" id="overall-pct">0%</div><div class="s-lbl">Conclusão geral</div></div>
-  </div>
-
-  <button class="reset-btn" onclick="resetWeek()">Resetar semana</button>
 </div>
 
 <script>
-// ============================================================
-// ATIVIDADES POR DIA — edite aqui à vontade!
-// Cada dia (0=Seg ... 6=Dom) tem sua própria lista.
-// Campos: id (único), name, meta (horário/detalhe), color, tag
-// ============================================================
-const schedule = {
-  0: [ // Segunda
-    { id: 's0_a', name: 'Estudar em Casa',   meta: 'Manhã · 3h',        color: 'var(--blue)',   tag: 'Estudo',    tagBg: 'var(--blue-dim)',   tagColor: 'var(--blue)'   },
-    { id: 's0_b', name: 'Biblioteca',        meta: '2h · Levar o PC',   color: 'var(--blue)',   tag: 'Estudo',    tagBg: 'var(--blue-dim)',   tagColor: 'var(--blue)'   },
-    { id: 's0_c', name: '100% Serviço',      meta: '14h – 16h',         color: 'var(--red)',    tag: 'Trabalho',  tagBg: 'var(--red-dim)',    tagColor: 'var(--red)'    },
-    { id: 's0_d', name: 'Revisão do dia',    meta: 'Noite · 15min',     color: 'var(--green)',  tag: 'Hábito',    tagBg: 'var(--green-dim)', tagColor: 'var(--green)'  },
-  ],
-  1: [ // Terça
-    { id: 's1_a', name: 'Estudar em Casa',   meta: 'Manhã · 3h',        color: 'var(--blue)',   tag: 'Estudo',    tagBg: 'var(--blue-dim)',   tagColor: 'var(--blue)'   },
-    { id: 's1_b', name: '100% Serviço',      meta: '14h – 16h',         color: 'var(--red)',    tag: 'Trabalho',  tagBg: 'var(--red-dim)',    tagColor: 'var(--red)'    },
-    { id: 's1_c', name: 'Exercício Físico',  meta: 'Tarde · 30min',     color: 'var(--yellow)', tag: 'Saúde',     tagBg: 'var(--yellow-dim)', tagColor: 'var(--yellow)' },
-    { id: 's1_d', name: 'Leitura',           meta: 'Noite · 20min',     color: 'var(--purple)', tag: 'Hábito',    tagBg: 'var(--purple-dim)', tagColor: 'var(--purple)' },
-  ],
-  2: [ // Quarta
-    { id: 's2_a', name: 'Biblioteca',        meta: 'Manhã · 2h',        color: 'var(--blue)',   tag: 'Estudo',    tagBg: 'var(--blue-dim)',   tagColor: 'var(--blue)'   },
-    { id: 's2_b', name: '100% Serviço',      meta: '14h – 16h',         color: 'var(--red)',    tag: 'Trabalho',  tagBg: 'var(--red-dim)',    tagColor: 'var(--red)'    },
-    { id: 's2_c', name: 'Organizar Tarefas', meta: 'Tarde · 20min',     color: 'var(--yellow)', tag: 'Produtiv.', tagBg: 'var(--yellow-dim)', tagColor: 'var(--yellow)' },
-    { id: 's2_d', name: 'Revisão do dia',    meta: 'Noite · 15min',     color: 'var(--green)',  tag: 'Hábito',    tagBg: 'var(--green-dim)', tagColor: 'var(--green)'  },
-  ],
-  3: [ // Quinta
-    { id: 's3_a', name: 'Estudar em Casa',   meta: 'Manhã · 3h',        color: 'var(--blue)',   tag: 'Estudo',    tagBg: 'var(--blue-dim)',   tagColor: 'var(--blue)'   },
-    { id: 's3_b', name: '100% Serviço',      meta: '14h – 16h',         color: 'var(--red)',    tag: 'Trabalho',  tagBg: 'var(--red-dim)',    tagColor: 'var(--red)'    },
-    { id: 's3_c', name: 'Exercício Físico',  meta: 'Tarde · 30min',     color: 'var(--yellow)', tag: 'Saúde',     tagBg: 'var(--yellow-dim)', tagColor: 'var(--yellow)' },
-    { id: 's3_d', name: 'Leitura',           meta: 'Noite · 20min',     color: 'var(--purple)', tag: 'Hábito',    tagBg: 'var(--purple-dim)', tagColor: 'var(--purple)' },
-  ],
-  4: [ // Sexta
-    { id: 's4_a', name: 'Biblioteca',        meta: 'Manhã · 2h',        color: 'var(--blue)',   tag: 'Estudo',    tagBg: 'var(--blue-dim)',   tagColor: 'var(--blue)'   },
-    { id: 's4_b', name: '100% Serviço',      meta: '14h – 16h',         color: 'var(--red)',    tag: 'Trabalho',  tagBg: 'var(--red-dim)',    tagColor: 'var(--red)'    },
-    { id: 's4_c', name: 'Planejar Semana',   meta: 'Tarde · 30min',     color: 'var(--yellow)', tag: 'Produtiv.', tagBg: 'var(--yellow-dim)', tagColor: 'var(--yellow)' },
-    { id: 's4_d', name: 'Revisão semanal',   meta: 'Noite · 20min',     color: 'var(--green)',  tag: 'Hábito',    tagBg: 'var(--green-dim)', tagColor: 'var(--green)'  },
-  ],
-  5: [ // Sábado
-    { id: 's5_a', name: 'Exercício Físico',  meta: 'Manhã · 1h',        color: 'var(--yellow)', tag: 'Saúde',     tagBg: 'var(--yellow-dim)', tagColor: 'var(--yellow)' },
-    { id: 's5_b', name: 'Leitura',           meta: 'Livre · 30min',     color: 'var(--purple)', tag: 'Lazer',     tagBg: 'var(--purple-dim)', tagColor: 'var(--purple)' },
-    { id: 's5_c', name: 'Projeto Pessoal',   meta: 'Tarde · 2h',        color: 'var(--blue)',   tag: 'Crescim.',  tagBg: 'var(--blue-dim)',   tagColor: 'var(--blue)'   },
-  ],
-  6: [ // Domingo
-    { id: 's6_a', name: 'Descanso ativo',    meta: 'Manhã · Caminhada', color: 'var(--green)',  tag: 'Saúde',     tagBg: 'var(--green-dim)', tagColor: 'var(--green)'  },
-    { id: 's6_b', name: 'Planejar semana',   meta: 'Tarde · 30min',     color: 'var(--yellow)', tag: 'Produtiv.', tagBg: 'var(--yellow-dim)', tagColor: 'var(--yellow)' },
-    { id: 's6_c', name: 'Leitura',           meta: 'Noite · 30min',     color: 'var(--purple)', tag: 'Lazer',     tagBg: 'var(--purple-dim)', tagColor: 'var(--purple)' },
-  ],
+let schedule = JSON.parse(localStorage.getItem('my_schedule')) || {
+  0: [{ id: Date.now(), name: 'Estudo Inicial', meta: '09:00', color: 'var(--blue)', seconds: 0 }],
+  1: [], 2: [], 3: [], 4: [], 5: [], 6: []
 };
 
-const dayNames = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
-const dayFull  = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
-const STORE_KEY = 'regras_dia_v2';
+let activeTimer = null;
+let currentDay = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1;
 
-function getTodayIndex() {
-  const d = new Date().getDay(); // 0=Sun
-  return d === 0 ? 6 : d - 1;   // convert to 0=Mon
+function render() {
+  const list = document.getElementById('activities-list');
+  list.innerHTML = '';
+  document.getElementById('day-title').textContent = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'][currentDay];
+
+  schedule[currentDay].forEach(act => {
+    const card = document.createElement('div');
+    card.className = 'act-card';
+    card.innerHTML = `
+      <div style="flex:1" onclick="editAct(${act.id})">
+        <div style="color:${act.color}; font-weight:600">${act.name}</div>
+        <div style="font-size:12px; color:var(--text3)">${act.meta}</div>
+      </div>
+      <span class="timer-display" id="t-${act.id}">${formatTime(act.seconds || 0)}</span>
+      <button class="play-btn ${activeTimer === act.id ? 'active' : ''}" onclick="toggleTimer(${act.id})">
+        ${activeTimer === act.id ? 'stop' : '▶'}
+      </button>
+    `;
+    list.appendChild(card);
+  });
+  localStorage.setItem('my_schedule', JSON.stringify(schedule));
 }
 
-function getWeekKey() {
-  const now = new Date();
-  const diff = now.getDay() === 0 ? -6 : 1 - now.getDay();
-  const mon = new Date(now); mon.setDate(now.getDate() + diff);
-  return mon.toISOString().slice(0,10);
+function formatTime(s) {
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  return `${h}h ${m}m ${sec}s`;
 }
 
-function getWeekLabel() {
-  const now = new Date();
-  const diff = now.getDay() === 0 ? -6 : 1 - now.getDay();
-  const mon = new Date(now); mon.setDate(now.getDate() + diff);
-  const sun = new Date(mon); sun.setDate(mon.getDate() + 6);
-  const fmt = d => d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-  return fmt(mon) + ' – ' + fmt(sun);
-}
-
-function loadState() {
-  try {
-    const raw = localStorage.getItem(STORE_KEY);
-    if (!raw) return { week: getWeekKey(), checks: {} };
-    const s = JSON.parse(raw);
-    if (s.week !== getWeekKey()) { s.checks = {}; s.week = getWeekKey(); saveState(s); }
-    return s;
-  } catch { return { week: getWeekKey(), checks: {} }; }
-}
-function saveState(s) { try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch {} }
-
-let state = loadState();
-let activeDay = getTodayIndex();
-
-function isChecked(id) { return !!(state.checks && state.checks[id]); }
-
-function toggle(id) {
-  state.checks[id] = !state.checks[id];
-  saveState(state);
+function toggleTimer(id) {
+  if (activeTimer === id) {
+    clearInterval(window.interval);
+    activeTimer = null;
+  } else {
+    clearInterval(window.interval);
+    activeTimer = id;
+    window.interval = setInterval(() => {
+      const act = schedule[currentDay].find(a => a.id === id);
+      act.seconds = (act.seconds || 0) + 1;
+      document.getElementById(`t-${id}`).textContent = formatTime(act.seconds);
+    }, 1000);
+  }
   render();
 }
 
-function resetWeek() {
-  if (confirm('Resetar todos os checkboxes desta semana?')) {
-    state.checks = {};
-    saveState(state);
-    render();
-  }
+// Funções de Edição
+let editingId = null;
+function openAddModal() {
+  editingId = null;
+  document.getElementById('edit-name').value = '';
+  document.getElementById('edit-modal').style.display = 'flex';
 }
 
-function getDayProgress(di) {
-  const acts = schedule[di] || [];
-  if (!acts.length) return 0;
-  const done = acts.filter(a => isChecked(a.id)).length;
-  return Math.round((done / acts.length) * 100);
-}
+function saveActivity() {
+  const name = document.getElementById('edit-name').value;
+  const meta = document.getElementById('edit-meta').value;
+  const color = document.getElementById('edit-color').value;
 
-function render() {
-  document.getElementById('week-range').textContent = getWeekLabel();
-
-  // Day tabs
-  const tabsEl = document.getElementById('day-tabs');
-  tabsEl.innerHTML = '';
-  const todayIdx = getTodayIndex();
-  dayNames.forEach((d, di) => {
-    const pct = getDayProgress(di);
-    const tab = document.createElement('div');
-    tab.className = 'day-tab' +
-      (di === activeDay ? ' active' : '') +
-      (di === todayIdx ? ' today' : '');
-    tab.innerHTML = `<div class="dt-label">${d}</div><div class="dt-dot"></div><div class="dt-pct">${pct}%</div>`;
-    tab.onclick = () => { activeDay = di; render(); };
-    tabsEl.appendChild(tab);
-  });
-
-  // Day title
-  document.getElementById('day-title').textContent =
-    dayFull[activeDay] + (activeDay === todayIdx ? ' · Hoje' : '');
-
-  // Activities for active day
-  const listEl = document.getElementById('activities-list');
-  listEl.innerHTML = '';
-  const acts = schedule[activeDay] || [];
-
-  if (!acts.length) {
-    listEl.innerHTML = '<div class="empty-day"><span>🌿</span>Sem atividades para este dia</div>';
+  if (editingId) {
+    const act = schedule[currentDay].find(a => a.id === editingId);
+    act.name = name; act.meta = meta; act.color = color;
   } else {
-    acts.forEach(act => {
-      const done = isChecked(act.id);
-      const card = document.createElement('div');
-      card.className = 'act-card' + (done ? ' done' : '');
-      card.innerHTML = `
-        <div class="act-check"></div>
-        <div class="act-body">
-          <div class="act-name" style="color:${act.color}">${act.name}</div>
-          ${act.meta ? `<div class="act-meta">${act.meta}</div>` : ''}
-        </div>
-        <div class="act-tag" style="background:${act.tagBg};color:${act.tagColor}">${act.tag}</div>
-      `;
-      card.onclick = () => toggle(act.id);
-      listEl.appendChild(card);
-    });
+    schedule[currentDay].push({ id: Date.now(), name, meta, color, seconds: 0 });
   }
-
-  // Week bars
-  const barsEl = document.getElementById('day-bars');
-  barsEl.innerHTML = '';
-  let bestCount = 0, bestName = '—';
-  dayNames.forEach((d, di) => {
-    const acts = schedule[di] || [];
-    const done = acts.filter(a => isChecked(a.id)).length;
-    const pct = acts.length ? Math.round((done / acts.length) * 100) : 0;
-    if (done > bestCount) { bestCount = done; bestName = d; }
-    const row = document.createElement('div');
-    row.className = 'day-bar-row';
-    row.innerHTML = `<div class="dbl">${d}</div><div class="db-track"><div class="db-fill" style="width:${pct}%"></div></div><div class="db-pct">${pct}%</div>`;
-    barsEl.appendChild(row);
-  });
-
-  // Summary
-  const totalDone = Object.values(state.checks).filter(Boolean).length;
-  const totalPossible = Object.values(schedule).reduce((s, a) => s + a.length, 0) * 1;
-  // total possible = sum of activities across all days
-  const tp = Object.values(schedule).reduce((s, a) => s + a.length, 0);
-  const overallPct = tp ? Math.round((totalDone / tp) * 100) : 0;
-  document.getElementById('total-done').textContent = totalDone;
-  document.getElementById('best-day').textContent = bestCount > 0 ? bestName : '—';
-  document.getElementById('overall-pct').textContent = overallPct + '%';
+  closeModal();
+  render();
 }
+
+function editAct(id) {
+  const act = schedule[currentDay].find(a => a.id === id);
+  editingId = id;
+  document.getElementById('edit-name').value = act.name;
+  document.getElementById('edit-meta').value = act.meta;
+  document.getElementById('edit-modal').style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('edit-modal').style.display = 'none'; }
+function resetWeek() { if(confirm('Zerar tudo?')) { localStorage.clear(); location.reload(); } }
 
 render();
 </script>
