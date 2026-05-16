@@ -689,7 +689,8 @@ let lastRemoteTimerSig=''; // assinatura para evitar render desnecessário
 
 function startTimerPolling(){
   stopTimerPolling();
-  timerPollInterval=setInterval(pollRemoteTimer, 15000);
+  // ✅ Poll a cada 5s — rápido o suficiente para pausar "em tempo real" no outro dispositivo
+  timerPollInterval=setInterval(pollRemoteTimer, 5000);
 }
 function stopTimerPolling(){
   if(timerPollInterval){clearInterval(timerPollInterval);timerPollInterval=null;}
@@ -708,9 +709,32 @@ async function pollRemoteTimer(){
     if(sig===lastRemoteTimerSig)return; // nada mudou
     lastRemoteTimerSig=sig;
 
-    // Se ESTE dispositivo está rodando → ele é a fonte da verdade, ignora remoto
+    // Se ESTE dispositivo está rodando → verifica se o remoto PAUSOU
+    // (outro dispositivo pode ter pausado enquanto este estava rodando)
     if(timerRunning){
-      setTimerSyncBadge('active','rodando aqui');
+      // Remoto ainda rodando → sem conflito, continua local
+      if(remote.running){
+        setTimerSyncBadge('active','rodando aqui');
+        return;
+      }
+      // ✅ Remoto PAROU (pausou ou zerou) — para o timer local também
+      // Só obedece se o savedAt remoto for mais recente que o nosso último push
+      const localState=lsGet(TKEY());
+      const remoteSavedAt=remote.savedAt||0;
+      const localSavedAt=localState?.savedAt||0;
+      if(remoteSavedAt <= localSavedAt) return; // nosso push foi depois, ignorar
+      // Para o timer local
+      clearInterval(timerInterval);timerRunning=false;
+      timerSeconds=remote.accSec||0;
+      document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
+      document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';
+      document.getElementById('btn-startstop').classList.remove('primary');
+      document.getElementById('timer-card').classList.remove('running');
+      const inp2=document.getElementById('timer-task-inp');
+      if(inp2&&remote.task!==undefined) inp2.value=remote.task||'';
+      lsSet(TKEY(),remote);
+      setTimerSyncBadge('saved','pausado remotamente ✓');
+      setTimeout(()=>setTimerSyncBadge('','em espera'),3000);
       return;
     }
 
@@ -1082,6 +1106,9 @@ function _startTimerUI(){
   document.getElementById('btn-startstop').classList.add('primary');
   document.getElementById('timer-card').classList.add('running');
   setTimerSyncBadge('active','rodando');
+  // Salva savedAt local agora para o comparador de pause remoto funcionar
+  const startState={running:true,startEpoch:Date.now()-timerSeconds*1000,accSec:timerSeconds,task:document.getElementById('timer-task-inp')?.value||'',savedAt:Date.now()};
+  lsSet(TKEY(),startState);
   timerInterval=setInterval(()=>{
     timerSeconds++;
     document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
