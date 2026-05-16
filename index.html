@@ -1167,7 +1167,7 @@ function showStats(){
 // ══════════════════════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════════════════════
-(function init(){
+(async function init(){
   SCRIPT_URL=lsGet('rdd_script_url')||'';
   SHEET_ID=lsGet('rdd_sheet_id')||'';
   if(!SCRIPT_URL||!SHEET_ID){
@@ -1175,7 +1175,23 @@ function showStats(){
     return;
   }
   const saved=localStorage.getItem('rdd_session');
-  if(saved&&lsGet('rdd_hash:'+saved)){startSession(saved);return;}
+  if(!saved){document.getElementById('login-screen').style.display='flex';return;}
+
+  // Hash local encontrado → entra direto
+  if(lsGet('rdd_hash:'+saved)){startSession(saved);return;}
+
+  // Hash não está local (novo dispositivo) → busca na nuvem antes de deslogar
+  if(sheetsReady()){
+    const remoteHash=await sheetGetUser(saved, hashKey(saved));
+    if(remoteHash){
+      lsSet('rdd_hash:'+saved, remoteHash); // salva localmente para próxima vez
+      startSession(saved);
+      return;
+    }
+  }
+
+  // Sem hash em lugar nenhum → redireciona para login
+  localStorage.removeItem('rdd_session');
   document.getElementById('login-screen').style.display='flex';
 })();
 </script>
