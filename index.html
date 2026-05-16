@@ -264,7 +264,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <div class="setup-title">Configurar Google Sheets</div>
   <div class="setup-sub">Faça isso <strong style="color:var(--text)">uma vez</strong>. Em outros dispositivos, você pode pular essa etapa — os dados vêm automaticamente da planilha.</div>
 
-  <!-- SKIP: já tem URL salva na outra planilha -->
   <div class="skip-box">
     <div class="skip-box-title">☁️ Já configurou em outro dispositivo?</div>
     <div class="skip-box-desc">Cole a URL do Web App que você criou antes. Os dados da sua conta serão carregados automaticamente.</div>
@@ -443,19 +442,12 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
   <!-- TIMER -->
   <div class="timer-card" id="timer-card">
     <div class="section-label">⏱ Cronômetro de Estudo</div>
-
-    <!-- Matérias salvas (chips rápidos) -->
     <div id="subjects-row" class="subjects-row"></div>
-
-    <!-- Input p/ adicionar nova matéria -->
     <div class="subject-add-row">
       <input class="subject-add-inp" id="new-subject-inp" placeholder="Nova matéria (ex: Português)..." maxlength="30" onkeydown="if(event.key==='Enter')addSubject()"/>
       <button class="subject-add-btn" onclick="addSubject()">+ Salvar</button>
     </div>
-
-    <!-- Campo livre (preenchido ao clicar no chip) -->
     <input class="timer-task-inp" id="timer-task-inp" placeholder="O que você está estudando?" maxlength="60"/>
-
     <div class="timer-display" id="timer-display">00:00:00</div>
     <div class="timer-btns">
       <button class="timer-btn primary" id="btn-startstop" onclick="timerStartStop()">Iniciar</button>
@@ -597,6 +589,18 @@ async function sheetGet(key){
     return JSON.parse(j.value);
   }catch{return null;}
 }
+
+// ─── sheetGetUser: busca dado de um usuário específico (para login cross-device) ───
+async function sheetGetUser(user,key){
+  if(!sheetsReady())return null;
+  try{
+    const res=await fetch(`${SCRIPT_URL}?sheetId=${encodeURIComponent(SHEET_ID)}&user=${encodeURIComponent(user)}&key=${encodeURIComponent(key)}`);
+    const j=await res.json();
+    if(!j.ok||j.value===null||j.value==='null')return null;
+    try{return JSON.parse(j.value);}catch{return j.value;}
+  }catch{return null;}
+}
+
 async function sheetGetAll(){
   if(!sheetsReady())return null;
   try{
@@ -674,7 +678,6 @@ function showSetup(){
   document.getElementById('setup-screen').style.display='flex';
 }
 
-// Já configurado em outro device — só cola URL+ID e entra
 async function skipSetup(){
   const url=document.getElementById('inp-skip-url').value.trim();
   const id=document.getElementById('inp-skip-id').value.trim();
@@ -708,12 +711,15 @@ async function saveSetup(){
 }
 
 // ══════════════════════════════════════════════════════════════
-//  SESSION / AUTH
+//  SESSION / AUTH  ← CORREÇÃO PRINCIPAL AQUI
 // ══════════════════════════════════════════════════════════════
 let currentUser=null,currentProfile=null;
 function showLogin(){document.getElementById('login-form').classList.remove('hidden');document.getElementById('register-form').classList.add('hidden');}
 function showRegister(){document.getElementById('register-form').classList.remove('hidden');document.getElementById('login-form').classList.add('hidden');}
 async function hashPass(p){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('rdd25_'+p));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
+
+// Chave do hash de cada usuário — inclui o nome do usuário para evitar colisões
+function hashKey(user){return 'auth:hash:'+user;}
 
 async function doLogin(){
   const user=document.getElementById('inp-user').value.trim().toLowerCase();
@@ -721,35 +727,62 @@ async function doLogin(){
   const msg=document.getElementById('login-msg');
   if(!user||!pass){msg.textContent='Preencha apelido e senha.';msg.className='login-msg err';return;}
   msg.textContent='Verificando...';msg.className='login-msg ok';
+
+  // 1) Tenta pegar hash localmente
   let storedHash=lsGet('rdd_hash:'+user);
+
+  // 2) Se não tiver localmente E planilha configurada → busca do Sheets
   if(!storedHash&&sheetsReady()){
-    msg.textContent='Buscando conta no Sheets...';
-    // Busca hash na planilha (login em novo device)
-    storedHash=await sheetGet('auth:hash');
+    msg.textContent='Buscando conta na nuvem...';
+    // ✅ CORREÇÃO: usa sheetGetUser (passa o usuário corretamente) e a chave inclui o nome
+    storedHash=await sheetGetUser(user, hashKey(user));
+    if(storedHash){
+      // Salva localmente para próximos logins offline
+      lsSet('rdd_hash:'+user, storedHash);
+    }
   }
+
   if(!storedHash){msg.textContent='Usuário não encontrado. Crie uma conta!';msg.className='login-msg err';return;}
   const hash=await hashPass(pass);
   if(storedHash!==hash){msg.textContent='Senha incorreta.';msg.className='login-msg err';return;}
-  lsSet('rdd_hash:'+user,storedHash);
   await startSession(user);
 }
+
 async function doRegister(){
   const user=document.getElementById('inp-reg-user').value.trim().toLowerCase();
   const pass=document.getElementById('inp-reg-pass').value;
   const msg=document.getElementById('register-msg');
   if(!user||pass.length<4){msg.textContent='Apelido e senha (mín. 4 chars).';msg.className='login-msg err';return;}
   if(!/^[a-z0-9_]+$/.test(user)){msg.textContent='Só letras minúsculas, números e _.';msg.className='login-msg err';return;}
-  if(lsGet('rdd_hash:'+user)){msg.textContent='Apelido já em uso.';msg.className='login-msg err';return;}
-  msg.textContent='Criando...';msg.className='login-msg ok';
+
+  // Verifica se apelido já existe localmente
+  if(lsGet('rdd_hash:'+user)){msg.textContent='Apelido já em uso neste dispositivo.';msg.className='login-msg err';return;}
+
+  // Verifica se apelido já existe na nuvem
+  if(sheetsReady()){
+    msg.textContent='Verificando disponibilidade...';msg.className='login-msg ok';
+    const remoteHash=await sheetGetUser(user, hashKey(user));
+    if(remoteHash){msg.textContent='Apelido já em uso. Escolha outro.';msg.className='login-msg err';return;}
+  }
+
+  msg.textContent='Criando conta...';msg.className='login-msg ok';
   const hash=await hashPass(pass);
-  lsSet('rdd_hash:'+user,hash);
+
+  // Salva localmente
+  lsSet('rdd_hash:'+user, hash);
+
+  // ✅ CORREÇÃO: salva na planilha com chave que inclui o nome do usuário
+  // Precisamos de currentUser temporário para o sheetSet funcionar
   currentUser=user;
-  if(sheetsReady())await sheetSet('auth:hash',hash);
+  if(sheetsReady()) await sheetSet(hashKey(user), hash);
   currentUser=null;
+
   await startSession(user);
 }
+
 async function startSession(user){
-  currentUser=user;currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};
+  currentUser=user;
+  currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};
   lsSet('rdd_session',user);
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app-screen').style.display='block';
@@ -760,7 +793,10 @@ async function startSession(user){
     showSyncBar('syncing','Carregando dados...',false);setSyncUI('spin','carregando...');
     const all=await sheetGetAll();
     if(all){
-      Object.entries(all).forEach(([k,v])=>{if(k!=='auth:hash')lsSet(k,v);});
+      Object.entries(all).forEach(([k,v])=>{
+        // Não sobrescreve o hash local com dados da planilha (segurança)
+        if(!k.startsWith('auth:'))lsSet(k,v);
+      });
       currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};
       restoreTimerFromSheets(all);
       showSyncBar('saved','Dados carregados ✓');setSyncUI('','online ✓');
@@ -770,9 +806,10 @@ async function startSession(user){
   lsSet('rdd_profile:'+user,currentProfile);
   calYear=new Date().getFullYear();calMonth=new Date().getMonth();
   detailAnchor=todayKey();
-  renderSubjects(); // <-- carrega matérias salvas
+  renderSubjects();
   render();
 }
+
 function doLogout(){
   if(!confirm('Sair da conta?'))return;
   if(timerRunning){clearInterval(timerInterval);timerSaveLocal();}
@@ -785,58 +822,34 @@ function doLogout(){
 function openSheets(){const id=lsGet('rdd_sheet_id');if(id)window.open(`https://docs.google.com/spreadsheets/d/${id}`,'_blank');else alert('Planilha não configurada.');}
 
 // ══════════════════════════════════════════════════════════════
-//  MATÉRIAS SALVAS (chips rápidos do cronômetro)
+//  MATÉRIAS SALVAS
 // ══════════════════════════════════════════════════════════════
 function getSubjects(){return lsGet('rdd_subjects:'+currentUser)||['Português','Matemática','Redação'];}
-function saveSubjects(arr){
-  lsSet('rdd_subjects:'+currentUser,arr);
-  scheduleSave('rdd_subjects:'+currentUser,arr);
-}
+function saveSubjects(arr){lsSet('rdd_subjects:'+currentUser,arr);scheduleSave('rdd_subjects:'+currentUser,arr);}
 let activeSubject=null;
 
 function renderSubjects(){
-  const arr=getSubjects();
-  const row=document.getElementById('subjects-row');
-  row.innerHTML='';
+  const arr=getSubjects();const row=document.getElementById('subjects-row');row.innerHTML='';
   arr.forEach(name=>{
-    const chip=document.createElement('div');
-    chip.className='subject-chip'+(activeSubject===name?' active':'');
+    const chip=document.createElement('div');chip.className='subject-chip'+(activeSubject===name?' active':'');
     chip.innerHTML=`<span onclick="selectSubject('${name.replace(/'/g,"\\'")}',this.parentElement)">${name}</span><span class="chip-del" onclick="removeSubject('${name.replace(/'/g,"\\'")}',event)">×</span>`;
     row.appendChild(chip);
   });
 }
-
 function selectSubject(name,chipEl){
-  // Toggle: clicou no mesmo → deseleciona
-  if(activeSubject===name){
-    activeSubject=null;
-    document.getElementById('timer-task-inp').value='';
-  } else {
-    activeSubject=name;
-    document.getElementById('timer-task-inp').value=name;
-  }
+  if(activeSubject===name){activeSubject=null;document.getElementById('timer-task-inp').value='';}
+  else{activeSubject=name;document.getElementById('timer-task-inp').value=name;}
   renderSubjects();
 }
-
 function removeSubject(name,e){
-  e.stopPropagation();
-  const arr=getSubjects().filter(s=>s!==name);
-  saveSubjects(arr);
+  e.stopPropagation();const arr=getSubjects().filter(s=>s!==name);saveSubjects(arr);
   if(activeSubject===name){activeSubject=null;document.getElementById('timer-task-inp').value='';}
   renderSubjects();
 }
-
 function addSubject(){
-  const inp=document.getElementById('new-subject-inp');
-  const name=inp.value.trim();
-  if(!name)return;
-  const arr=getSubjects();
-  if(!arr.includes(name)){arr.push(name);saveSubjects(arr);}
-  inp.value='';
-  // Seleciona automaticamente a nova matéria
-  activeSubject=name;
-  document.getElementById('timer-task-inp').value=name;
-  renderSubjects();
+  const inp=document.getElementById('new-subject-inp');const name=inp.value.trim();if(!name)return;
+  const arr=getSubjects();if(!arr.includes(name)){arr.push(name);saveSubjects(arr);}
+  inp.value='';activeSubject=name;document.getElementById('timer-task-inp').value=name;renderSubjects();
 }
 
 // ══════════════════════════════════════════════════════════════
