@@ -20,31 +20,34 @@
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
 .container{max-width:480px;margin:0 auto;padding:20px 14px 60px;}
 
-/* ── SYNC BAR ── */
+/* SYNC BAR */
 #sync-bar{position:fixed;top:0;left:0;right:0;z-index:300;padding:7px 16px;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:7px;transition:all 0.35s;transform:translateY(-100%);}
 #sync-bar.show{transform:translateY(0);}
 #sync-bar.syncing{background:rgba(55,138,221,0.95);color:white;}
 #sync-bar.saved{background:rgba(29,158,117,0.95);color:white;}
 #sync-bar.error{background:rgba(226,75,74,0.95);color:white;}
 
-/* ── SETUP SCREEN ── */
+/* SETUP SCREEN */
 #setup-screen{display:none;flex-direction:column;min-height:100vh;padding:28px 22px 40px;max-width:480px;margin:0 auto;}
 .setup-logo{font-size:34px;margin-bottom:8px;}
 .setup-title{font-size:22px;font-weight:600;margin-bottom:6px;}
-.setup-sub{font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:22px;}
+.setup-sub{font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:16px;}
 .step-box{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:16px;margin-bottom:12px;}
 .step-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--blue);color:white;font-size:11px;font-weight:700;margin-right:8px;flex-shrink:0;}
 .step-title{font-size:13px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;}
 .step-body{font-size:12px;color:var(--text3);line-height:1.75;padding-left:30px;}
 .step-body a{color:var(--blue);text-decoration:none;}
 .step-body a:hover{text-decoration:underline;}
-.step-body code{background:var(--bg3);padding:2px 6px;border-radius:5px;font-family:'DM Mono',monospace;font-size:11px;color:var(--yellow);}
-.code-block{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:12px;margin:8px 0;font-family:'DM Mono',monospace;font-size:11px;color:var(--yellow);line-height:1.7;overflow-x:auto;white-space:pre;}
+.step-body strong{color:var(--text2);}
+.code-block{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:12px;margin:8px 0;font-family:'DM Mono',monospace;font-size:10.5px;color:var(--yellow);line-height:1.7;overflow-x:auto;white-space:pre;max-height:200px;overflow-y:auto;}
 .copy-btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--blue);cursor:pointer;background:var(--blue-dim);border:1px solid rgba(55,138,221,0.3);border-radius:6px;padding:4px 10px;margin-top:4px;transition:all 0.15s;}
 .copy-btn:hover{background:rgba(55,138,221,0.25);}
+.skip-box{background:rgba(29,158,117,0.08);border:1px solid rgba(29,158,117,0.25);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
+.skip-box-title{font-size:13px;font-weight:600;color:var(--green);margin-bottom:6px;}
+.skip-box-desc{font-size:12px;color:var(--text3);line-height:1.6;margin-bottom:10px;}
 
-/* ── LOGIN ── */
-#login-screen{display:flex;flex-direction:column;justify-content:center;min-height:100vh;padding:32px 24px;max-width:480px;margin:0 auto;}
+/* LOGIN */
+#login-screen{display:none;flex-direction:column;justify-content:center;min-height:100vh;padding:32px 24px;max-width:480px;margin:0 auto;}
 .login-logo{font-size:36px;margin-bottom:8px;}
 .login-title{font-size:24px;font-weight:600;margin-bottom:4px;}
 .login-sub{font-size:13px;color:var(--text3);margin-bottom:22px;line-height:1.5;}
@@ -62,11 +65,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .login-divider{display:flex;align-items:center;gap:10px;margin:12px 0;}
 .login-divider span{font-size:11px;color:var(--text3);}
 .login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--border);}
-.url-status{font-size:11px;padding:7px 11px;border-radius:8px;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
-.url-status.ok{background:var(--green-dim);color:var(--green);border:1px solid rgba(29,158,117,0.3);}
-.url-status.warn{background:rgba(226,168,75,0.12);color:var(--yellow);border:1px solid rgba(226,168,75,0.3);}
 
-/* ── APP ── */
+/* APP */
 #app-screen{display:none;}
 .app-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
 .app-title{font-size:20px;font-weight:600;}
@@ -84,7 +84,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .sync-dot.err{background:var(--red);}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-/* ── LEVEL ── */
+/* LEVEL */
 .level-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
 .level-icon{font-size:28px;flex-shrink:0;}
 .level-info{flex:1;}
@@ -95,13 +95,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .level-bar-bg{height:4px;background:var(--bg3);border-radius:99px;overflow:hidden;margin-top:4px;}
 .level-bar-fill{height:100%;border-radius:99px;transition:width 0.5s cubic-bezier(.4,0,.2,1);}
 
-/* ── XP TOAST ── */
+/* XP TOAST */
 .xp-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:10px 18px;font-size:13px;font-weight:600;opacity:0;transition:all 0.4s;pointer-events:none;z-index:999;white-space:nowrap;}
 .xp-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .xp-toast.pos{color:var(--green);border-color:var(--green);}
 .xp-toast.neg{color:var(--red);border-color:var(--red);}
 
-/* ── TODAY ── */
+/* TODAY */
 .today-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:12px;}
 .section-label{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
 .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
@@ -122,9 +122,24 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .act-tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
 .empty-day{text-align:center;padding:20px;color:var(--text3);font-size:13px;}
 
-/* ── TIMER ── */
+/* TIMER */
 .timer-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 15px 13px;margin-bottom:12px;transition:border-color 0.3s;}
 .timer-card.running{border-color:var(--green);}
+
+/* Matérias rápidas */
+.subjects-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.subject-chip{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.subject-chip:hover{border-color:var(--blue);color:var(--blue);}
+.subject-chip.active{background:var(--blue-dim);border-color:var(--blue);color:var(--blue);}
+.subject-chip .chip-del{font-size:13px;color:var(--text3);margin-left:2px;line-height:1;transition:color 0.15s;}
+.subject-chip .chip-del:hover{color:var(--red);}
+.subject-add-row{display:flex;gap:6px;margin-bottom:10px;}
+.subject-add-inp{flex:1;padding:7px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;}
+.subject-add-inp:focus{border-color:var(--green);}
+.subject-add-inp::placeholder{color:var(--text3);}
+.subject-add-btn{padding:7px 14px;border-radius:8px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.subject-add-btn:hover{border-color:var(--green);color:var(--green);}
+
 .timer-task-inp{width:100%;padding:8px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;margin-bottom:10px;}
 .timer-task-inp:focus{border-color:var(--green);}
 .timer-task-inp::placeholder{color:var(--text3);}
@@ -144,7 +159,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .session-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:0 2px;transition:color 0.15s;}
 .session-del:hover{color:var(--red);}
 
-/* ── CALENDAR ── */
+/* CALENDAR */
 .cal-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:12px;}
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .cal-nav-btn{background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:16px;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
@@ -169,7 +184,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .cal-legend-lbl{font-size:10px;color:var(--text3);}
 .cal-legend-box{width:12px;height:12px;border-radius:3px;}
 
-/* ── XP HISTORY ── */
+/* XP HISTORY */
 .xp-history-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:12px;}
 .xp-day-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);}
 .xp-day-row:last-child{border-bottom:none;}
@@ -180,7 +195,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .xp-day-delta.neg{color:var(--red);}
 .xp-day-delta.zero{color:var(--text3);}
 
-/* ── DETAIL ── */
+/* DETAIL */
 .detail-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:12px;}
 .detail-day-block{margin-bottom:14px;}
 .detail-day-block:last-child{margin-bottom:0;}
@@ -202,13 +217,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .detail-nav-btn:hover{border-color:var(--green);color:var(--green);}
 .detail-week-label{font-size:13px;font-weight:600;}
 
-/* ── TOOLS ── */
+/* TOOLS */
 .tools-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:12px;}
 .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
 .tool-btn{padding:10px;border-radius:9px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;text-align:center;}
 .tool-btn:hover{border-color:var(--green);color:var(--green);}
 
-/* ── MODAL ── */
+/* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;display:flex;align-items:flex-end;justify-content:center;}
 .modal-overlay.hidden{display:none!important;}
 .modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:18px 18px 0 0;padding:20px 18px 36px;width:100%;max-width:480px;max-height:85vh;overflow-y:auto;}
@@ -238,19 +253,30 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 </head>
 <body>
 
-<!-- SYNC BAR -->
 <div id="sync-bar">
   <span id="sync-icon">🔄</span>
   <span id="sync-text">Salvando...</span>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     SETUP SCREEN — aparece só se não tem URL salva
-══════════════════════════════════════════════ -->
+<!-- ══ SETUP ══ -->
 <div id="setup-screen">
   <div class="setup-logo">📋</div>
   <div class="setup-title">Configurar Google Sheets</div>
-  <div class="setup-sub">Faça isso uma vez. Seus dados ficam salvos numa planilha do Google e sincronizados em todos os dispositivos automaticamente.</div>
+  <div class="setup-sub">Faça isso <strong style="color:var(--text)">uma vez</strong>. Em outros dispositivos, você pode pular essa etapa — os dados vêm automaticamente da planilha.</div>
+
+  <!-- SKIP: já tem URL salva na outra planilha -->
+  <div class="skip-box">
+    <div class="skip-box-title">☁️ Já configurou em outro dispositivo?</div>
+    <div class="skip-box-desc">Cole a URL do Web App que você criou antes. Os dados da sua conta serão carregados automaticamente.</div>
+    <div class="field-label">URL do Web App (Apps Script)</div>
+    <input class="field-input mono" id="inp-skip-url" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom:8px"/>
+    <div class="field-label">ID da Planilha</div>
+    <input class="field-input mono" id="inp-skip-id" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms" style="margin-bottom:8px"/>
+    <button class="btn-primary" onclick="skipSetup()" style="margin-bottom:0">✅ Conectar e entrar</button>
+    <div class="login-msg" id="skip-msg" style="margin-top:6px;min-height:16px;"></div>
+  </div>
+
+  <div class="login-divider"><span>ou configure pela primeira vez</span></div>
 
   <div class="step-box">
     <div class="step-title"><span class="step-num">1</span>Abrir o Google Apps Script</div>
@@ -262,7 +288,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <div class="step-box">
     <div class="step-title"><span class="step-num">2</span>Colar o código do servidor</div>
     <div class="step-body">
-      Cole o código abaixo no editor e salve (Ctrl+S):
+      Cole o código abaixo e salve (Ctrl+S):
       <div class="code-block" id="apps-script-code">const SHEET_NAME = 'Dados';
 
 function doPost(e) {
@@ -275,6 +301,7 @@ function doPost(e) {
     for (let i = 1; i < rows.length; i++) {
       if (rows[i][0] === user && rows[i][1] === key) {
         sheet.getRange(i + 1, 3).setValue(value);
+        sheet.getRange(i + 1, 4).setValue(new Date().toISOString());
         return ok('updated');
       }
     }
@@ -303,8 +330,8 @@ function doGet(e) {
   } catch(err) { return err_(err.toString()); }
 }
 
-const ok  = v => ContentService.createTextOutput(JSON.stringify({ok:true,  value:v})).setMimeType(ContentService.MimeType.JSON);
-const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false, error:m})).setMimeType(ContentService.MimeType.JSON);</div>
+const ok  = v => ContentService.createTextOutput(JSON.stringify({ok:true,value:v})).setMimeType(ContentService.MimeType.JSON);
+const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:m})).setMimeType(ContentService.MimeType.JSON);</div>
       <span class="copy-btn" onclick="copyScript()">📋 Copiar código</span>
     </div>
   </div>
@@ -312,29 +339,28 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false, error
   <div class="step-box">
     <div class="step-title"><span class="step-num">3</span>Publicar como Web App</div>
     <div class="step-body">
-      No editor, clique em <strong>Implantar → Nova implantação</strong><br>
+      <strong>Implantar → Nova implantação</strong><br>
       • Tipo: <strong>App da Web</strong><br>
       • Executar como: <strong>Eu mesmo</strong><br>
-      • Quem tem acesso: <strong>Qualquer pessoa</strong><br>
-      Clique em <strong>Implantar</strong> e copie a URL gerada.
+      • Acesso: <strong>Qualquer pessoa</strong><br>
+      Copie a URL gerada.
     </div>
   </div>
 
   <div class="step-box">
-    <div class="step-title"><span class="step-num">4</span>Criar a planilha e pegar o ID</div>
+    <div class="step-title"><span class="step-num">4</span>Criar planilha e pegar ID</div>
     <div class="step-body">
-      Crie uma <a href="https://sheets.new" target="_blank">planilha nova</a>. A URL será assim:<br>
-      <code>docs.google.com/spreadsheets/d/<strong>ID_AQUI</strong>/edit</code><br>
-      Copie só o <strong>ID</strong> da planilha.
+      Crie uma <a href="https://sheets.new" target="_blank">planilha nova</a>. Copie o ID da URL:<br>
+      <span style="font-family:DM Mono,monospace;font-size:10px;color:var(--yellow)">docs.google.com/spreadsheets/d/<strong>ID_AQUI</strong>/edit</span>
     </div>
   </div>
 
   <div class="step-box">
-    <div class="step-title"><span class="step-num">5</span>Cole as informações abaixo</div>
+    <div class="step-title"><span class="step-num">5</span>Cole as informações</div>
     <div class="step-body" style="padding-left:0;margin-top:8px;">
-      <div class="field-label" style="margin-top:8px;">URL do Web App (Apps Script)</div>
+      <div class="field-label" style="margin-top:8px;">URL do Web App</div>
       <input class="field-input mono" id="inp-script-url" placeholder="https://script.google.com/macros/s/.../exec"/>
-      <div class="field-label">ID da Planilha Google Sheets</div>
+      <div class="field-label">ID da Planilha</div>
       <input class="field-input mono" id="inp-sheet-id" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms"/>
       <button class="btn-primary" onclick="saveSetup()">✅ Salvar e continuar</button>
       <div class="login-msg err" id="setup-msg"></div>
@@ -342,14 +368,11 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false, error
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     LOGIN
-══════════════════════════════════════ -->
+<!-- ══ LOGIN ══ -->
 <div id="login-screen">
   <div class="login-logo">📋</div>
   <div class="login-title">Regras do Dia</div>
   <div class="login-sub">Entre para acessar seu progresso</div>
-
   <div id="login-form">
     <div class="field-label">Apelido</div>
     <input class="field-input" id="inp-user" placeholder="ex: joao123" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()"/>
@@ -362,7 +385,6 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false, error
     <button class="btn-secondary" onclick="showSetup()">⚙️ Reconfigurar planilha</button>
     <div class="login-msg" id="login-msg"></div>
   </div>
-
   <div id="register-form" class="hidden">
     <div class="field-label">Escolha um apelido</div>
     <input class="field-input" id="inp-reg-user" placeholder="ex: joao123" autocomplete="username" onkeydown="if(event.key==='Enter')doRegister()"/>
@@ -375,9 +397,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false, error
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     APP
-══════════════════════════════════════ -->
+<!-- ══ APP ══ -->
 <div id="app-screen">
 <div class="container">
 
@@ -392,7 +412,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false, error
         <div class="user-name-lbl" id="user-name-label">—</div>
         <span class="logout-lbl">sair</span>
       </div>
-      <div class="sync-pill" onclick="manualSync()" title="Clique para sincronizar">
+      <div class="sync-pill" onclick="manualSync()">
         <div class="sync-dot" id="sync-dot"></div>
         <span id="sync-lbl">sync</span>
       </div>
@@ -420,9 +440,22 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false, error
     <div id="today-acts"></div>
   </div>
 
+  <!-- TIMER -->
   <div class="timer-card" id="timer-card">
     <div class="section-label">⏱ Cronômetro de Estudo</div>
-    <input class="timer-task-inp" id="timer-task-inp" placeholder="O que você está estudando? (opcional)" maxlength="60"/>
+
+    <!-- Matérias salvas (chips rápidos) -->
+    <div id="subjects-row" class="subjects-row"></div>
+
+    <!-- Input p/ adicionar nova matéria -->
+    <div class="subject-add-row">
+      <input class="subject-add-inp" id="new-subject-inp" placeholder="Nova matéria (ex: Português)..." maxlength="30" onkeydown="if(event.key==='Enter')addSubject()"/>
+      <button class="subject-add-btn" onclick="addSubject()">+ Salvar</button>
+    </div>
+
+    <!-- Campo livre (preenchido ao clicar no chip) -->
+    <input class="timer-task-inp" id="timer-task-inp" placeholder="O que você está estudando?" maxlength="60"/>
+
     <div class="timer-display" id="timer-display">00:00:00</div>
     <div class="timer-btns">
       <button class="timer-btn primary" id="btn-startstop" onclick="timerStartStop()">Iniciar</button>
@@ -478,7 +511,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false, error
       <button class="tool-btn" onclick="exportPDF()">📄 Exportar PDF</button>
       <button class="tool-btn" onclick="manualSync()">☁️ Sincronizar</button>
       <button class="tool-btn" onclick="showStats()">📊 Estatísticas</button>
-      <button class="tool-btn" onclick="openSheets()">📊 Ver Planilha</button>
+      <button class="tool-btn" onclick="openSheets()">🔗 Ver Planilha</button>
     </div>
   </div>
 
@@ -522,34 +555,12 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false, error
 //  CONSTANTES
 // ══════════════════════════════════════════════════════════════
 const defaultSchedule = {
-  0:[
-    {id:'s0_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
-    {id:'s0_b',name:'Biblioteca',meta:'3h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
-    {id:'s0_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'},
-  ],
-  1:[
-    {id:'s1_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
-    {id:'s1_b',name:'Biblioteca',meta:'2h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
-    {id:'s1_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'},
-  ],
-  2:[
-    {id:'s2_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
-    {id:'s2_b',name:'Biblioteca',meta:'1h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
-    {id:'s2_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'},
-  ],
-  3:[
-    {id:'s3_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
-    {id:'s3_b',name:'Biblioteca',meta:'3h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
-    {id:'s3_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'},
-  ],
-  4:[
-    {id:'s4_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
-    {id:'s4_b',name:'Biblioteca',meta:'2h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
-    {id:'s4_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'},
-  ],
-  5:[
-    {id:'s5_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
-  ],
+  0:[{id:'s0_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s0_b',name:'Biblioteca',meta:'3h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s0_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'}],
+  1:[{id:'s1_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s1_b',name:'Biblioteca',meta:'2h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s1_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'}],
+  2:[{id:'s2_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s2_b',name:'Biblioteca',meta:'1h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s2_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'}],
+  3:[{id:'s3_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s3_b',name:'Biblioteca',meta:'3h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s3_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'}],
+  4:[{id:'s4_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s4_b',name:'Biblioteca',meta:'2h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s4_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'}],
+  5:[{id:'s5_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'}],
   6:[],
 };
 const TAG_STYLES={'Estudo':{color:'var(--blue)',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},'Trabalho':{color:'var(--red)',tagBg:'var(--red-dim)',tagColor:'var(--red)'},'Saúde':{color:'var(--green)',tagBg:'var(--green-dim)',tagColor:'var(--green)'},'Pessoal':{color:'var(--yellow)',tagBg:'rgba(226,168,75,0.15)',tagColor:'var(--yellow)'},'Outro':{color:'var(--text2)',tagBg:'rgba(139,144,160,0.15)',tagColor:'var(--text2)'}};
@@ -559,206 +570,150 @@ const LEVELS=[{min:0,name:'Iniciante',icon:'🌱',bar:'#5a5f70'},{min:300,name:'
 function getLevel(xp){for(let i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i].min)return{lv:i,...LEVELS[i]};return{lv:0,...LEVELS[0]};}
 
 // ══════════════════════════════════════════════════════════════
-//  LOCAL STORAGE helpers
+//  LOCAL STORAGE
 // ══════════════════════════════════════════════════════════════
 function lsGet(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch{return null;}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
 
 // ══════════════════════════════════════════════════════════════
 //  GOOGLE SHEETS API
-//  Toda comunicação passa pela URL do Apps Script publicado.
-//  O Apps Script usa fetch sem-cookies (mode=no-cors não funciona
-//  com POST+JSON), então usamos fetchWithRetry com redirect follow.
 // ══════════════════════════════════════════════════════════════
-let SCRIPT_URL = '';
-let SHEET_ID   = '';
+let SCRIPT_URL='', SHEET_ID='';
+function sheetsReady(){return SCRIPT_URL&&SHEET_ID;}
 
-function sheetsReady(){ return SCRIPT_URL && SHEET_ID; }
-
-async function sheetSet(key, value){
-  if(!sheetsReady()) return false;
+async function sheetSet(key,value){
+  if(!sheetsReady())return false;
   try{
-    const res = await fetch(SCRIPT_URL, {
-      method:'POST',
-      body: JSON.stringify({sheetId:SHEET_ID, user:currentUser, key, value:JSON.stringify(value)}),
-    });
-    const j = await res.json();
-    return j.ok;
-  }catch{ return false; }
+    const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({sheetId:SHEET_ID,user:currentUser,key,value:JSON.stringify(value)})});
+    const j=await res.json();return j.ok;
+  }catch{return false;}
 }
-
 async function sheetGet(key){
-  if(!sheetsReady()) return null;
+  if(!sheetsReady())return null;
   try{
-    const url = `${SCRIPT_URL}?sheetId=${encodeURIComponent(SHEET_ID)}&user=${encodeURIComponent(currentUser)}&key=${encodeURIComponent(key)}`;
-    const res = await fetch(url);
-    const j = await res.json();
-    if(!j.ok || j.value === null) return null;
+    const res=await fetch(`${SCRIPT_URL}?sheetId=${encodeURIComponent(SHEET_ID)}&user=${encodeURIComponent(currentUser)}&key=${encodeURIComponent(key)}`);
+    const j=await res.json();
+    if(!j.ok||j.value===null)return null;
     return JSON.parse(j.value);
-  }catch{ return null; }
+  }catch{return null;}
 }
-
-// Carrega TODOS os dados do usuário de uma vez (uma chamada só)
 async function sheetGetAll(){
-  if(!sheetsReady()) return null;
+  if(!sheetsReady())return null;
   try{
-    const url = `${SCRIPT_URL}?sheetId=${encodeURIComponent(SHEET_ID)}&user=${encodeURIComponent(currentUser)}`;
-    const res = await fetch(url);
-    const j = await res.json();
-    if(!j.ok) return null;
-    // j.value é um objeto { key: jsonString }
-    const result = {};
-    Object.entries(j.value||{}).forEach(([k,v])=>{
-      try{ result[k] = JSON.parse(v); }catch{ result[k]=v; }
-    });
+    const res=await fetch(`${SCRIPT_URL}?sheetId=${encodeURIComponent(SHEET_ID)}&user=${encodeURIComponent(currentUser)}`);
+    const j=await res.json();if(!j.ok)return null;
+    const result={};
+    Object.entries(j.value||{}).forEach(([k,v])=>{try{result[k]=JSON.parse(v);}catch{result[k]=v;}});
     return result;
-  }catch{ return null; }
+  }catch{return null;}
 }
 
 // ══════════════════════════════════════════════════════════════
-//  SYNC STATUS
+//  SYNC
 // ══════════════════════════════════════════════════════════════
-let syncQ = [];       // fila de {key,value} a salvar
-let syncing = false;
-let syncTimer = null;
-
-function setSyncUI(state, label){
-  const dot = document.getElementById('sync-dot');
-  const lbl = document.getElementById('sync-lbl');
-  if(!dot) return;
-  dot.className = 'sync-dot'+(state==='spin'?' spin':state==='err'?' err':'');
-  if(lbl) lbl.textContent = label||state;
+let syncQ=[],syncing=false,syncTimer=null;
+function setSyncUI(state,label){
+  const dot=document.getElementById('sync-dot'),lbl=document.getElementById('sync-lbl');
+  if(!dot)return;
+  dot.className='sync-dot'+(state==='spin'?' spin':state==='err'?' err':'');
+  if(lbl)lbl.textContent=label||state;
 }
-
-function showSyncBar(type, text, ms=2500){
+function showSyncBar(type,text,ms=2500){
   const bar=document.getElementById('sync-bar');
-  document.getElementById('sync-icon').textContent = type==='syncing'?'🔄':type==='saved'?'✅':'❌';
-  document.getElementById('sync-text').textContent = text;
-  bar.className = 'show '+type;
-  if(ms) setTimeout(()=>bar.className='',ms);
+  document.getElementById('sync-icon').textContent=type==='syncing'?'🔄':type==='saved'?'✅':'❌';
+  document.getElementById('sync-text').textContent=text;
+  bar.className='show '+type;
+  if(ms)setTimeout(()=>bar.className='',ms);
 }
-
-// Agenda o salvamento de uma chave (debounced 2s)
-function scheduleSave(key, value){
-  // Merge na fila — substitui se a chave já existe
-  const idx = syncQ.findIndex(e=>e.key===key);
-  if(idx>=0) syncQ[idx].value=value; else syncQ.push({key,value});
-  clearTimeout(syncTimer);
-  syncTimer = setTimeout(flushSyncQ, 2000);
+function scheduleSave(key,value){
+  const idx=syncQ.findIndex(e=>e.key===key);
+  if(idx>=0)syncQ[idx].value=value;else syncQ.push({key,value});
+  clearTimeout(syncTimer);syncTimer=setTimeout(flushSyncQ,2000);
 }
-
 async function flushSyncQ(){
-  if(!sheetsReady() || syncing || !syncQ.length) return;
-  syncing = true;
-  setSyncUI('spin','salvando...');
-  const batch = [...syncQ]; syncQ = [];
-  let allOk = true;
-  for(const {key,value} of batch){
-    const ok = await sheetSet(key, value);
-    if(!ok){ syncQ.push({key,value}); allOk=false; } // re-queues on fail
+  if(!sheetsReady()||syncing||!syncQ.length)return;
+  syncing=true;setSyncUI('spin','salvando...');
+  const batch=[...syncQ];syncQ=[];let allOk=true;
+  for(const{key,value}of batch){
+    const ok=await sheetSet(key,value);
+    if(!ok){syncQ.push({key,value});allOk=false;}
   }
-  syncing = false;
-  if(allOk){
-    setSyncUI('','salvo ✓');
-  } else {
-    setSyncUI('err','erro');
-    setTimeout(flushSyncQ, 5000); // retry
-  }
+  syncing=false;
+  if(allOk)setSyncUI('','salvo ✓');
+  else{setSyncUI('err','erro');setTimeout(flushSyncQ,5000);}
 }
-
 async function manualSync(){
-  if(!sheetsReady()){
-    alert('Configure a planilha primeiro em "Reconfigurar planilha".');
-    return;
-  }
-  showSyncBar('syncing','Sincronizando com Google Sheets...',false);
-  setSyncUI('spin','sincronizando...');
-
-  // 1. Flush local → Sheets
+  if(!sheetsReady()){alert('Configure a planilha primeiro.');return;}
+  showSyncBar('syncing','Sincronizando...',false);setSyncUI('spin','sincronizando...');
   await flushSyncQ();
-
-  // 2. Pull Sheets → local (pega dados de outros devices)
-  const all = await sheetGetAll();
+  const all=await sheetGetAll();
   if(all){
-    let changed = false;
+    let changed=false;
     Object.entries(all).forEach(([k,v])=>{
-      const local = lsGet(k);
-      // Só sobrescreve se o dado remoto é diferente
-      if(JSON.stringify(local) !== JSON.stringify(v)){
-        lsSet(k, v);
-        changed = true;
-      }
+      if(JSON.stringify(lsGet(k))!==JSON.stringify(v)){lsSet(k,v);changed=true;}
     });
-    if(changed){ recalcXP(); render(); }
-    // Restaura cronômetro se estava rodando em outro device
+    if(changed){recalcXP();render();}
     restoreTimerFromSheets(all);
     showSyncBar('saved','Sincronizado ✓');
-  } else {
-    showSyncBar('error','Erro ao conectar');
-  }
+  }else{showSyncBar('error','Erro ao conectar');}
 }
 
 // ══════════════════════════════════════════════════════════════
 //  SETUP
 // ══════════════════════════════════════════════════════════════
-const APPS_SCRIPT_CODE = document.getElementById('apps-script-code').textContent;
-
+const APPS_SCRIPT_CODE=document.getElementById('apps-script-code').textContent;
 function copyScript(){
   navigator.clipboard.writeText(APPS_SCRIPT_CODE).then(()=>{
-    const btn = document.querySelector('.copy-btn');
-    btn.textContent='✅ Copiado!';
+    const btn=document.querySelector('.copy-btn');btn.textContent='✅ Copiado!';
     setTimeout(()=>btn.textContent='📋 Copiar código',2000);
   });
 }
-
 function showSetup(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app-screen').style.display='none';
   document.getElementById('setup-screen').style.display='flex';
 }
 
-async function saveSetup(){
-  const url   = document.getElementById('inp-script-url').value.trim();
-  const id    = document.getElementById('inp-sheet-id').value.trim();
-  const msg   = document.getElementById('setup-msg');
-  if(!url || !url.startsWith('https://script.google.com')){
-    msg.textContent='⚠️ URL inválida. Deve começar com https://script.google.com';return;
-  }
-  if(!id){ msg.textContent='⚠️ ID da planilha em branco.';return; }
-  msg.textContent='Testando conexão...';
-  // Testa a conexão
+// Já configurado em outro device — só cola URL+ID e entra
+async function skipSetup(){
+  const url=document.getElementById('inp-skip-url').value.trim();
+  const id=document.getElementById('inp-skip-id').value.trim();
+  const msg=document.getElementById('skip-msg');
+  if(!url||!url.startsWith('https://script.google.com')){msg.textContent='⚠️ URL inválida.';msg.className='login-msg err';return;}
+  if(!id){msg.textContent='⚠️ ID em branco.';msg.className='login-msg err';return;}
+  msg.textContent='Testando conexão...';msg.className='login-msg ok';
   try{
-    const testUrl = `${url}?sheetId=${encodeURIComponent(id)}&user=__test__`;
-    const r = await fetch(testUrl);
-    const j = await r.json();
-    if(!j.ok && j.error && j.error.includes('Cannot call SpreadsheetApp')){
-      msg.textContent='❌ ID da planilha inválido.';return;
-    }
-  }catch(e){
-    msg.textContent='❌ Não foi possível conectar. Verifique a URL e tente de novo.';return;
-  }
-  lsSet('rdd_script_url', url);
-  lsSet('rdd_sheet_id', id);
-  SCRIPT_URL = url; SHEET_ID = id;
+    const r=await fetch(`${url}?sheetId=${encodeURIComponent(id)}&user=__ping__`);
+    await r.json();
+  }catch(e){msg.textContent='❌ Não conectou. Verifique a URL.';msg.className='login-msg err';return;}
+  lsSet('rdd_script_url',url);lsSet('rdd_sheet_id',id);
+  SCRIPT_URL=url;SHEET_ID=id;
+  msg.textContent='✅ Conectado!';
+  setTimeout(()=>{document.getElementById('setup-screen').style.display='none';document.getElementById('login-screen').style.display='flex';},700);
+}
+
+async function saveSetup(){
+  const url=document.getElementById('inp-script-url').value.trim();
+  const id=document.getElementById('inp-sheet-id').value.trim();
+  const msg=document.getElementById('setup-msg');
+  if(!url||!url.startsWith('https://script.google.com')){msg.textContent='⚠️ URL inválida.';return;}
+  if(!id){msg.textContent='⚠️ ID em branco.';return;}
+  msg.textContent='Testando...';
+  try{const r=await fetch(`${url}?sheetId=${encodeURIComponent(id)}&user=__test__`);await r.json();}
+  catch(e){msg.textContent='❌ Não conectou.';return;}
+  lsSet('rdd_script_url',url);lsSet('rdd_sheet_id',id);
+  SCRIPT_URL=url;SHEET_ID=id;
   msg.textContent='✅ Configurado!';
-  setTimeout(()=>{
-    document.getElementById('setup-screen').style.display='none';
-    document.getElementById('login-screen').style.display='flex';
-  }, 800);
+  setTimeout(()=>{document.getElementById('setup-screen').style.display='none';document.getElementById('login-screen').style.display='flex';},700);
 }
 
 // ══════════════════════════════════════════════════════════════
 //  SESSION / AUTH
 // ══════════════════════════════════════════════════════════════
-let currentUser=null, currentProfile=null;
-
+let currentUser=null,currentProfile=null;
 function showLogin(){document.getElementById('login-form').classList.remove('hidden');document.getElementById('register-form').classList.add('hidden');}
 function showRegister(){document.getElementById('register-form').classList.remove('hidden');document.getElementById('login-form').classList.add('hidden');}
-
-async function hashPass(p){
-  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('rdd25_'+p));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
+async function hashPass(p){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('rdd25_'+p));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
 
 async function doLogin(){
   const user=document.getElementById('inp-user').value.trim().toLowerCase();
@@ -766,126 +721,135 @@ async function doLogin(){
   const msg=document.getElementById('login-msg');
   if(!user||!pass){msg.textContent='Preencha apelido e senha.';msg.className='login-msg err';return;}
   msg.textContent='Verificando...';msg.className='login-msg ok';
-
-  // Tenta buscar hash do Sheets (para login em novo device)
-  let storedHash = lsGet('rdd_hash:'+user);
-  if(!storedHash && sheetsReady()){
+  let storedHash=lsGet('rdd_hash:'+user);
+  if(!storedHash&&sheetsReady()){
     msg.textContent='Buscando conta no Sheets...';
-    storedHash = await sheetGet('auth:hash');
+    // Busca hash na planilha (login em novo device)
+    storedHash=await sheetGet('auth:hash');
   }
   if(!storedHash){msg.textContent='Usuário não encontrado. Crie uma conta!';msg.className='login-msg err';return;}
-  const hash = await hashPass(pass);
-  if(storedHash !== hash){msg.textContent='Senha incorreta.';msg.className='login-msg err';return;}
-  lsSet('rdd_hash:'+user, storedHash); // guarda localmente para próximo login offline
+  const hash=await hashPass(pass);
+  if(storedHash!==hash){msg.textContent='Senha incorreta.';msg.className='login-msg err';return;}
+  lsSet('rdd_hash:'+user,storedHash);
   await startSession(user);
 }
-
 async function doRegister(){
   const user=document.getElementById('inp-reg-user').value.trim().toLowerCase();
   const pass=document.getElementById('inp-reg-pass').value;
   const msg=document.getElementById('register-msg');
-  if(!user||pass.length<4){msg.textContent='Apelido e senha (mín. 4 chars) obrigatórios.';msg.className='login-msg err';return;}
+  if(!user||pass.length<4){msg.textContent='Apelido e senha (mín. 4 chars).';msg.className='login-msg err';return;}
   if(!/^[a-z0-9_]+$/.test(user)){msg.textContent='Só letras minúsculas, números e _.';msg.className='login-msg err';return;}
-  // Verifica se já existe
-  if(lsGet('rdd_hash:'+user)){msg.textContent='Apelido já em uso neste device.';msg.className='login-msg err';return;}
-  msg.textContent='Criando conta...';msg.className='login-msg ok';
-  const hash = await hashPass(pass);
-  lsSet('rdd_hash:'+user, hash);
-  // Salva hash no Sheets tb
-  currentUser = user; // temporário para sheetSet funcionar
-  if(sheetsReady()) await sheetSet('auth:hash', hash);
-  currentUser = null;
+  if(lsGet('rdd_hash:'+user)){msg.textContent='Apelido já em uso.';msg.className='login-msg err';return;}
+  msg.textContent='Criando...';msg.className='login-msg ok';
+  const hash=await hashPass(pass);
+  lsSet('rdd_hash:'+user,hash);
+  currentUser=user;
+  if(sheetsReady())await sheetSet('auth:hash',hash);
+  currentUser=null;
   await startSession(user);
 }
-
 async function startSession(user){
-  currentUser    = user;
-  currentProfile = lsGet('rdd_profile:'+user)||{totalXP:0};
-  lsSet('rdd_session', user);
-
+  currentUser=user;currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};
+  lsSet('rdd_session',user);
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app-screen').style.display='block';
   document.getElementById('user-name-label').textContent=user;
   document.getElementById('user-avatar').textContent=user[0].toUpperCase();
-
-  // Restaura cronômetro persistente
   timerRestoreFromLocal();
-
-  // Pull dados do Sheets
   if(sheetsReady()){
-    showSyncBar('syncing','Carregando dados da planilha...',false);
-    setSyncUI('spin','carregando...');
-    const all = await sheetGetAll();
+    showSyncBar('syncing','Carregando dados...',false);setSyncUI('spin','carregando...');
+    const all=await sheetGetAll();
     if(all){
-      Object.entries(all).forEach(([k,v])=>{ if(k!=='auth:hash') lsSet(k,v); });
-      currentProfile = lsGet('rdd_profile:'+user)||{totalXP:0};
+      Object.entries(all).forEach(([k,v])=>{if(k!=='auth:hash')lsSet(k,v);});
+      currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};
       restoreTimerFromSheets(all);
-      showSyncBar('saved','Dados carregados ✓');
-      setSyncUI('','online ✓');
-    } else {
-      showSyncBar('error','Usando dados locais');
-      setSyncUI('err','offline');
-    }
+      showSyncBar('saved','Dados carregados ✓');setSyncUI('','online ✓');
+    }else{showSyncBar('error','Usando dados locais');setSyncUI('err','offline');}
   }
-
-  currentProfile.totalXP = calcTotalXP();
-  lsSet('rdd_profile:'+user, currentProfile);
-  calYear=new Date().getFullYear(); calMonth=new Date().getMonth();
+  currentProfile.totalXP=calcTotalXP();
+  lsSet('rdd_profile:'+user,currentProfile);
+  calYear=new Date().getFullYear();calMonth=new Date().getMonth();
   detailAnchor=todayKey();
+  renderSubjects(); // <-- carrega matérias salvas
   render();
 }
-
 function doLogout(){
   if(!confirm('Sair da conta?'))return;
-  if(timerRunning){ clearInterval(timerInterval); timerSaveLocal(); }
-  currentUser=null; currentProfile=null;
-  localStorage.removeItem('rdd_session');
+  if(timerRunning){clearInterval(timerInterval);timerSaveLocal();}
+  currentUser=null;currentProfile=null;localStorage.removeItem('rdd_session');
   document.getElementById('app-screen').style.display='none';
   document.getElementById('login-screen').style.display='flex';
-  document.getElementById('inp-user').value='';
-  document.getElementById('inp-pass').value='';
-  document.getElementById('login-msg').textContent='';
-  showLogin();
+  document.getElementById('inp-user').value='';document.getElementById('inp-pass').value='';
+  document.getElementById('login-msg').textContent='';showLogin();
+}
+function openSheets(){const id=lsGet('rdd_sheet_id');if(id)window.open(`https://docs.google.com/spreadsheets/d/${id}`,'_blank');else alert('Planilha não configurada.');}
+
+// ══════════════════════════════════════════════════════════════
+//  MATÉRIAS SALVAS (chips rápidos do cronômetro)
+// ══════════════════════════════════════════════════════════════
+function getSubjects(){return lsGet('rdd_subjects:'+currentUser)||['Português','Matemática','Redação'];}
+function saveSubjects(arr){
+  lsSet('rdd_subjects:'+currentUser,arr);
+  scheduleSave('rdd_subjects:'+currentUser,arr);
+}
+let activeSubject=null;
+
+function renderSubjects(){
+  const arr=getSubjects();
+  const row=document.getElementById('subjects-row');
+  row.innerHTML='';
+  arr.forEach(name=>{
+    const chip=document.createElement('div');
+    chip.className='subject-chip'+(activeSubject===name?' active':'');
+    chip.innerHTML=`<span onclick="selectSubject('${name.replace(/'/g,"\\'")}',this.parentElement)">${name}</span><span class="chip-del" onclick="removeSubject('${name.replace(/'/g,"\\'")}',event)">×</span>`;
+    row.appendChild(chip);
+  });
 }
 
-function openSheets(){
-  const id = lsGet('rdd_sheet_id');
-  if(id) window.open(`https://docs.google.com/spreadsheets/d/${id}`, '_blank');
-  else alert('Planilha não configurada.');
+function selectSubject(name,chipEl){
+  // Toggle: clicou no mesmo → deseleciona
+  if(activeSubject===name){
+    activeSubject=null;
+    document.getElementById('timer-task-inp').value='';
+  } else {
+    activeSubject=name;
+    document.getElementById('timer-task-inp').value=name;
+  }
+  renderSubjects();
+}
+
+function removeSubject(name,e){
+  e.stopPropagation();
+  const arr=getSubjects().filter(s=>s!==name);
+  saveSubjects(arr);
+  if(activeSubject===name){activeSubject=null;document.getElementById('timer-task-inp').value='';}
+  renderSubjects();
+}
+
+function addSubject(){
+  const inp=document.getElementById('new-subject-inp');
+  const name=inp.value.trim();
+  if(!name)return;
+  const arr=getSubjects();
+  if(!arr.includes(name)){arr.push(name);saveSubjects(arr);}
+  inp.value='';
+  // Seleciona automaticamente a nova matéria
+  activeSubject=name;
+  document.getElementById('timer-task-inp').value=name;
+  renderSubjects();
 }
 
 // ══════════════════════════════════════════════════════════════
-//  DAY DATA  (local + agenda sync)
+//  DAY DATA
 // ══════════════════════════════════════════════════════════════
 function getDayData(k){return lsGet('rdd_day:'+currentUser+':'+k)||{checks:{},timerSec:0,sessions:[]};}
-function saveDayData(k,data){
-  const key = 'rdd_day:'+currentUser+':'+k;
-  lsSet(key,data);
-  scheduleSave(key,data);
-}
+function saveDayData(k,data){const key='rdd_day:'+currentUser+':'+k;lsSet(key,data);scheduleSave(key,data);}
 function isChecked(dayKey,id){return !!(getDayData(dayKey).checks||{})[id];}
 function getActsKey(dayKey){return 'rdd_acts:'+currentUser+':'+dayKey;}
-function getActsForDay(dayKey){
-  const custom=lsGet(getActsKey(dayKey));
-  if(custom!==null)return custom;
-  return JSON.parse(JSON.stringify(defaultSchedule[dayOfWeek(dayKey)]||[]));
-}
-function saveActsForDay(dayKey,acts){
-  lsSet(getActsKey(dayKey),acts);
-  scheduleSave(getActsKey(dayKey),acts);
-}
-function toggle(dayKey,id){
-  const data=getDayData(dayKey);
-  if(!data.checks)data.checks={};
-  data.checks[id]=!data.checks[id];
-  saveDayData(dayKey,data);
-  recalcXP();render();
-}
-function getDayPct(k){
-  const acts=getActsForDay(k);if(!acts.length)return -1;
-  const checks=(getDayData(k).checks||{});
-  return Math.round(acts.filter(a=>checks[a.id]).length/acts.length*100);
-}
+function getActsForDay(dayKey){const c=lsGet(getActsKey(dayKey));if(c!==null)return c;return JSON.parse(JSON.stringify(defaultSchedule[dayOfWeek(dayKey)]||[]));}
+function saveActsForDay(dayKey,acts){lsSet(getActsKey(dayKey),acts);scheduleSave(getActsKey(dayKey),acts);}
+function toggle(dayKey,id){const data=getDayData(dayKey);if(!data.checks)data.checks={};data.checks[id]=!data.checks[id];saveDayData(dayKey,data);recalcXP();render();}
+function getDayPct(k){const acts=getActsForDay(k);if(!acts.length)return -1;const checks=(getDayData(k).checks||{});return Math.round(acts.filter(a=>checks[a.id]).length/acts.length*100);}
 
 // ══════════════════════════════════════════════════════════════
 //  XP
@@ -895,35 +859,26 @@ function calcDayDelta(dayKey,isPast){
   const acts=getActsForDay(dayKey);if(!acts.length)return 0;
   const checks=data.checks||{};let delta=0;
   acts.forEach(a=>{if(checks[a.id])delta+=5;else if(isPast)delta-=5;});
-  delta+=Math.min(Math.floor((data.timerSec||0)/1800),10);
-  return delta;
+  delta+=Math.min(Math.floor((data.timerSec||0)/1800),10);return delta;
 }
 function calcTotalXP(){
   const today=todayKey();let total=0;
   for(let i=0;i<localStorage.length;i++){
     const k=localStorage.key(i);
-    if(k&&k.startsWith('rdd_day:'+currentUser+':')){
-      const dk=k.replace('rdd_day:'+currentUser+':','');
-      total+=calcDayDelta(dk,dk<today);
-    }
+    if(k&&k.startsWith('rdd_day:'+currentUser+':')){const dk=k.replace('rdd_day:'+currentUser+':','');total+=calcDayDelta(dk,dk<today);}
   }
   return Math.max(0,total);
 }
 function recalcXP(){
   const prev=currentProfile?(currentProfile.totalXP||0):0;
   currentProfile.totalXP=calcTotalXP();
-  const pkey='rdd_profile:'+currentUser;
-  lsSet(pkey,currentProfile);
-  scheduleSave(pkey,currentProfile);
-  const diff=currentProfile.totalXP-prev;
-  if(diff!==0)showXPToast(diff);
+  const pkey='rdd_profile:'+currentUser;lsSet(pkey,currentProfile);scheduleSave(pkey,currentProfile);
+  const diff=currentProfile.totalXP-prev;if(diff!==0)showXPToast(diff);
 }
 function showXPToast(diff){
   const el=document.getElementById('xp-toast');
-  el.textContent=(diff>0?'+':'')+diff+' XP';
-  el.className='xp-toast '+(diff>0?'pos':'neg');
-  el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),2200);
+  el.textContent=(diff>0?'+':'')+diff+' XP';el.className='xp-toast '+(diff>0?'pos':'neg');
+  el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -936,9 +891,9 @@ function fmtHM(s){return`${Math.floor(s/3600)}h${String(Math.floor((s%3600)/60))
 function fmtTime(s){return[Math.floor(s/3600),Math.floor((s%3600)/60),s%60].map(v=>String(v).padStart(2,'0')).join(':');}
 function getMonthDays(year,month){
   const first=new Date(year,month,1);const last=new Date(year,month+1,0);
-  const startDow=first.getDay()===0?6:first.getDay()-1;
-  const days=[];for(let i=0;i<startDow;i++)days.push(null);
-  for(let d=1;d<=last.getDate();d++){days.push(`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`);}
+  const startDow=first.getDay()===0?6:first.getDay()-1;const days=[];
+  for(let i=0;i<startDow;i++)days.push(null);
+  for(let d=1;d<=last.getDate();d++)days.push(`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`);
   return days;
 }
 function getWeekKeys(anchorKey){
@@ -950,62 +905,38 @@ function weekLabel(keys){const fmt=k=>new Date(k+'T12:00:00').toLocaleDateString
 
 // ══════════════════════════════════════════════════════════════
 //  TIMER PERSISTENTE
-//  Salva o epoch de início, então ao reabrir calcula o tempo corrido.
 // ══════════════════════════════════════════════════════════════
 let timerRunning=false,timerSeconds=0,timerInterval=null;
 const TKEY=()=>'rdd_timer:'+currentUser;
-
 function timerSaveLocal(){
-  const state={
-    running:timerRunning,
-    startEpoch:timerRunning?(Date.now()-timerSeconds*1000):null,
-    accSec:timerRunning?0:timerSeconds,
-    task:document.getElementById('timer-task-inp')?.value||'',
-    savedAt:Date.now()
-  };
-  lsSet(TKEY(),state);
-  scheduleSave(TKEY(),state); // salva no Sheets também
+  const state={running:timerRunning,startEpoch:timerRunning?(Date.now()-timerSeconds*1000):null,accSec:timerRunning?0:timerSeconds,task:document.getElementById('timer-task-inp')?.value||'',savedAt:Date.now()};
+  lsSet(TKEY(),state);scheduleSave(TKEY(),state);
 }
-
 function timerRestoreFromLocal(){
   const t=lsGet(TKEY());if(!t)return;
   const inp=document.getElementById('timer-task-inp');
   if(inp&&t.task)inp.value=t.task;
-  if(t.running&&t.startEpoch){
-    timerSeconds=Math.floor((Date.now()-t.startEpoch)/1000);
-    _startTimerUI();
-  } else {
-    timerSeconds=t.accSec||0;
-    document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
-  }
+  if(t.running&&t.startEpoch){timerSeconds=Math.floor((Date.now()-t.startEpoch)/1000);_startTimerUI();}
+  else{timerSeconds=t.accSec||0;document.getElementById('timer-display').textContent=fmtTime(timerSeconds);}
 }
-
 function restoreTimerFromSheets(all){
   const t=all[TKEY()];if(!t||timerRunning)return;
   if(t.running&&t.startEpoch){
     const elapsed=Math.floor((Date.now()-t.startEpoch)/1000);
     if(elapsed>0&&elapsed<86400){
       timerSeconds=elapsed;
-      const inp=document.getElementById('timer-task-inp');
-      if(inp&&t.task)inp.value=t.task;
+      const inp=document.getElementById('timer-task-inp');if(inp&&t.task)inp.value=t.task;
       _startTimerUI();
     }
   }
 }
-
 function _startTimerUI(){
-  if(timerRunning)return;
-  timerRunning=true;
+  if(timerRunning)return;timerRunning=true;
   document.getElementById('btn-startstop').textContent='Pausar';
   document.getElementById('btn-startstop').classList.add('primary');
   document.getElementById('timer-card').classList.add('running');
-  timerInterval=setInterval(()=>{
-    timerSeconds++;
-    document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
-    if(timerSeconds%30===0)timerSaveLocal();
-  },1000);
+  timerInterval=setInterval(()=>{timerSeconds++;document.getElementById('timer-display').textContent=fmtTime(timerSeconds);if(timerSeconds%30===0)timerSaveLocal();},1000);
 }
-
 function timerStartStop(){
   if(timerRunning){
     clearInterval(timerInterval);timerRunning=false;
@@ -1013,11 +944,8 @@ function timerStartStop(){
     document.getElementById('btn-startstop').classList.remove('primary');
     document.getElementById('timer-card').classList.remove('running');
     timerSaveLocal();
-  } else {
-    _startTimerUI();timerSaveLocal();
-  }
+  }else{_startTimerUI();timerSaveLocal();}
 }
-
 function timerSave(){
   if(timerSeconds===0)return;
   const k=todayKey();const data=getDayData(k);
@@ -1032,33 +960,27 @@ function timerSave(){
   document.getElementById('btn-startstop').classList.remove('primary');
   document.getElementById('timer-card').classList.remove('running');
   if(document.getElementById('timer-task-inp'))document.getElementById('timer-task-inp').value='';
-  lsSet(TKEY(),{running:false,accSec:0,task:''});
-  scheduleSave(TKEY(),{running:false,accSec:0,task:''});
+  activeSubject=null;renderSubjects();
+  lsSet(TKEY(),{running:false,accSec:0,task:''});scheduleSave(TKEY(),{running:false,accSec:0,task:''});
   recalcXP();render();
-  const btn=document.getElementById('btn-save');
-  btn.textContent='Salvo ✓';btn.style.color='var(--green)';
+  const btn=document.getElementById('btn-save');btn.textContent='Salvo ✓';btn.style.color='var(--green)';
   setTimeout(()=>{btn.textContent='Salvar';btn.style.color='';},1800);
 }
-
 function timerReset(){
-  if(!confirm('Zerar o cronômetro? Sessões já salvas não serão apagadas.'))return;
+  if(!confirm('Zerar o cronômetro?'))return;
   clearInterval(timerInterval);timerRunning=false;timerSeconds=0;
   document.getElementById('timer-display').textContent='00:00:00';
   document.getElementById('btn-startstop').textContent='Iniciar';
   document.getElementById('btn-startstop').classList.remove('primary');
   document.getElementById('timer-card').classList.remove('running');
+  activeSubject=null;renderSubjects();
   lsSet(TKEY(),{running:false,accSec:0,task:''});
 }
-
 function deleteSession(dayKey,idx){
-  const data=getDayData(dayKey);
-  if(!data.sessions||!data.sessions[idx])return;
+  const data=getDayData(dayKey);if(!data.sessions||!data.sessions[idx])return;
   data.timerSec=Math.max(0,(data.timerSec||0)-(data.sessions[idx].sec||0));
-  data.sessions.splice(idx,1);
-  saveDayData(dayKey,data);recalcXP();render();
+  data.sessions.splice(idx,1);saveDayData(dayKey,data);recalcXP();render();
 }
-
-// Persiste timer quando app perde foco
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&timerRunning)timerSaveLocal();});
 window.addEventListener('beforeunload',()=>{if(timerRunning)timerSaveLocal();});
 
@@ -1071,12 +993,11 @@ function openEditModal(dayKey){
   document.getElementById('modal-title').textContent='Editar · '+dayFull[dayOfWeek(dayKey)];
   document.getElementById('modal-sub').textContent=new Date(dayKey+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
   document.getElementById('add-name').value='';document.getElementById('add-meta').value='';document.getElementById('add-tag').value='Estudo';
-  renderModalActs();
-  document.getElementById('edit-modal').classList.remove('hidden');
+  renderModalActs();document.getElementById('edit-modal').classList.remove('hidden');
 }
 function renderModalActs(){
   const el=document.getElementById('modal-acts-list');el.innerHTML='';
-  if(!modalActs.length){el.innerHTML='<div style="padding:10px 0;color:var(--text3);font-size:12px;">Nenhuma atividade — dia de descanso 🌿</div>';return;}
+  if(!modalActs.length){el.innerHTML='<div style="padding:10px 0;color:var(--text3);font-size:12px;">Nenhuma atividade 🌿</div>';return;}
   modalActs.forEach((act,i)=>{
     const row=document.createElement('div');row.className='modal-act-row';
     row.innerHTML=`<div style="flex:1"><div class="modal-act-name" style="color:${act.color||'var(--text)'}">${act.name}</div><div class="modal-act-meta">${act.meta||''}</div></div><div style="font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;white-space:nowrap;background:${act.tagBg};color:${act.tagColor}">${act.tag}</div><button class="modal-act-del" onclick="removeModalAct(${i})">×</button>`;
@@ -1091,11 +1012,10 @@ function addModalAct(){
   if(!name){document.getElementById('add-name').focus();return;}
   const style=TAG_STYLES[tag]||TAG_STYLES['Outro'];
   modalActs.push({id:'custom_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),name,meta,tag,...style});
-  document.getElementById('add-name').value='';document.getElementById('add-meta').value='';
-  renderModalActs();
+  document.getElementById('add-name').value='';document.getElementById('add-meta').value='';renderModalActs();
 }
 function restoreDefault(){
-  if(!confirm('Restaurar a rotina padrão? As edições serão perdidas.'))return;
+  if(!confirm('Restaurar rotina padrão?'))return;
   modalActs=JSON.parse(JSON.stringify(defaultSchedule[dayOfWeek(editingDayKey)]||[]));
   localStorage.removeItem(getActsKey(editingDayKey));renderModalActs();
 }
@@ -1104,8 +1024,7 @@ function saveEditModal(){
   const data=getDayData(editingDayKey);
   const validIds=new Set(modalActs.map(a=>a.id));
   Object.keys(data.checks||{}).forEach(id=>{if(!validIds.has(id))delete data.checks[id];});
-  saveDayData(editingDayKey,data);
-  closeModal('edit-modal');recalcXP();render();
+  saveDayData(editingDayKey,data);closeModal('edit-modal');recalcXP();render();
 }
 function closeModal(id){document.getElementById(id).classList.add('hidden');}
 
@@ -1128,8 +1047,7 @@ function renderCal(){
     const num=document.createElement('div');num.className='cal-num';num.textContent=new Date(k+'T12:00:00').getDate();
     cell.appendChild(num);
     if(pct>=0&&!isFuture){const dot=document.createElement('div');dot.className='cal-dot';dot.style.background=pct===100?'white':pct>0?'var(--green)':'var(--text3)';cell.appendChild(dot);}
-    cell.onclick=()=>{detailAnchor=k;renderDetail();};
-    grid.appendChild(cell);
+    cell.onclick=()=>{detailAnchor=k;renderDetail();};grid.appendChild(cell);
   });
 }
 
@@ -1143,61 +1061,36 @@ function renderXPHistory(){
   days.forEach(k=>{
     const isPast=k<today;const acts=getActsForDay(k);
     const row=document.createElement('div');row.className='xp-day-row';
-    const dateEl=document.createElement('div');dateEl.className='xp-day-date';
-    dateEl.textContent=new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+    const dateEl=document.createElement('div');dateEl.className='xp-day-date';dateEl.textContent=new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
     const nameEl=document.createElement('div');nameEl.className='xp-day-name';
     const deltaEl=document.createElement('div');
     if(!acts.length){nameEl.textContent=dayFull[dayOfWeek(k)]+' · Descanso';deltaEl.className='xp-day-delta zero';deltaEl.textContent='—';}
-    else{
-      const delta=calcDayDelta(k,isPast);const pct=getDayPct(k);
-      nameEl.textContent=dayFull[dayOfWeek(k)]+(isPast?` · ${pct}%`:' · hoje');
-      deltaEl.className='xp-day-delta '+(delta>0?'pos':delta<0?'neg':'zero');
-      deltaEl.textContent=(delta>0?'+':'')+delta+' XP';
-    }
+    else{const delta=calcDayDelta(k,isPast);const pct=getDayPct(k);nameEl.textContent=dayFull[dayOfWeek(k)]+(isPast?` · ${pct}%`:' · hoje');deltaEl.className='xp-day-delta '+(delta>0?'pos':delta<0?'neg':'zero');deltaEl.textContent=(delta>0?'+':'')+delta+' XP';}
     row.appendChild(dateEl);row.appendChild(nameEl);row.appendChild(deltaEl);el.appendChild(row);
   });
 }
 
 // ══════════════════════════════════════════════════════════════
-//  DETAIL / WEEK
+//  DETAIL
 // ══════════════════════════════════════════════════════════════
 let detailAnchor=todayKey();
 function detailMove(n){const d=new Date(detailAnchor+'T12:00:00');d.setDate(d.getDate()+n*7);detailAnchor=d.toISOString().slice(0,10);renderDetail();}
 function renderDetail(){
-  const keys=getWeekKeys(detailAnchor);
-  document.getElementById('detail-week-label').textContent=weekLabel(keys);
+  const keys=getWeekKeys(detailAnchor);document.getElementById('detail-week-label').textContent=weekLabel(keys);
   const today=todayKey();const el=document.getElementById('detail-list');el.innerHTML='';
   keys.forEach((k,i)=>{
-    const acts=getActsForDay(k);
-    const block=document.createElement('div');block.className='detail-day-block';
+    const acts=getActsForDay(k);const block=document.createElement('div');block.className='detail-day-block';
     const hdr=document.createElement('div');hdr.className='detail-day-header';
     const nameEl=document.createElement('div');nameEl.className='detail-day-name';nameEl.textContent=dayFull[i];
-    const dateEl=document.createElement('div');dateEl.className='detail-day-date';
-    dateEl.textContent=new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+    const dateEl=document.createElement('div');dateEl.className='detail-day-date';dateEl.textContent=new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
     hdr.appendChild(nameEl);hdr.appendChild(dateEl);
-    if(acts.length&&k<=today){
-      const pct=getDayPct(k);const badge=document.createElement('div');badge.className='detail-day-badge';
-      badge.style.background=pct===100?'rgba(29,158,117,0.2)':pct>0?'rgba(226,168,75,0.2)':'rgba(90,95,112,0.2)';
-      badge.style.color=pct===100?'var(--green)':pct>0?'var(--yellow)':'var(--text3)';
-      badge.textContent=pct+'%';hdr.appendChild(badge);
-    }
+    if(acts.length&&k<=today){const pct=getDayPct(k);const badge=document.createElement('div');badge.className='detail-day-badge';badge.style.background=pct===100?'rgba(29,158,117,0.2)':pct>0?'rgba(226,168,75,0.2)':'rgba(90,95,112,0.2)';badge.style.color=pct===100?'var(--green)':pct>0?'var(--yellow)':'var(--text3)';badge.textContent=pct+'%';hdr.appendChild(badge);}
     block.appendChild(hdr);
-    if(!acts.length){
-      const em=document.createElement('div');em.className='detail-empty';em.textContent='🌿 Descanso';block.appendChild(em);
-    } else {
+    if(!acts.length){const em=document.createElement('div');em.className='detail-empty';em.textContent='🌿 Descanso';block.appendChild(em);}
+    else{
       const checks=(getDayData(k).checks||{});const sessions=(getDayData(k).sessions||[]);
-      acts.forEach(act=>{
-        const done=!!checks[act.id];const row=document.createElement('div');row.className='detail-act-row';
-        row.innerHTML=`<div class="detail-check ${done?'done':'miss'}"></div><div class="detail-act-name ${done?'done':''}">${act.name}</div><div class="detail-act-time">${act.meta||''}</div>`;
-        block.appendChild(row);
-      });
-      if(sessions.length){
-        sessions.forEach((s,si)=>{
-          const tr=document.createElement('div');tr.className='detail-act-row';
-          tr.innerHTML=`<div class="detail-check done" style="background:var(--blue)"></div><div class="detail-act-name done" style="font-style:italic">⏱ ${s.task||'Estudo'}</div><div style="display:flex;align-items:center;gap:6px"><span class="detail-act-time">${fmtHM(s.sec||0)}</span>${k===today?`<button class="session-del" onclick="deleteSession('${k}',${si})">×</button>`:''}</div>`;
-          block.appendChild(tr);
-        });
-      }
+      acts.forEach(act=>{const done=!!checks[act.id];const row=document.createElement('div');row.className='detail-act-row';row.innerHTML=`<div class="detail-check ${done?'done':'miss'}"></div><div class="detail-act-name ${done?'done':''}">${act.name}</div><div class="detail-act-time">${act.meta||''}</div>`;block.appendChild(row);});
+      if(sessions.length){sessions.forEach((s,si)=>{const tr=document.createElement('div');tr.className='detail-act-row';tr.innerHTML=`<div class="detail-check done" style="background:var(--blue)"></div><div class="detail-act-name done" style="font-style:italic">⏱ ${s.task||'Estudo'}</div><div style="display:flex;align-items:center;gap:6px"><span class="detail-act-time">${fmtHM(s.sec||0)}</span>${k===today?`<button class="session-del" onclick="deleteSession('${k}',${si})">×</button>`:''}</div>`;block.appendChild(tr);});}
     }
     el.appendChild(block);
   });
@@ -1207,16 +1100,13 @@ function renderDetail(){
 //  RENDER
 // ══════════════════════════════════════════════════════════════
 function renderLevel(){
-  const xp=currentProfile?(currentProfile.totalXP||0):0;
-  const lv=getLevel(xp);const ni=Math.min(lv.lv+1,LEVELS.length-1);const next=LEVELS[ni];
+  const xp=currentProfile?(currentProfile.totalXP||0):0;const lv=getLevel(xp);
+  const ni=Math.min(lv.lv+1,LEVELS.length-1);const next=LEVELS[ni];
   const pct=lv.lv===LEVELS.length-1?100:Math.round((xp-lv.min)/(next.min-lv.min)*100);
-  document.getElementById('lv-icon').textContent=lv.icon;
-  document.getElementById('lv-name').textContent=lv.name;
+  document.getElementById('lv-icon').textContent=lv.icon;document.getElementById('lv-name').textContent=lv.name;
   document.getElementById('lv-desc').textContent=lv.lv<LEVELS.length-1?`${xp-lv.min} / ${next.min-lv.min} XP para ${next.name}`:'Nível máximo! 👑';
-  document.getElementById('lv-xp-label').textContent=`XP total: ${xp}`;
-  document.getElementById('lv-xp-val').textContent=`Nível ${lv.lv+1}`;
-  document.getElementById('lv-bar').style.width=pct+'%';
-  document.getElementById('lv-bar').style.background=lv.bar;
+  document.getElementById('lv-xp-label').textContent=`XP total: ${xp}`;document.getElementById('lv-xp-val').textContent=`Nível ${lv.lv+1}`;
+  document.getElementById('lv-bar').style.width=pct+'%';document.getElementById('lv-bar').style.background=lv.bar;
 }
 function renderToday(){
   const k=todayKey();const acts=getActsForDay(k);
@@ -1225,11 +1115,9 @@ function renderToday(){
   const el=document.getElementById('today-acts');el.innerHTML='';
   if(!acts.length){el.innerHTML='<div class="empty-day">🌿 Sem atividades hoje</div>';return;}
   acts.forEach(act=>{
-    const done=isChecked(k,act.id);
-    const card=document.createElement('div');card.className='act-card'+(done?' done':'');
+    const done=isChecked(k,act.id);const card=document.createElement('div');card.className='act-card'+(done?' done':'');
     card.innerHTML=`<div class="act-check"></div><div class="act-body"><div class="act-name" style="color:${act.color||'var(--text)'}">${act.name}</div><div class="act-meta">${act.meta||''}</div></div><div class="act-tag" style="background:${act.tagBg};color:${act.tagColor}">${act.tag}</div>`;
-    card.onclick=()=>toggle(k,act.id);
-    el.appendChild(card);
+    card.onclick=()=>toggle(k,act.id);el.appendChild(card);
   });
 }
 function renderTimerSessions(){
@@ -1237,45 +1125,26 @@ function renderTimerSessions(){
   const box=document.getElementById('sessions-box');const list=document.getElementById('sessions-list');
   if(!sessions.length){box.classList.add('hidden');return;}
   box.classList.remove('hidden');list.innerHTML='';
-  sessions.forEach((s,i)=>{
-    const row=document.createElement('div');row.className='session-row';
-    row.innerHTML=`<span class="session-name">⏱ ${s.task||'Estudo'}</span><span class="session-time">${fmtHM(s.sec||0)}</span><button class="session-del" onclick="deleteSession('${k}',${i})">×</button>`;
-    list.appendChild(row);
-  });
+  sessions.forEach((s,i)=>{const row=document.createElement('div');row.className='session-row';row.innerHTML=`<span class="session-name">⏱ ${s.task||'Estudo'}</span><span class="session-time">${fmtHM(s.sec||0)}</span><button class="session-del" onclick="deleteSession('${k}',${i})">×</button>`;list.appendChild(row);});
 }
 function render(){renderLevel();renderToday();renderCal();renderXPHistory();renderDetail();renderTimerSessions();}
 
 // ══════════════════════════════════════════════════════════════
-//  EXPORT PDF + STATS
+//  PDF + STATS
 // ══════════════════════════════════════════════════════════════
 function exportPDF(){
-  const allDays=[];
-  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('rdd_day:'+currentUser+':')){allDays.push(k.replace('rdd_day:'+currentUser+':',''));}}
+  const allDays=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('rdd_day:'+currentUser+':')){allDays.push(k.replace('rdd_day:'+currentUser+':',''));}}
   allDays.sort();if(!allDays.length){alert('Nenhum dado salvo ainda.');return;}
   const byMonth={};allDays.forEach(k=>{const ym=k.slice(0,7);if(!byMonth[ym])byMonth[ym]=[];byMonth[ym].push(k);});
   const xp=currentProfile.totalXP||0;const lv=getLevel(xp);const perfect=allDays.filter(k=>getDayPct(k)===100).length;
-  let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Regras do Dia – ${currentUser}</title>
-<style>body{font-family:Arial,sans-serif;color:#1a1a2e;padding:32px;max-width:800px;margin:0 auto;font-size:13px;}h1{font-size:22px;}.sub{color:#666;font-size:12px;margin-bottom:24px;}.stats{display:flex;gap:20px;margin-bottom:28px;flex-wrap:wrap;}.stat{background:#f5f5f5;border-radius:10px;padding:12px 18px;text-align:center;}.stat-num{font-size:22px;font-weight:700;color:#1D9E75;}.stat-lbl{font-size:11px;color:#666;}h2{font-size:15px;margin:20px 0 10px;border-bottom:2px solid #1D9E75;padding-bottom:6px;color:#1D9E75;}table{width:100%;border-collapse:collapse;}th{text-align:left;font-size:11px;color:#999;padding:4px 8px;border-bottom:1px solid #eee;text-transform:uppercase;}td{padding:6px 8px;border-bottom:1px solid #f0f0f0;font-size:12px;}.done{color:#1D9E75;font-weight:600;}.miss{color:#ccc;}.pct-badge{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:600;}.p100{background:#d4f5ea;color:#1D9E75;}.pmid{background:#fff3d4;color:#E2A84B;}.plow{background:#f5f5f5;color:#999;}</style></head><body>
-<h1>📋 Regras do Dia</h1><div class="sub">Usuário: <strong>${currentUser}</strong> · Nível: ${lv.icon} ${lv.name} · ${new Date().toLocaleDateString('pt-BR')}</div>
-<div class="stats"><div class="stat"><div class="stat-num">${xp}</div><div class="stat-lbl">XP Total</div></div><div class="stat"><div class="stat-num">${lv.lv+1}</div><div class="stat-lbl">Nível</div></div><div class="stat"><div class="stat-num">${allDays.length}</div><div class="stat-lbl">Dias</div></div><div class="stat"><div class="stat-num">${perfect}</div><div class="stat-lbl">Dias 100%</div></div></div>`;
-  Object.keys(byMonth).sort().forEach(ym=>{
-    const[y,m]=ym.split('-');html+=`<h2>${monthNames[parseInt(m)-1]} ${y}</h2><table><tr><th>Data</th><th>Dia</th><th>Atividades</th><th>Estudo</th><th>%</th></tr>`;
-    byMonth[ym].forEach(k=>{
-      const acts=getActsForDay(k);const data=getDayData(k);const checks=data.checks||{};const pct=getDayPct(k);
-      const actSum=acts.map(a=>`<span class="${checks[a.id]?'done':'miss'}">${checks[a.id]?'✓':'✗'} ${a.name}</span>`).join(' ');
-      const pb=pct===100?'p100':pct>0?'pmid':'plow';
-      html+=`<tr><td>${new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}</td><td>${dayFull[dayOfWeek(k)]}</td><td>${acts.length?actSum:'Descanso'}</td><td>${data.timerSec>0?fmtHM(data.timerSec):'—'}</td><td>${acts.length?`<span class="pct-badge ${pb}">${pct}%</span>`:'—'}</td></tr>`;
-    });html+='</table>';
-  });html+='</body></html>';
-  const w=window.open('','_blank');w.document.write(html);w.document.close();setTimeout(()=>w.print(),500);
+  let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Regras do Dia – ${currentUser}</title><style>body{font-family:Arial,sans-serif;color:#1a1a2e;padding:32px;max-width:800px;margin:0 auto;font-size:13px;}h1{font-size:22px;}.sub{color:#666;font-size:12px;margin-bottom:24px;}.stats{display:flex;gap:20px;margin-bottom:28px;flex-wrap:wrap;}.stat{background:#f5f5f5;border-radius:10px;padding:12px 18px;text-align:center;}.stat-num{font-size:22px;font-weight:700;color:#1D9E75;}.stat-lbl{font-size:11px;color:#666;}h2{font-size:15px;margin:20px 0 10px;border-bottom:2px solid #1D9E75;padding-bottom:6px;color:#1D9E75;}table{width:100%;border-collapse:collapse;}th{text-align:left;font-size:11px;color:#999;padding:4px 8px;border-bottom:1px solid #eee;text-transform:uppercase;}td{padding:6px 8px;border-bottom:1px solid #f0f0f0;font-size:12px;}.done{color:#1D9E75;font-weight:600;}.miss{color:#ccc;}.pct-badge{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:600;}.p100{background:#d4f5ea;color:#1D9E75;}.pmid{background:#fff3d4;color:#E2A84B;}.plow{background:#f5f5f5;color:#999;}</style></head><body><h1>📋 Regras do Dia</h1><div class="sub">Usuário: <strong>${currentUser}</strong> · Nível: ${lv.icon} ${lv.name} · ${new Date().toLocaleDateString('pt-BR')}</div><div class="stats"><div class="stat"><div class="stat-num">${xp}</div><div class="stat-lbl">XP Total</div></div><div class="stat"><div class="stat-num">${lv.lv+1}</div><div class="stat-lbl">Nível</div></div><div class="stat"><div class="stat-num">${allDays.length}</div><div class="stat-lbl">Dias</div></div><div class="stat"><div class="stat-num">${perfect}</div><div class="stat-lbl">Dias 100%</div></div></div>`;
+  Object.keys(byMonth).sort().forEach(ym=>{const[y,m]=ym.split('-');html+=`<h2>${monthNames[parseInt(m)-1]} ${y}</h2><table><tr><th>Data</th><th>Dia</th><th>Atividades</th><th>Estudo</th><th>%</th></tr>`;byMonth[ym].forEach(k=>{const acts=getActsForDay(k);const data=getDayData(k);const checks=data.checks||{};const pct=getDayPct(k);const actSum=acts.map(a=>`<span class="${checks[a.id]?'done':'miss'}">${checks[a.id]?'✓':'✗'} ${a.name}</span>`).join(' ');const pb=pct===100?'p100':pct>0?'pmid':'plow';html+=`<tr><td>${new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}</td><td>${dayFull[dayOfWeek(k)]}</td><td>${acts.length?actSum:'Descanso'}</td><td>${data.timerSec>0?fmtHM(data.timerSec):'—'}</td><td>${acts.length?`<span class="pct-badge ${pb}">${pct}%</span>`:'—'}</td></tr>`;});html+='</table>';});
+  html+='</body></html>';const w=window.open('','_blank');w.document.write(html);w.document.close();setTimeout(()=>w.print(),500);
 }
-
 function showStats(){
-  const allDays=[];
-  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('rdd_day:'+currentUser+':')){allDays.push(k.replace('rdd_day:'+currentUser+':',''));}}
+  const allDays=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('rdd_day:'+currentUser+':')){allDays.push(k.replace('rdd_day:'+currentUser+':',''));}}
   if(!allDays.length){alert('Nenhum dado ainda.');return;}
-  const perfect=allDays.filter(k=>getDayPct(k)===100).length;
-  const withActs=allDays.filter(k=>getDayPct(k)>=0);
+  const perfect=allDays.filter(k=>getDayPct(k)===100).length;const withActs=allDays.filter(k=>getDayPct(k)>=0);
   const avgPct=withActs.length?Math.round(withActs.reduce((s,k)=>s+getDayPct(k),0)/withActs.length):0;
   const totalSec=allDays.reduce((s,k)=>s+(getDayData(k).timerSec||0),0);
   const xp=currentProfile.totalXP||0;const lv=getLevel(xp);
@@ -1286,21 +1155,14 @@ function showStats(){
 //  INIT
 // ══════════════════════════════════════════════════════════════
 (function init(){
-  SCRIPT_URL = lsGet('rdd_script_url')||'';
-  SHEET_ID   = lsGet('rdd_sheet_id')||'';
-
-  if(!SCRIPT_URL || !SHEET_ID){
-    // Primeira vez — mostra tela de setup
+  SCRIPT_URL=lsGet('rdd_script_url')||'';
+  SHEET_ID=lsGet('rdd_sheet_id')||'';
+  if(!SCRIPT_URL||!SHEET_ID){
     document.getElementById('setup-screen').style.display='flex';
-    document.getElementById('login-screen').style.display='none';
     return;
   }
-
-  // Tem configuração — vai pro login
   const saved=localStorage.getItem('rdd_session');
-  if(saved&&lsGet('rdd_hash:'+saved)){
-    startSession(saved);return;
-  }
+  if(saved&&lsGet('rdd_hash:'+saved)){startSession(saved);return;}
   document.getElementById('login-screen').style.display='flex';
 })();
 </script>
