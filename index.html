@@ -126,6 +126,12 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .timer-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 15px 13px;margin-bottom:12px;transition:border-color 0.3s;}
 .timer-card.running{border-color:var(--green);}
 
+/* — indicador de sincronização do timer — */
+.timer-sync-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--text3);padding:2px 8px;border-radius:20px;border:1px solid var(--border);background:var(--bg3);margin-bottom:8px;transition:all 0.3s;}
+.timer-sync-badge.active{color:var(--blue);border-color:var(--blue);background:var(--blue-dim);}
+.timer-sync-badge.saved{color:var(--green);border-color:var(--green);background:var(--green-dim);}
+.timer-sync-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+
 /* Matérias rápidas */
 .subjects-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
 .subject-chip{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
@@ -441,7 +447,13 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
 
   <!-- TIMER -->
   <div class="timer-card" id="timer-card">
-    <div class="section-label">⏱ Cronômetro de Estudo</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <div class="section-label" style="margin-bottom:0;">⏱ Cronômetro de Estudo</div>
+      <div class="timer-sync-badge" id="timer-sync-badge">
+        <div class="timer-sync-dot"></div>
+        <span id="timer-sync-lbl">aguardando</span>
+      </div>
+    </div>
     <div id="subjects-row" class="subjects-row"></div>
     <div class="subject-add-row">
       <input class="subject-add-inp" id="new-subject-inp" placeholder="Nova matéria (ex: Português)..." maxlength="30" onkeydown="if(event.key==='Enter')addSubject()"/>
@@ -633,6 +645,13 @@ function scheduleSave(key,value){
   if(idx>=0)syncQ[idx].value=value;else syncQ.push({key,value});
   clearTimeout(syncTimer);syncTimer=setTimeout(flushSyncQ,2000);
 }
+
+// ✅ FIX: flush imediato sem debounce — para uso após pause/save/reset do timer
+async function flushSyncQNow(){
+  clearTimeout(syncTimer);
+  return flushSyncQ();
+}
+
 async function flushSyncQ(){
   if(!sheetsReady()||syncing||!syncQ.length)return;
   syncing=true;setSyncUI('spin','salvando...');
@@ -659,6 +678,85 @@ async function manualSync(){
     restoreTimerFromSheets(all);
     showSyncBar('saved','Sincronizado ✓');
   }else{showSyncBar('error','Erro ao conectar');}
+}
+
+// ══════════════════════════════════════════════════════════════
+//  ✅ POLLING DO TIMER — verifica estado remoto a cada 15s
+//  Resolve: pausar/salvar num dispositivo não aparecia no outro
+// ══════════════════════════════════════════════════════════════
+let timerPollInterval=null;
+let lastRemoteTimerSig=''; // assinatura para evitar render desnecessário
+
+function startTimerPolling(){
+  stopTimerPolling();
+  timerPollInterval=setInterval(pollRemoteTimer, 15000);
+}
+function stopTimerPolling(){
+  if(timerPollInterval){clearInterval(timerPollInterval);timerPollInterval=null;}
+}
+
+async function pollRemoteTimer(){
+  if(!sheetsReady()||!currentUser)return;
+  // Não substitui se este dispositivo está ativo com cronômetro rodando
+  // (este dispositivo é a "fonte da verdade" quando está rodando)
+  try{
+    const remote=await sheetGetUser(currentUser, TKEY());
+    if(!remote)return;
+
+    // cria assinatura para detectar mudança real
+    const sig=JSON.stringify({r:remote.running,e:remote.startEpoch,a:remote.accSec,t:remote.task,s:remote.savedAt});
+    if(sig===lastRemoteTimerSig)return; // nada mudou
+    lastRemoteTimerSig=sig;
+
+    // Se ESTE dispositivo está rodando → ele é a fonte da verdade, ignora remoto
+    if(timerRunning){
+      setTimerSyncBadge('active','rodando aqui');
+      return;
+    }
+
+    // Remoto diz que está RODANDO (outro dispositivo iniciou)
+    if(remote.running && remote.startEpoch){
+      const elapsed=Math.floor((Date.now()-remote.startEpoch)/1000);
+      if(elapsed>0 && elapsed<86400){
+        timerSeconds=elapsed;
+        const inp=document.getElementById('timer-task-inp');
+        if(inp && remote.task) inp.value=remote.task;
+        lsSet(TKEY(), remote);
+        _startTimerUI();
+        setTimerSyncBadge('active','rodando em outro dispositivo');
+        return;
+      }
+    }
+
+    // Remoto diz PARADO (outro dispositivo pausou ou zerou)
+    if(!remote.running){
+      const remoteAcc=remote.accSec||0;
+      if(remoteAcc!==timerSeconds){
+        // Para o timer local se estava rodando (não deveria chegar aqui, mas por segurança)
+        if(timerRunning){clearInterval(timerInterval);timerRunning=false;}
+        timerSeconds=remoteAcc;
+        document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
+        document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';
+        document.getElementById('btn-startstop').classList.remove('primary');
+        document.getElementById('timer-card').classList.remove('running');
+        const inp=document.getElementById('timer-task-inp');
+        if(inp && remote.task!==undefined) inp.value=remote.task||'';
+        lsSet(TKEY(), remote);
+        setTimerSyncBadge('saved','atualizado ✓');
+        setTimeout(()=>setTimerSyncBadge('','em espera'),3000);
+      }
+    }
+  }catch(e){
+    // falha silenciosa no poll — não quebra a UX
+  }
+}
+
+function setTimerSyncBadge(state, label){
+  const badge=document.getElementById('timer-sync-badge');
+  const lbl=document.getElementById('timer-sync-lbl');
+  if(!badge||!lbl)return;
+  badge.className='timer-sync-badge'+(state==='active'?' active':state==='saved'?' saved':'');
+  lbl.textContent=label||'em espera';
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -771,7 +869,6 @@ async function doRegister(){
 async function startSession(user){
   currentUser=user;
   currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};
-  // ✅ Salva sessão com timestamp — não expira sozinha
   lsSet('rdd_session',{user, ts: Date.now()});
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app-screen').style.display='block';
@@ -796,13 +893,15 @@ async function startSession(user){
   detailAnchor=todayKey();
   renderSubjects();
   render();
+  // ✅ inicia o polling do timer
+  startTimerPolling();
 }
 
 function doLogout(){
   if(!confirm('Sair da conta?'))return;
   if(timerRunning){clearInterval(timerInterval);timerSaveLocal();}
+  stopTimerPolling(); // ✅ para o polling ao sair
   currentUser=null;currentProfile=null;
-  // ✅ Remove sessão SOMENTE quando o usuário pede para sair
   localStorage.removeItem('rdd_session');
   document.getElementById('app-screen').style.display='none';
   document.getElementById('login-screen').style.display='flex';
@@ -907,14 +1006,41 @@ function getWeekKeys(anchorKey){
 function weekLabel(keys){const fmt=k=>new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});return fmt(keys[0])+' – '+fmt(keys[6]);}
 
 // ══════════════════════════════════════════════════════════════
-//  TIMER PERSISTENTE
+//  TIMER PERSISTENTE — COM SYNC IMEDIATO
 // ══════════════════════════════════════════════════════════════
 let timerRunning=false,timerSeconds=0,timerInterval=null;
 const TKEY=()=>'rdd_timer:'+currentUser;
+
 function timerSaveLocal(){
-  const state={running:timerRunning,startEpoch:timerRunning?(Date.now()-timerSeconds*1000):null,accSec:timerRunning?0:timerSeconds,task:document.getElementById('timer-task-inp')?.value||'',savedAt:Date.now()};
-  lsSet(TKEY(),state);scheduleSave(TKEY(),state);
+  const state={
+    running:timerRunning,
+    startEpoch:timerRunning?(Date.now()-timerSeconds*1000):null,
+    accSec:timerSeconds,  // ✅ FIX: salva sempre o acumulado real, não só quando parado
+    task:document.getElementById('timer-task-inp')?.value||'',
+    savedAt:Date.now()
+  };
+  lsSet(TKEY(),state);
+  scheduleSave(TKEY(),state);
 }
+
+// ✅ FIX: versão que força sync imediato para a nuvem (não debounced)
+async function timerSaveAndPush(){
+  const state={
+    running:timerRunning,
+    startEpoch:timerRunning?(Date.now()-timerSeconds*1000):null,
+    accSec:timerSeconds,
+    task:document.getElementById('timer-task-inp')?.value||'',
+    savedAt:Date.now()
+  };
+  lsSet(TKEY(),state);
+  // Enfileira e força flush imediato
+  const idx=syncQ.findIndex(e=>e.key===TKEY());
+  if(idx>=0)syncQ[idx].value=state;else syncQ.push({key:TKEY(),value:state});
+  await flushSyncQNow();
+  // Atualiza assinatura local para o poller não re-processar
+  lastRemoteTimerSig=JSON.stringify({r:state.running,e:state.startEpoch,a:state.accSec,t:state.task,s:state.savedAt});
+}
+
 function timerRestoreFromLocal(){
   const t=lsGet(TKEY());if(!t)return;
   const inp=document.getElementById('timer-task-inp');
@@ -922,34 +1048,67 @@ function timerRestoreFromLocal(){
   if(t.running&&t.startEpoch){timerSeconds=Math.floor((Date.now()-t.startEpoch)/1000);_startTimerUI();}
   else{timerSeconds=t.accSec||0;document.getElementById('timer-display').textContent=fmtTime(timerSeconds);}
 }
+
 function restoreTimerFromSheets(all){
-  const t=all[TKEY()];if(!t||timerRunning)return;
+  const t=all[TKEY()];if(!t)return;
+  // Se localmente está rodando e o startEpoch local é mais recente, mantém local
+  if(timerRunning){
+    const local=lsGet(TKEY());
+    if(local&&local.startEpoch&&t.startEpoch&&local.startEpoch>=t.startEpoch)return;
+  }
   if(t.running&&t.startEpoch){
     const elapsed=Math.floor((Date.now()-t.startEpoch)/1000);
     if(elapsed>0&&elapsed<86400){
       timerSeconds=elapsed;
       const inp=document.getElementById('timer-task-inp');if(inp&&t.task)inp.value=t.task;
-      _startTimerUI();
+      lsSet(TKEY(),t);
+      if(!timerRunning)_startTimerUI();
+      return;
     }
   }
+  // ✅ FIX: também restaura estado PAUSADO (accSec > 0, running = false)
+  if(!t.running && !timerRunning){
+    timerSeconds=t.accSec||0;
+    document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
+    const inp=document.getElementById('timer-task-inp');if(inp&&t.task)inp.value=t.task;
+    document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';
+    lsSet(TKEY(),t);
+  }
 }
+
 function _startTimerUI(){
   if(timerRunning)return;timerRunning=true;
   document.getElementById('btn-startstop').textContent='Pausar';
   document.getElementById('btn-startstop').classList.add('primary');
   document.getElementById('timer-card').classList.add('running');
-  timerInterval=setInterval(()=>{timerSeconds++;document.getElementById('timer-display').textContent=fmtTime(timerSeconds);if(timerSeconds%30===0)timerSaveLocal();},1000);
+  setTimerSyncBadge('active','rodando');
+  timerInterval=setInterval(()=>{
+    timerSeconds++;
+    document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
+    // A cada 30s salva e sincroniza com a nuvem
+    if(timerSeconds%30===0)timerSaveLocal();
+  },1000);
 }
-function timerStartStop(){
+
+async function timerStartStop(){
   if(timerRunning){
     clearInterval(timerInterval);timerRunning=false;
     document.getElementById('btn-startstop').textContent='Continuar';
     document.getElementById('btn-startstop').classList.remove('primary');
     document.getElementById('timer-card').classList.remove('running');
-    timerSaveLocal();
-  }else{_startTimerUI();timerSaveLocal();}
+    setTimerSyncBadge('saved','pausado — sincronizando...');
+    // ✅ FIX: sync imediato ao pausar
+    await timerSaveAndPush();
+    setTimerSyncBadge('saved','pausado ✓');
+    setTimeout(()=>setTimerSyncBadge('','em espera'),3000);
+  }else{
+    _startTimerUI();
+    // ✅ FIX: sync imediato ao iniciar (para o outro dispositivo saber que começou)
+    await timerSaveAndPush();
+  }
 }
-function timerSave(){
+
+async function timerSave(){
   if(timerSeconds===0)return;
   const k=todayKey();const data=getDayData(k);
   const task=document.getElementById('timer-task-inp')?.value?.trim()||'';
@@ -964,12 +1123,22 @@ function timerSave(){
   document.getElementById('timer-card').classList.remove('running');
   if(document.getElementById('timer-task-inp'))document.getElementById('timer-task-inp').value='';
   activeSubject=null;renderSubjects();
-  lsSet(TKEY(),{running:false,accSec:0,task:''});scheduleSave(TKEY(),{running:false,accSec:0,task:''});
+  // ✅ FIX: reseta o timer na nuvem imediatamente após salvar a sessão
+  const resetState={running:false,accSec:0,task:'',savedAt:Date.now()};
+  lsSet(TKEY(),resetState);
+  const idx=syncQ.findIndex(e=>e.key===TKEY());
+  if(idx>=0)syncQ[idx].value=resetState;else syncQ.push({key:TKEY(),value:resetState});
+  lastRemoteTimerSig=JSON.stringify({r:false,e:null,a:0,t:'',s:resetState.savedAt});
+  setTimerSyncBadge('saved','sessão salva — sincronizando...');
+  await flushSyncQNow();
   recalcXP();render();
+  setTimerSyncBadge('saved','sessão salva ✓');
+  setTimeout(()=>setTimerSyncBadge('','em espera'),3000);
   const btn=document.getElementById('btn-save');btn.textContent='Salvo ✓';btn.style.color='var(--green)';
   setTimeout(()=>{btn.textContent='Salvar';btn.style.color='';},1800);
 }
-function timerReset(){
+
+async function timerReset(){
   if(!confirm('Zerar o cronômetro?'))return;
   clearInterval(timerInterval);timerRunning=false;timerSeconds=0;
   document.getElementById('timer-display').textContent='00:00:00';
@@ -977,14 +1146,28 @@ function timerReset(){
   document.getElementById('btn-startstop').classList.remove('primary');
   document.getElementById('timer-card').classList.remove('running');
   activeSubject=null;renderSubjects();
-  lsSet(TKEY(),{running:false,accSec:0,task:''});
+  // ✅ FIX: sync imediato ao zerar
+  const resetState={running:false,accSec:0,task:'',savedAt:Date.now()};
+  lsSet(TKEY(),resetState);
+  const idx=syncQ.findIndex(e=>e.key===TKEY());
+  if(idx>=0)syncQ[idx].value=resetState;else syncQ.push({key:TKEY(),value:resetState});
+  lastRemoteTimerSig=JSON.stringify({r:false,e:null,a:0,t:'',s:resetState.savedAt});
+  setTimerSyncBadge('saved','zerado — sincronizando...');
+  await flushSyncQNow();
+  setTimerSyncBadge('','em espera');
 }
+
 function deleteSession(dayKey,idx){
   const data=getDayData(dayKey);if(!data.sessions||!data.sessions[idx])return;
   data.timerSec=Math.max(0,(data.timerSec||0)-(data.sessions[idx].sec||0));
   data.sessions.splice(idx,1);saveDayData(dayKey,data);recalcXP();render();
 }
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&timerRunning)timerSaveLocal();});
+
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden&&timerRunning)timerSaveLocal();
+  // ✅ Quando volta ao foco, faz poll imediato para pegar mudanças
+  if(!document.hidden&&currentUser)pollRemoteTimer();
+});
 window.addEventListener('beforeunload',()=>{if(timerRunning)timerSaveLocal();});
 
 // ══════════════════════════════════════════════════════════════
@@ -1155,7 +1338,7 @@ function showStats(){
 }
 
 // ══════════════════════════════════════════════════════════════
-//  INIT — ✅ CORRIGIDO: sessão persiste sem verificar hash
+//  INIT
 // ══════════════════════════════════════════════════════════════
 (async function init(){
   SCRIPT_URL=lsGet('rdd_script_url')||'';
@@ -1166,34 +1349,26 @@ function showStats(){
     return;
   }
 
-  // ✅ Lê a sessão salva — pode ser string (formato antigo) ou objeto {user, ts}
   let savedRaw = localStorage.getItem('rdd_session');
   let savedUser = null;
   if(savedRaw){
     try{
       const parsed = JSON.parse(savedRaw);
-      // Formato novo: {user, ts}
       if(parsed && typeof parsed === 'object' && parsed.user){
         savedUser = parsed.user;
-      }
-      // Formato antigo: string simples (JSON de uma string)
-      else if(typeof parsed === 'string'){
+      }else if(typeof parsed === 'string'){
         savedUser = parsed;
       }
     }catch{
-      // Caso raro: valor bruto sem JSON
       savedUser = savedRaw;
     }
   }
 
-  // ✅ Se há sessão salva, retoma DIRETAMENTE — sem pedir senha, sem checar hash
-  // O hash só é verificado no momento do login manual (doLogin)
   if(savedUser){
     await startSession(savedUser);
     return;
   }
 
-  // Sem sessão → tela de login
   document.getElementById('login-screen').style.display='flex';
 })();
 </script>
