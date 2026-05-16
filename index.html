@@ -590,7 +590,6 @@ async function sheetGet(key){
   }catch{return null;}
 }
 
-// ─── sheetGetUser: busca dado de um usuário específico (para login cross-device) ───
 async function sheetGetUser(user,key){
   if(!sheetsReady())return null;
   try{
@@ -711,14 +710,12 @@ async function saveSetup(){
 }
 
 // ══════════════════════════════════════════════════════════════
-//  SESSION / AUTH  ← CORREÇÃO PRINCIPAL AQUI
+//  SESSION / AUTH
 // ══════════════════════════════════════════════════════════════
 let currentUser=null,currentProfile=null;
 function showLogin(){document.getElementById('login-form').classList.remove('hidden');document.getElementById('register-form').classList.add('hidden');}
 function showRegister(){document.getElementById('register-form').classList.remove('hidden');document.getElementById('login-form').classList.add('hidden');}
 async function hashPass(p){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('rdd25_'+p));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
-
-// Chave do hash de cada usuário — inclui o nome do usuário para evitar colisões
 function hashKey(user){return 'auth:hash:'+user;}
 
 async function doLogin(){
@@ -728,16 +725,12 @@ async function doLogin(){
   if(!user||!pass){msg.textContent='Preencha apelido e senha.';msg.className='login-msg err';return;}
   msg.textContent='Verificando...';msg.className='login-msg ok';
 
-  // 1) Tenta pegar hash localmente
   let storedHash=lsGet('rdd_hash:'+user);
 
-  // 2) Se não tiver localmente E planilha configurada → busca do Sheets
   if(!storedHash&&sheetsReady()){
     msg.textContent='Buscando conta na nuvem...';
-    // ✅ CORREÇÃO: usa sheetGetUser (passa o usuário corretamente) e a chave inclui o nome
     storedHash=await sheetGetUser(user, hashKey(user));
     if(storedHash){
-      // Salva localmente para próximos logins offline
       lsSet('rdd_hash:'+user, storedHash);
     }
   }
@@ -755,10 +748,8 @@ async function doRegister(){
   if(!user||pass.length<4){msg.textContent='Apelido e senha (mín. 4 chars).';msg.className='login-msg err';return;}
   if(!/^[a-z0-9_]+$/.test(user)){msg.textContent='Só letras minúsculas, números e _.';msg.className='login-msg err';return;}
 
-  // Verifica se apelido já existe localmente
   if(lsGet('rdd_hash:'+user)){msg.textContent='Apelido já em uso neste dispositivo.';msg.className='login-msg err';return;}
 
-  // Verifica se apelido já existe na nuvem
   if(sheetsReady()){
     msg.textContent='Verificando disponibilidade...';msg.className='login-msg ok';
     const remoteHash=await sheetGetUser(user, hashKey(user));
@@ -768,11 +759,8 @@ async function doRegister(){
   msg.textContent='Criando conta...';msg.className='login-msg ok';
   const hash=await hashPass(pass);
 
-  // Salva localmente
   lsSet('rdd_hash:'+user, hash);
 
-  // ✅ CORREÇÃO: salva na planilha com chave que inclui o nome do usuário
-  // Precisamos de currentUser temporário para o sheetSet funcionar
   currentUser=user;
   if(sheetsReady()) await sheetSet(hashKey(user), hash);
   currentUser=null;
@@ -783,7 +771,8 @@ async function doRegister(){
 async function startSession(user){
   currentUser=user;
   currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};
-  lsSet('rdd_session',user);
+  // ✅ Salva sessão com timestamp — não expira sozinha
+  lsSet('rdd_session',{user, ts: Date.now()});
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app-screen').style.display='block';
   document.getElementById('user-name-label').textContent=user;
@@ -794,7 +783,6 @@ async function startSession(user){
     const all=await sheetGetAll();
     if(all){
       Object.entries(all).forEach(([k,v])=>{
-        // Não sobrescreve o hash local com dados da planilha (segurança)
         if(!k.startsWith('auth:'))lsSet(k,v);
       });
       currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};
@@ -813,7 +801,9 @@ async function startSession(user){
 function doLogout(){
   if(!confirm('Sair da conta?'))return;
   if(timerRunning){clearInterval(timerInterval);timerSaveLocal();}
-  currentUser=null;currentProfile=null;localStorage.removeItem('rdd_session');
+  currentUser=null;currentProfile=null;
+  // ✅ Remove sessão SOMENTE quando o usuário pede para sair
+  localStorage.removeItem('rdd_session');
   document.getElementById('app-screen').style.display='none';
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('inp-user').value='';document.getElementById('inp-pass').value='';
@@ -1165,33 +1155,45 @@ function showStats(){
 }
 
 // ══════════════════════════════════════════════════════════════
-//  INIT
+//  INIT — ✅ CORRIGIDO: sessão persiste sem verificar hash
 // ══════════════════════════════════════════════════════════════
 (async function init(){
   SCRIPT_URL=lsGet('rdd_script_url')||'';
   SHEET_ID=lsGet('rdd_sheet_id')||'';
+
   if(!SCRIPT_URL||!SHEET_ID){
     document.getElementById('setup-screen').style.display='flex';
     return;
   }
-  const saved=localStorage.getItem('rdd_session');
-  if(!saved){document.getElementById('login-screen').style.display='flex';return;}
 
-  // Hash local encontrado → entra direto
-  if(lsGet('rdd_hash:'+saved)){startSession(saved);return;}
-
-  // Hash não está local (novo dispositivo) → busca na nuvem antes de deslogar
-  if(sheetsReady()){
-    const remoteHash=await sheetGetUser(saved, hashKey(saved));
-    if(remoteHash){
-      lsSet('rdd_hash:'+saved, remoteHash); // salva localmente para próxima vez
-      startSession(saved);
-      return;
+  // ✅ Lê a sessão salva — pode ser string (formato antigo) ou objeto {user, ts}
+  let savedRaw = localStorage.getItem('rdd_session');
+  let savedUser = null;
+  if(savedRaw){
+    try{
+      const parsed = JSON.parse(savedRaw);
+      // Formato novo: {user, ts}
+      if(parsed && typeof parsed === 'object' && parsed.user){
+        savedUser = parsed.user;
+      }
+      // Formato antigo: string simples (JSON de uma string)
+      else if(typeof parsed === 'string'){
+        savedUser = parsed;
+      }
+    }catch{
+      // Caso raro: valor bruto sem JSON
+      savedUser = savedRaw;
     }
   }
 
-  // Sem hash em lugar nenhum → redireciona para login
-  localStorage.removeItem('rdd_session');
+  // ✅ Se há sessão salva, retoma DIRETAMENTE — sem pedir senha, sem checar hash
+  // O hash só é verificado no momento do login manual (doLogin)
+  if(savedUser){
+    await startSession(savedUser);
+    return;
+  }
+
+  // Sem sessão → tela de login
   document.getElementById('login-screen').style.display='flex';
 })();
 </script>
