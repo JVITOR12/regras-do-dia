@@ -122,17 +122,24 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .act-tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
 .empty-day{text-align:center;padding:20px;color:var(--text3);font-size:13px;}
 
-/* TIMER */
+/* ══ TIMER ══ */
 .timer-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 15px 13px;margin-bottom:12px;transition:border-color 0.3s;}
 .timer-card.running{border-color:var(--green);}
 
-/* — indicador de sincronização do timer — */
 .timer-sync-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--text3);padding:2px 8px;border-radius:20px;border:1px solid var(--border);background:var(--bg3);margin-bottom:8px;transition:all 0.3s;}
 .timer-sync-badge.active{color:var(--blue);border-color:var(--blue);background:var(--blue-dim);}
 .timer-sync-badge.saved{color:var(--green);border-color:var(--green);background:var(--green-dim);}
 .timer-sync-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
 
-/* Matérias rápidas */
+/* ══ Intervalos do timer ══ */
+.timer-intervals{margin-top:8px;margin-bottom:8px;}
+.timer-interval-row{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);}
+.timer-interval-row:last-child{border-bottom:none;}
+.timer-interval-icon{font-size:11px;width:16px;text-align:center;flex-shrink:0;}
+.timer-interval-time{font-size:11px;font-family:'DM Mono',monospace;color:var(--text2);flex:1;}
+.timer-interval-dur{font-size:11px;font-family:'DM Mono',monospace;color:var(--green);}
+.timer-intervals-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.7px;font-weight:500;margin-bottom:6px;}
+
 .subjects-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
 .subject-chip{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .subject-chip:hover{border-color:var(--blue);color:var(--blue);}
@@ -178,6 +185,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .cal-cell:hover{border-color:var(--border2);}
 .cal-cell.empty{cursor:default;opacity:0;}
 .cal-cell.today{border-color:var(--green)!important;}
+.cal-cell.future{opacity:0.6;}
 .cal-cell .cal-num{font-size:11px;font-weight:600;line-height:1;}
 .cal-cell .cal-dot{width:4px;height:4px;border-radius:50%;margin-top:2px;}
 .cal-cell.pct-0{background:var(--bg3);color:var(--text3);}
@@ -223,6 +231,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .detail-nav-btn:hover{border-color:var(--green);color:var(--green);}
 .detail-week-label{font-size:13px;font-weight:600;}
 
+/* ══ Botão editar no detail ══ */
+.detail-edit-btn{font-size:10px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px 8px;cursor:pointer;transition:all 0.15s;}
+.detail-edit-btn:hover{border-color:var(--blue);color:var(--blue);}
+
 /* TOOLS */
 .tools-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:12px;}
 .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
@@ -254,6 +266,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .modal-btn.cancel:hover{border-color:var(--red);color:var(--red);}
 .modal-restore-note{font-size:11px;color:var(--text3);margin-top:8px;text-align:center;}
 .modal-restore-link{color:var(--blue);cursor:pointer;text-decoration:underline;}
+
+/* ══ Banner "planejando dia futuro" ══ */
+.future-banner{display:flex;align-items:center;gap:8px;background:rgba(55,138,221,0.1);border:1px solid rgba(55,138,221,0.3);border-radius:10px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:var(--blue);}
+.future-banner-icon{font-size:14px;}
+
 .hidden{display:none!important;}
 </style>
 </head>
@@ -437,12 +454,22 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
     </div>
   </div>
 
+  <!-- ══ HOJE ══ -->
   <div class="today-card">
     <div class="section-header">
       <div class="section-label" id="today-section-label">Hoje</div>
-      <button class="edit-day-btn" onclick="openEditModal(todayKey())">✏️ Editar dia</button>
+      <button class="edit-day-btn" onclick="openEditModal(todayKey())">✏️ Editar hoje</button>
     </div>
     <div id="today-acts"></div>
+  </div>
+
+  <!-- ══ PRÓXIMO DIA ══ -->
+  <div class="today-card" id="next-day-card">
+    <div class="section-header">
+      <div class="section-label" id="next-day-label">Amanhã</div>
+      <button class="edit-day-btn" id="next-day-edit-btn" onclick="openEditNextDay()">✏️ Planejar</button>
+    </div>
+    <div id="next-day-acts"></div>
   </div>
 
   <!-- TIMER -->
@@ -461,6 +488,13 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
     </div>
     <input class="timer-task-inp" id="timer-task-inp" placeholder="O que você está estudando?" maxlength="60"/>
     <div class="timer-display" id="timer-display">00:00:00</div>
+
+    <!-- ══ INTERVALOS em tempo real ══ -->
+    <div class="timer-intervals hidden" id="timer-intervals-box">
+      <div class="timer-intervals-lbl">Intervalos desta sessão</div>
+      <div id="timer-intervals-list"></div>
+    </div>
+
     <div class="timer-btns">
       <button class="timer-btn primary" id="btn-startstop" onclick="timerStartStop()">Iniciar</button>
       <button class="timer-btn" id="btn-save" onclick="timerSave()">Salvar</button>
@@ -527,6 +561,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
   <div class="modal-box">
     <div class="modal-title" id="modal-title">Editar atividades</div>
     <div class="modal-sub" id="modal-sub">–</div>
+    <div id="modal-future-banner"></div>
     <div class="modal-section">Atividades do dia</div>
     <div id="modal-acts-list"></div>
     <div class="modal-restore-note"><span class="modal-restore-link" onclick="restoreDefault()">↩ Restaurar rotina padrão</span></div>
@@ -646,7 +681,6 @@ function scheduleSave(key,value){
   clearTimeout(syncTimer);syncTimer=setTimeout(flushSyncQ,2000);
 }
 
-// ✅ FIX: flush imediato sem debounce — para uso após pause/save/reset do timer
 async function flushSyncQNow(){
   clearTimeout(syncTimer);
   return flushSyncQ();
@@ -681,15 +715,13 @@ async function manualSync(){
 }
 
 // ══════════════════════════════════════════════════════════════
-//  ✅ POLLING DO TIMER — verifica estado remoto a cada 15s
-//  Resolve: pausar/salvar num dispositivo não aparecia no outro
+//  POLLING DO TIMER
 // ══════════════════════════════════════════════════════════════
 let timerPollInterval=null;
-let lastRemoteTimerSig=''; // assinatura para evitar render desnecessário
+let lastRemoteTimerSig='';
 
 function startTimerPolling(){
   stopTimerPolling();
-  // ✅ Poll a cada 5s — rápido o suficiente para pausar "em tempo real" no outro dispositivo
   timerPollInterval=setInterval(pollRemoteTimer, 5000);
 }
 function stopTimerPolling(){
@@ -698,34 +730,26 @@ function stopTimerPolling(){
 
 async function pollRemoteTimer(){
   if(!sheetsReady()||!currentUser)return;
-  // Não substitui se este dispositivo está ativo com cronômetro rodando
-  // (este dispositivo é a "fonte da verdade" quando está rodando)
   try{
     const remote=await sheetGetUser(currentUser, TKEY());
     if(!remote)return;
-
-    // cria assinatura para detectar mudança real
     const sig=JSON.stringify({r:remote.running,e:remote.startEpoch,a:remote.accSec,t:remote.task,s:remote.savedAt});
-    if(sig===lastRemoteTimerSig)return; // nada mudou
+    if(sig===lastRemoteTimerSig)return;
     lastRemoteTimerSig=sig;
 
-    // Se ESTE dispositivo está rodando → verifica se o remoto PAUSOU
-    // (outro dispositivo pode ter pausado enquanto este estava rodando)
     if(timerRunning){
-      // Remoto ainda rodando → sem conflito, continua local
       if(remote.running){
         setTimerSyncBadge('active','rodando aqui');
         return;
       }
-      // ✅ Remoto PAROU (pausou ou zerou) — para o timer local também
-      // Só obedece se o savedAt remoto for mais recente que o nosso último push
       const localState=lsGet(TKEY());
       const remoteSavedAt=remote.savedAt||0;
       const localSavedAt=localState?.savedAt||0;
-      if(remoteSavedAt <= localSavedAt) return; // nosso push foi depois, ignorar
-      // Para o timer local
+      if(remoteSavedAt <= localSavedAt) return;
       clearInterval(timerInterval);timerRunning=false;
       timerSeconds=remote.accSec||0;
+      // ✅ Atualiza intervalos com os do remoto
+      timerIntervals=remote.intervals||[];
       document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
       document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';
       document.getElementById('btn-startstop').classList.remove('primary');
@@ -733,32 +757,33 @@ async function pollRemoteTimer(){
       const inp2=document.getElementById('timer-task-inp');
       if(inp2&&remote.task!==undefined) inp2.value=remote.task||'';
       lsSet(TKEY(),remote);
+      renderTimerIntervals();
       setTimerSyncBadge('saved','pausado remotamente ✓');
       setTimeout(()=>setTimerSyncBadge('','em espera'),3000);
       return;
     }
 
-    // Remoto diz que está RODANDO (outro dispositivo iniciou)
     if(remote.running && remote.startEpoch){
-      const elapsed=Math.floor((Date.now()-remote.startEpoch)/1000);
+      const elapsed=Math.floor((Date.now()-remote.startEpoch)/1000)+(remote.accSec||0);
       if(elapsed>0 && elapsed<86400){
         timerSeconds=elapsed;
+        timerIntervals=remote.intervals||[];
         const inp=document.getElementById('timer-task-inp');
         if(inp && remote.task) inp.value=remote.task;
         lsSet(TKEY(), remote);
         _startTimerUI();
+        renderTimerIntervals();
         setTimerSyncBadge('active','rodando em outro dispositivo');
         return;
       }
     }
 
-    // Remoto diz PARADO (outro dispositivo pausou ou zerou)
     if(!remote.running){
       const remoteAcc=remote.accSec||0;
       if(remoteAcc!==timerSeconds){
-        // Para o timer local se estava rodando (não deveria chegar aqui, mas por segurança)
         if(timerRunning){clearInterval(timerInterval);timerRunning=false;}
         timerSeconds=remoteAcc;
+        timerIntervals=remote.intervals||[];
         document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
         document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';
         document.getElementById('btn-startstop').classList.remove('primary');
@@ -766,13 +791,12 @@ async function pollRemoteTimer(){
         const inp=document.getElementById('timer-task-inp');
         if(inp && remote.task!==undefined) inp.value=remote.task||'';
         lsSet(TKEY(), remote);
+        renderTimerIntervals();
         setTimerSyncBadge('saved','atualizado ✓');
         setTimeout(()=>setTimerSyncBadge('','em espera'),3000);
       }
     }
-  }catch(e){
-    // falha silenciosa no poll — não quebra a UX
-  }
+  }catch(e){}
 }
 
 function setTimerSyncBadge(state, label){
@@ -846,17 +870,12 @@ async function doLogin(){
   const msg=document.getElementById('login-msg');
   if(!user||!pass){msg.textContent='Preencha apelido e senha.';msg.className='login-msg err';return;}
   msg.textContent='Verificando...';msg.className='login-msg ok';
-
   let storedHash=lsGet('rdd_hash:'+user);
-
   if(!storedHash&&sheetsReady()){
     msg.textContent='Buscando conta na nuvem...';
     storedHash=await sheetGetUser(user, hashKey(user));
-    if(storedHash){
-      lsSet('rdd_hash:'+user, storedHash);
-    }
+    if(storedHash)lsSet('rdd_hash:'+user, storedHash);
   }
-
   if(!storedHash){msg.textContent='Usuário não encontrado. Crie uma conta!';msg.className='login-msg err';return;}
   const hash=await hashPass(pass);
   if(storedHash!==hash){msg.textContent='Senha incorreta.';msg.className='login-msg err';return;}
@@ -869,24 +888,18 @@ async function doRegister(){
   const msg=document.getElementById('register-msg');
   if(!user||pass.length<4){msg.textContent='Apelido e senha (mín. 4 chars).';msg.className='login-msg err';return;}
   if(!/^[a-z0-9_]+$/.test(user)){msg.textContent='Só letras minúsculas, números e _.';msg.className='login-msg err';return;}
-
   if(lsGet('rdd_hash:'+user)){msg.textContent='Apelido já em uso neste dispositivo.';msg.className='login-msg err';return;}
-
   if(sheetsReady()){
     msg.textContent='Verificando disponibilidade...';msg.className='login-msg ok';
     const remoteHash=await sheetGetUser(user, hashKey(user));
     if(remoteHash){msg.textContent='Apelido já em uso. Escolha outro.';msg.className='login-msg err';return;}
   }
-
   msg.textContent='Criando conta...';msg.className='login-msg ok';
   const hash=await hashPass(pass);
-
   lsSet('rdd_hash:'+user, hash);
-
   currentUser=user;
   if(sheetsReady()) await sheetSet(hashKey(user), hash);
   currentUser=null;
-
   await startSession(user);
 }
 
@@ -917,14 +930,13 @@ async function startSession(user){
   detailAnchor=todayKey();
   renderSubjects();
   render();
-  // ✅ inicia o polling do timer
   startTimerPolling();
 }
 
 function doLogout(){
   if(!confirm('Sair da conta?'))return;
   if(timerRunning){clearInterval(timerInterval);timerSaveLocal();}
-  stopTimerPolling(); // ✅ para o polling ao sair
+  stopTimerPolling();
   currentUser=null;currentProfile=null;
   localStorage.removeItem('rdd_session');
   document.getElementById('app-screen').style.display='none';
@@ -978,6 +990,40 @@ function toggle(dayKey,id){const data=getDayData(dayKey);if(!data.checks)data.ch
 function getDayPct(k){const acts=getActsForDay(k);if(!acts.length)return -1;const checks=(getDayData(k).checks||{});return Math.round(acts.filter(a=>checks[a.id]).length/acts.length*100);}
 
 // ══════════════════════════════════════════════════════════════
+//  ✅ FIX 1: PRÓXIMO DIA — helper para calcular chave de amanhã
+// ══════════════════════════════════════════════════════════════
+function nextDayKey(){
+  const d=new Date();d.setDate(d.getDate()+1);return d.toISOString().slice(0,10);
+}
+function openEditNextDay(){
+  openEditModal(nextDayKey());
+}
+function renderNextDay(){
+  const k=nextDayKey();
+  const acts=getActsForDay(k);
+  const dow=dayOfWeek(k);
+  const lbl=document.getElementById('next-day-label');
+  const el=document.getElementById('next-day-acts');
+  const card=document.getElementById('next-day-card');
+
+  lbl.textContent=`Amanhã · ${dayFull[dow]}`;
+  el.innerHTML='';
+
+  if(!acts.length){
+    el.innerHTML='<div class="empty-day">🌿 Amanhã é descanso</div>';
+  } else {
+    // Mostra prévia das atividades planejadas (somente leitura — sem toggle)
+    acts.forEach(act=>{
+      const row=document.createElement('div');
+      row.className='act-card';
+      row.style.cursor='default';
+      row.innerHTML=`<div class="act-check" style="border-style:dashed;background:transparent"></div><div class="act-body"><div class="act-name" style="color:${act.color||'var(--text)'}">${act.name}</div><div class="act-meta">${act.meta||''}</div></div><div class="act-tag" style="background:${act.tagBg};color:${act.tagColor}">${act.tag}</div>`;
+      el.appendChild(row);
+    });
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
 //  XP
 // ══════════════════════════════════════════════════════════════
 function calcDayDelta(dayKey,isPast){
@@ -1015,6 +1061,11 @@ function dayOfWeek(k){const d=new Date(k+'T12:00:00');return d.getDay()===0?6:d.
 function fmtToday(){return new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});}
 function fmtHM(s){return`${Math.floor(s/3600)}h${String(Math.floor((s%3600)/60)).padStart(2,'0')}min`;}
 function fmtTime(s){return[Math.floor(s/3600),Math.floor((s%3600)/60),s%60].map(v=>String(v).padStart(2,'0')).join(':');}
+function fmtHHMM(epoch){
+  if(!epoch)return'--:--';
+  const d=new Date(epoch);
+  return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
 function getMonthDays(year,month){
   const first=new Date(year,month,1);const last=new Date(year,month+1,0);
   const startDow=first.getDay()===0?6:first.getDay()-1;const days=[];
@@ -1030,154 +1081,243 @@ function getWeekKeys(anchorKey){
 function weekLabel(keys){const fmt=k=>new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});return fmt(keys[0])+' – '+fmt(keys[6]);}
 
 // ══════════════════════════════════════════════════════════════
-//  TIMER PERSISTENTE — COM SYNC IMEDIATO
+//  ✅ FIX 2: TIMER COM TIMESTAMPS REAIS DE INÍCIO/PAUSA
+//
+//  Estrutura do estado do timer:
+//  {
+//    running: bool,
+//    accSec: number,          // segundos acumulados antes do segmento atual
+//    startEpoch: number|null, // quando este segmento foi iniciado (ms)
+//    task: string,
+//    savedAt: number,         // timestamp do último save (ms)
+//    intervals: [             // ← NOVO: lista de todos os intervalos
+//      { startEpoch, endEpoch, durationSec }
+//    ]
+//  }
 // ══════════════════════════════════════════════════════════════
-let timerRunning=false,timerSeconds=0,timerInterval=null;
+let timerRunning=false;
+let timerSeconds=0;      // segundos exibidos no display (acc + elapsed atual)
+let timerAccSec=0;       // segundos acumulados antes do segmento em curso
+let timerStartEpoch=null;// quando o segmento atual foi iniciado
+let timerInterval=null;
+let timerIntervals=[];   // lista de {startEpoch, endEpoch, durationSec}
+
 const TKEY=()=>'rdd_timer:'+currentUser;
 
-function timerSaveLocal(){
-  const state={
-    running:timerRunning,
-    startEpoch:timerRunning?(Date.now()-timerSeconds*1000):null,
-    accSec:timerSeconds,  // ✅ FIX: salva sempre o acumulado real, não só quando parado
-    task:document.getElementById('timer-task-inp')?.value||'',
-    savedAt:Date.now()
-  };
-  lsSet(TKEY(),state);
-  scheduleSave(TKEY(),state);
+// Calcula quantos segundos se passaram no segmento atual
+function currentSegmentSec(){
+  if(!timerRunning||!timerStartEpoch)return 0;
+  return Math.floor((Date.now()-timerStartEpoch)/1000);
 }
 
-// ✅ FIX: versão que força sync imediato para a nuvem (não debounced)
-async function timerSaveAndPush(){
-  const state={
-    running:timerRunning,
-    startEpoch:timerRunning?(Date.now()-timerSeconds*1000):null,
-    accSec:timerSeconds,
-    task:document.getElementById('timer-task-inp')?.value||'',
-    savedAt:Date.now()
+function buildTimerState(){
+  return {
+    running: timerRunning,
+    startEpoch: timerStartEpoch,
+    accSec: timerAccSec,
+    task: document.getElementById('timer-task-inp')?.value||'',
+    savedAt: Date.now(),
+    intervals: timerIntervals
   };
-  lsSet(TKEY(),state);
-  // Enfileira e força flush imediato
+}
+
+function applyTimerState(t){
+  if(!t) return;
+  timerIntervals = t.intervals||[];
+  const inp=document.getElementById('timer-task-inp');
+  if(inp && t.task !== undefined) inp.value = t.task||'';
+
+  if(t.running && t.startEpoch){
+    // Calcula segundos do segmento atual baseado no startEpoch real
+    const segSec = Math.floor((Date.now() - t.startEpoch) / 1000);
+    if(segSec >= 0 && segSec < 86400){
+      timerAccSec = t.accSec || 0;
+      timerStartEpoch = t.startEpoch;
+      timerSeconds = timerAccSec + segSec;
+      lsSet(TKEY(), t);
+      if(!timerRunning) _startTimerUI();
+      return;
+    }
+  }
+  // Estado pausado
+  timerAccSec = t.accSec || 0;
+  timerSeconds = timerAccSec;
+  timerStartEpoch = null;
+  document.getElementById('timer-display').textContent = fmtTime(timerSeconds);
+  document.getElementById('btn-startstop').textContent = timerSeconds > 0 ? 'Continuar' : 'Iniciar';
+  document.getElementById('btn-startstop').classList.remove('primary');
+  document.getElementById('timer-card').classList.remove('running');
+  lsSet(TKEY(), t);
+  renderTimerIntervals();
+}
+
+function timerSaveLocal(){
+  lsSet(TKEY(), buildTimerState());
+}
+
+async function timerSaveAndPush(){
+  const state = buildTimerState();
+  lsSet(TKEY(), state);
   const idx=syncQ.findIndex(e=>e.key===TKEY());
-  if(idx>=0)syncQ[idx].value=state;else syncQ.push({key:TKEY(),value:state});
+  if(idx>=0) syncQ[idx].value=state; else syncQ.push({key:TKEY(), value:state});
   await flushSyncQNow();
-  // Atualiza assinatura local para o poller não re-processar
   lastRemoteTimerSig=JSON.stringify({r:state.running,e:state.startEpoch,a:state.accSec,t:state.task,s:state.savedAt});
 }
 
 function timerRestoreFromLocal(){
-  const t=lsGet(TKEY());if(!t)return;
-  const inp=document.getElementById('timer-task-inp');
-  if(inp&&t.task)inp.value=t.task;
-  if(t.running&&t.startEpoch){timerSeconds=Math.floor((Date.now()-t.startEpoch)/1000);_startTimerUI();}
-  else{timerSeconds=t.accSec||0;document.getElementById('timer-display').textContent=fmtTime(timerSeconds);}
+  const t=lsGet(TKEY());
+  if(!t) return;
+  applyTimerState(t);
 }
 
 function restoreTimerFromSheets(all){
-  const t=all[TKEY()];if(!t)return;
-  // Se localmente está rodando e o startEpoch local é mais recente, mantém local
+  const t=all[TKEY()];
+  if(!t) return;
   if(timerRunning){
     const local=lsGet(TKEY());
-    if(local&&local.startEpoch&&t.startEpoch&&local.startEpoch>=t.startEpoch)return;
+    if(local && local.startEpoch && t.startEpoch && local.startEpoch >= t.startEpoch) return;
   }
-  if(t.running&&t.startEpoch){
-    const elapsed=Math.floor((Date.now()-t.startEpoch)/1000);
-    if(elapsed>0&&elapsed<86400){
-      timerSeconds=elapsed;
-      const inp=document.getElementById('timer-task-inp');if(inp&&t.task)inp.value=t.task;
-      lsSet(TKEY(),t);
-      if(!timerRunning)_startTimerUI();
-      return;
-    }
-  }
-  // ✅ FIX: também restaura estado PAUSADO (accSec > 0, running = false)
-  if(!t.running && !timerRunning){
-    timerSeconds=t.accSec||0;
-    document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
-    const inp=document.getElementById('timer-task-inp');if(inp&&t.task)inp.value=t.task;
-    document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';
-    lsSet(TKEY(),t);
-  }
+  applyTimerState(t);
 }
 
 function _startTimerUI(){
-  if(timerRunning)return;timerRunning=true;
+  if(timerRunning) return;
+  timerRunning=true;
   document.getElementById('btn-startstop').textContent='Pausar';
   document.getElementById('btn-startstop').classList.add('primary');
   document.getElementById('timer-card').classList.add('running');
   setTimerSyncBadge('active','rodando');
-  // Salva savedAt local agora para o comparador de pause remoto funcionar
-  const startState={running:true,startEpoch:Date.now()-timerSeconds*1000,accSec:timerSeconds,task:document.getElementById('timer-task-inp')?.value||'',savedAt:Date.now()};
-  lsSet(TKEY(),startState);
   timerInterval=setInterval(()=>{
-    timerSeconds++;
+    timerSeconds = timerAccSec + currentSegmentSec();
     document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
-    // A cada 30s salva e sincroniza com a nuvem
-    if(timerSeconds%30===0)timerSaveLocal();
+    if(timerSeconds % 30 === 0) timerSaveLocal();
   },1000);
+}
+
+// ══ Renderiza a lista de intervalos na UI ══
+function renderTimerIntervals(){
+  const box=document.getElementById('timer-intervals-box');
+  const list=document.getElementById('timer-intervals-list');
+  if(!timerIntervals.length){ box.classList.add('hidden'); return; }
+  box.classList.remove('hidden');
+  list.innerHTML='';
+  timerIntervals.forEach((iv,i)=>{
+    const row=document.createElement('div');
+    row.className='timer-interval-row';
+    const icon = iv.endEpoch ? '⏸' : '▶';
+    const startStr = fmtHHMM(iv.startEpoch);
+    const endStr   = iv.endEpoch ? fmtHHMM(iv.endEpoch) : 'rodando...';
+    const durStr   = iv.durationSec ? fmtHM(iv.durationSec) : '—';
+    row.innerHTML=`<span class="timer-interval-icon">${icon}</span><span class="timer-interval-time">${startStr} → ${endStr}</span><span class="timer-interval-dur">${durStr}</span>`;
+    list.appendChild(row);
+  });
 }
 
 async function timerStartStop(){
   if(timerRunning){
-    clearInterval(timerInterval);timerRunning=false;
+    // ══ PAUSAR ══
+    const endEpoch = Date.now();
+    const segSec = currentSegmentSec();
+    // Fecha o último intervalo aberto
+    if(timerIntervals.length && !timerIntervals[timerIntervals.length-1].endEpoch){
+      timerIntervals[timerIntervals.length-1].endEpoch = endEpoch;
+      timerIntervals[timerIntervals.length-1].durationSec = segSec;
+    }
+    timerAccSec += segSec;
+    timerSeconds = timerAccSec;
+    timerStartEpoch = null;
+    clearInterval(timerInterval); timerRunning=false;
+    document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
     document.getElementById('btn-startstop').textContent='Continuar';
     document.getElementById('btn-startstop').classList.remove('primary');
     document.getElementById('timer-card').classList.remove('running');
+    renderTimerIntervals();
     setTimerSyncBadge('saved','pausado — sincronizando...');
-    // ✅ FIX: sync imediato ao pausar
     await timerSaveAndPush();
     setTimerSyncBadge('saved','pausado ✓');
     setTimeout(()=>setTimerSyncBadge('','em espera'),3000);
-  }else{
+  } else {
+    // ══ INICIAR ══
+    timerStartEpoch = Date.now();
+    // Adiciona novo intervalo aberto
+    timerIntervals.push({startEpoch: timerStartEpoch, endEpoch: null, durationSec: null});
+    renderTimerIntervals();
     _startTimerUI();
-    // ✅ FIX: sync imediato ao iniciar (para o outro dispositivo saber que começou)
     await timerSaveAndPush();
   }
 }
 
 async function timerSave(){
-  if(timerSeconds===0)return;
+  if(timerSeconds===0) return;
+  // Se ainda rodando, pause implícito
+  let finalSec = timerSeconds;
+  if(timerRunning){
+    const endEpoch = Date.now();
+    const segSec = currentSegmentSec();
+    if(timerIntervals.length && !timerIntervals[timerIntervals.length-1].endEpoch){
+      timerIntervals[timerIntervals.length-1].endEpoch = endEpoch;
+      timerIntervals[timerIntervals.length-1].durationSec = segSec;
+    }
+    timerAccSec += segSec;
+    finalSec = timerAccSec;
+    clearInterval(timerInterval); timerRunning=false;
+  }
+
   const k=todayKey();const data=getDayData(k);
   const task=document.getElementById('timer-task-inp')?.value?.trim()||'';
-  data.timerSec=(data.timerSec||0)+timerSeconds;
-  if(!data.sessions)data.sessions=[];
-  data.sessions.push({sec:timerSeconds,task:task||'Estudo',savedAt:new Date().toISOString()});
+  data.timerSec=(data.timerSec||0)+finalSec;
+  if(!data.sessions) data.sessions=[];
+  // Salva a sessão com os intervalos reais
+  data.sessions.push({
+    sec: finalSec,
+    task: task||'Estudo',
+    savedAt: new Date().toISOString(),
+    intervals: JSON.parse(JSON.stringify(timerIntervals)) // cópia dos intervalos
+  });
   saveDayData(k,data);
-  clearInterval(timerInterval);timerRunning=false;timerSeconds=0;
+
+  // Reset total
+  timerAccSec=0; timerSeconds=0; timerStartEpoch=null; timerIntervals=[];
   document.getElementById('timer-display').textContent='00:00:00';
   document.getElementById('btn-startstop').textContent='Iniciar';
   document.getElementById('btn-startstop').classList.remove('primary');
   document.getElementById('timer-card').classList.remove('running');
-  if(document.getElementById('timer-task-inp'))document.getElementById('timer-task-inp').value='';
-  activeSubject=null;renderSubjects();
-  // ✅ FIX: reseta o timer na nuvem imediatamente após salvar a sessão
-  const resetState={running:false,accSec:0,task:'',savedAt:Date.now()};
+  if(document.getElementById('timer-task-inp')) document.getElementById('timer-task-inp').value='';
+  activeSubject=null; renderSubjects();
+  renderTimerIntervals();
+
+  const resetState={running:false,accSec:0,startEpoch:null,task:'',savedAt:Date.now(),intervals:[]};
   lsSet(TKEY(),resetState);
   const idx=syncQ.findIndex(e=>e.key===TKEY());
-  if(idx>=0)syncQ[idx].value=resetState;else syncQ.push({key:TKEY(),value:resetState});
+  if(idx>=0) syncQ[idx].value=resetState; else syncQ.push({key:TKEY(),value:resetState});
   lastRemoteTimerSig=JSON.stringify({r:false,e:null,a:0,t:'',s:resetState.savedAt});
+
   setTimerSyncBadge('saved','sessão salva — sincronizando...');
   await flushSyncQNow();
-  recalcXP();render();
+  recalcXP(); render();
   setTimerSyncBadge('saved','sessão salva ✓');
   setTimeout(()=>setTimerSyncBadge('','em espera'),3000);
-  const btn=document.getElementById('btn-save');btn.textContent='Salvo ✓';btn.style.color='var(--green)';
+
+  const btn=document.getElementById('btn-save');
+  btn.textContent='Salvo ✓';btn.style.color='var(--green)';
   setTimeout(()=>{btn.textContent='Salvar';btn.style.color='';},1800);
 }
 
 async function timerReset(){
   if(!confirm('Zerar o cronômetro?'))return;
-  clearInterval(timerInterval);timerRunning=false;timerSeconds=0;
+  if(timerRunning){ clearInterval(timerInterval); timerRunning=false; }
+  timerAccSec=0; timerSeconds=0; timerStartEpoch=null; timerIntervals=[];
   document.getElementById('timer-display').textContent='00:00:00';
   document.getElementById('btn-startstop').textContent='Iniciar';
   document.getElementById('btn-startstop').classList.remove('primary');
   document.getElementById('timer-card').classList.remove('running');
-  activeSubject=null;renderSubjects();
-  // ✅ FIX: sync imediato ao zerar
-  const resetState={running:false,accSec:0,task:'',savedAt:Date.now()};
+  activeSubject=null; renderSubjects();
+  renderTimerIntervals();
+
+  const resetState={running:false,accSec:0,startEpoch:null,task:'',savedAt:Date.now(),intervals:[]};
   lsSet(TKEY(),resetState);
   const idx=syncQ.findIndex(e=>e.key===TKEY());
-  if(idx>=0)syncQ[idx].value=resetState;else syncQ.push({key:TKEY(),value:resetState});
+  if(idx>=0) syncQ[idx].value=resetState; else syncQ.push({key:TKEY(),value:resetState});
   lastRemoteTimerSig=JSON.stringify({r:false,e:null,a:0,t:'',s:resetState.savedAt});
   setTimerSyncBadge('saved','zerado — sincronizando...');
   await flushSyncQNow();
@@ -1191,22 +1331,34 @@ function deleteSession(dayKey,idx){
 }
 
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden&&timerRunning)timerSaveLocal();
-  // ✅ Quando volta ao foco, faz poll imediato para pegar mudanças
-  if(!document.hidden&&currentUser)pollRemoteTimer();
+  if(document.hidden && timerRunning) timerSaveLocal();
+  if(!document.hidden && currentUser) pollRemoteTimer();
 });
-window.addEventListener('beforeunload',()=>{if(timerRunning)timerSaveLocal();});
+window.addEventListener('beforeunload',()=>{ if(timerRunning) timerSaveLocal(); });
 
 // ══════════════════════════════════════════════════════════════
-//  EDIT MODAL
+//  ✅ FIX 1: EDIT MODAL — suporte a dias futuros
 // ══════════════════════════════════════════════════════════════
 let editingDayKey=null,modalActs=[];
 function openEditModal(dayKey){
-  editingDayKey=dayKey;modalActs=JSON.parse(JSON.stringify(getActsForDay(dayKey)));
-  document.getElementById('modal-title').textContent='Editar · '+dayFull[dayOfWeek(dayKey)];
-  document.getElementById('modal-sub').textContent=new Date(dayKey+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
-  document.getElementById('add-name').value='';document.getElementById('add-meta').value='';document.getElementById('add-tag').value='Estudo';
-  renderModalActs();document.getElementById('edit-modal').classList.remove('hidden');
+  editingDayKey=dayKey;
+  modalActs=JSON.parse(JSON.stringify(getActsForDay(dayKey)));
+  const today=todayKey();
+  const isFuture=dayKey>today;
+  document.getElementById('modal-title').textContent=(isFuture?'Planejar · ':'Editar · ')+dayFull[dayOfWeek(dayKey)];
+  document.getElementById('modal-sub').textContent=new Date(dayKey+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})+(isFuture?' (planejamento futuro)':'');
+  // Banner informativo para dias futuros
+  const bannerEl=document.getElementById('modal-future-banner');
+  if(isFuture){
+    bannerEl.innerHTML='<div class="future-banner"><span class="future-banner-icon">📅</span>Você está planejando um dia futuro. As atividades serão salvas e estarão prontas quando chegar o dia.</div>';
+  } else {
+    bannerEl.innerHTML='';
+  }
+  document.getElementById('add-name').value='';
+  document.getElementById('add-meta').value='';
+  document.getElementById('add-tag').value='Estudo';
+  renderModalActs();
+  document.getElementById('edit-modal').classList.remove('hidden');
 }
 function renderModalActs(){
   const el=document.getElementById('modal-acts-list');el.innerHTML='';
@@ -1237,7 +1389,10 @@ function saveEditModal(){
   const data=getDayData(editingDayKey);
   const validIds=new Set(modalActs.map(a=>a.id));
   Object.keys(data.checks||{}).forEach(id=>{if(!validIds.has(id))delete data.checks[id];});
-  saveDayData(editingDayKey,data);closeModal('edit-modal');recalcXP();render();
+  saveDayData(editingDayKey,data);
+  closeModal('edit-modal');
+  recalcXP();
+  render(); // ← atualiza tanto hoje quanto amanhã
 }
 function closeModal(id){document.getElementById(id).classList.add('hidden');}
 
@@ -1257,10 +1412,17 @@ function renderCal(){
     const pct=getDayPct(k);const isFuture=k>today;
     cell.className='cal-cell '+pctClass(isFuture?-2:pct);
     if(k===today)cell.classList.add('today');
+    if(isFuture)cell.classList.add('future');
     const num=document.createElement('div');num.className='cal-num';num.textContent=new Date(k+'T12:00:00').getDate();
     cell.appendChild(num);
     if(pct>=0&&!isFuture){const dot=document.createElement('div');dot.className='cal-dot';dot.style.background=pct===100?'white':pct>0?'var(--green)':'var(--text3)';cell.appendChild(dot);}
-    cell.onclick=()=>{detailAnchor=k;renderDetail();};grid.appendChild(cell);
+    // ✅ Clique em qualquer dia (inclusive futuro) abre detalhes + permite editar
+    cell.onclick=()=>{
+      detailAnchor=k;
+      renderDetail();
+      if(isFuture) openEditModal(k); // abre planejamento direto no calendário
+    };
+    grid.appendChild(cell);
   });
 }
 
@@ -1284,7 +1446,7 @@ function renderXPHistory(){
 }
 
 // ══════════════════════════════════════════════════════════════
-//  DETAIL
+//  DETAIL — com botão editar em cada dia
 // ══════════════════════════════════════════════════════════════
 let detailAnchor=todayKey();
 function detailMove(n){const d=new Date(detailAnchor+'T12:00:00');d.setDate(d.getDate()+n*7);detailAnchor=d.toISOString().slice(0,10);renderDetail();}
@@ -1298,12 +1460,29 @@ function renderDetail(){
     const dateEl=document.createElement('div');dateEl.className='detail-day-date';dateEl.textContent=new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
     hdr.appendChild(nameEl);hdr.appendChild(dateEl);
     if(acts.length&&k<=today){const pct=getDayPct(k);const badge=document.createElement('div');badge.className='detail-day-badge';badge.style.background=pct===100?'rgba(29,158,117,0.2)':pct>0?'rgba(226,168,75,0.2)':'rgba(90,95,112,0.2)';badge.style.color=pct===100?'var(--green)':pct>0?'var(--yellow)':'var(--text3)';badge.textContent=pct+'%';hdr.appendChild(badge);}
+    // ✅ Botão editar em cada dia do detail (inclusive futuros)
+    const editBtn=document.createElement('button');
+    editBtn.className='detail-edit-btn';
+    editBtn.textContent=k>today?'📅 Planejar':'✏️ Editar';
+    editBtn.onclick=()=>openEditModal(k);
+    hdr.appendChild(editBtn);
     block.appendChild(hdr);
-    if(!acts.length){const em=document.createElement('div');em.className='detail-empty';em.textContent='🌿 Descanso';block.appendChild(em);}
+    if(!acts.length){const em=document.createElement('div');em.className='detail-empty';em.textContent=k>today?'📅 Sem planejamento ainda':'🌿 Descanso';block.appendChild(em);}
     else{
       const checks=(getDayData(k).checks||{});const sessions=(getDayData(k).sessions||[]);
       acts.forEach(act=>{const done=!!checks[act.id];const row=document.createElement('div');row.className='detail-act-row';row.innerHTML=`<div class="detail-check ${done?'done':'miss'}"></div><div class="detail-act-name ${done?'done':''}">${act.name}</div><div class="detail-act-time">${act.meta||''}</div>`;block.appendChild(row);});
-      if(sessions.length){sessions.forEach((s,si)=>{const tr=document.createElement('div');tr.className='detail-act-row';tr.innerHTML=`<div class="detail-check done" style="background:var(--blue)"></div><div class="detail-act-name done" style="font-style:italic">⏱ ${s.task||'Estudo'}</div><div style="display:flex;align-items:center;gap:6px"><span class="detail-act-time">${fmtHM(s.sec||0)}</span>${k===today?`<button class="session-del" onclick="deleteSession('${k}',${si})">×</button>`:''}</div>`;block.appendChild(tr);});}
+      if(sessions.length){
+        sessions.forEach((s,si)=>{
+          const tr=document.createElement('div');tr.className='detail-act-row';
+          // ✅ Mostra os intervalos da sessão se existirem
+          let intervalsHtml='';
+          if(s.intervals && s.intervals.length){
+            intervalsHtml=s.intervals.map(iv=>`<div style="font-size:10px;color:var(--text3);padding-left:20px;font-family:'DM Mono',monospace">${fmtHHMM(iv.startEpoch)}→${fmtHHMM(iv.endEpoch)} (${fmtHM(iv.durationSec||0)})</div>`).join('');
+          }
+          tr.innerHTML=`<div style="flex:1"><div style="display:flex;align-items:center;gap:8px"><div class="detail-check done" style="background:var(--blue)"></div><div class="detail-act-name done" style="font-style:italic">⏱ ${s.task||'Estudo'}</div><span class="detail-act-time">${fmtHM(s.sec||0)}</span>${k===today?`<button class="session-del" onclick="deleteSession('${k}',${si})">×</button>`:''}</div>${intervalsHtml}</div>`;
+          block.appendChild(tr);
+        });
+      }
     }
     el.appendChild(block);
   });
@@ -1338,9 +1517,28 @@ function renderTimerSessions(){
   const box=document.getElementById('sessions-box');const list=document.getElementById('sessions-list');
   if(!sessions.length){box.classList.add('hidden');return;}
   box.classList.remove('hidden');list.innerHTML='';
-  sessions.forEach((s,i)=>{const row=document.createElement('div');row.className='session-row';row.innerHTML=`<span class="session-name">⏱ ${s.task||'Estudo'}</span><span class="session-time">${fmtHM(s.sec||0)}</span><button class="session-del" onclick="deleteSession('${k}',${i})">×</button>`;list.appendChild(row);});
+  sessions.forEach((s,i)=>{
+    const row=document.createElement('div');row.className='session-row';
+    // Exibe horário da 1ª e última marcação, se disponível
+    let timeDetail='';
+    if(s.intervals && s.intervals.length){
+      const first=s.intervals[0];
+      const last=s.intervals[s.intervals.length-1];
+      timeDetail=` · ${fmtHHMM(first.startEpoch)}–${fmtHHMM(last.endEpoch)}`;
+    }
+    row.innerHTML=`<span class="session-name">⏱ ${s.task||'Estudo'}${timeDetail}</span><span class="session-time">${fmtHM(s.sec||0)}</span><button class="session-del" onclick="deleteSession('${k}',${i})">×</button>`;
+    list.appendChild(row);
+  });
 }
-function render(){renderLevel();renderToday();renderCal();renderXPHistory();renderDetail();renderTimerSessions();}
+function render(){
+  renderLevel();
+  renderToday();
+  renderNextDay();      // ✅ sempre atualiza o card de amanhã
+  renderCal();
+  renderXPHistory();
+  renderDetail();
+  renderTimerSessions();
+}
 
 // ══════════════════════════════════════════════════════════════
 //  PDF + STATS
