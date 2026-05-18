@@ -608,8 +608,8 @@ function renderNextDay(){const k=nextDayKey();const acts=getActsForDay(k);const 
 // ACTIVITIES:  +5 XP each done, -5 XP each missed (past days)
 // ─────────────────────────────────────────────────────────────
 function calcDayDelta(dayKey,isPast){const data=lsGet('rdd_day:'+currentUser+':'+dayKey)||{};const acts=getActsForDay(dayKey);if(!acts.length)return 0;const checks=data.checks||{};let delta=0;acts.forEach(a=>{if(checks[a.id])delta+=5;else if(isPast)delta-=5;});
-  // 10 XP per hour of study (5 XP per 30min block), NO cap
-  delta+=Math.floor((data.timerSec||0)/1800)*5;
+  // 10 XP per hour of study (20 XP per 30min block), NO cap
+  delta+=Math.floor((data.timerSec||0)/1800)*20;
   return delta;}
 
 function calcTotalXP(){const today=todayKey();let total=0;for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('rdd_day:'+currentUser+':')){const dk=k.replace('rdd_day:'+currentUser+':','');total+=calcDayDelta(dk,dk<today);}}return Math.max(0,total);}
