@@ -86,10 +86,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 
 /* LEVEL */
 .level-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
-.level-icon{width:56px;height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
-.level-icon img{width:56px;height:56px;object-fit:contain;border-radius:10px;transition:transform 0.3s;}
-.level-icon img:hover{transform:scale(1.08);}
-.level-icon .emoji-fallback{font-size:32px;line-height:1;}
+.level-icon{font-size:28px;flex-shrink:0;}
 .level-info{flex:1;}
 .level-name{font-size:14px;font-weight:600;}
 .level-desc{font-size:11px;color:var(--text3);margin-top:1px;}
@@ -125,13 +122,16 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .act-tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
 .empty-day{text-align:center;padding:20px;color:var(--text3);font-size:13px;}
 
-/* TIMER */
+/* ══ TIMER ══ */
 .timer-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 15px 13px;margin-bottom:12px;transition:border-color 0.3s;}
 .timer-card.running{border-color:var(--green);}
+
 .timer-sync-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--text3);padding:2px 8px;border-radius:20px;border:1px solid var(--border);background:var(--bg3);margin-bottom:8px;transition:all 0.3s;}
 .timer-sync-badge.active{color:var(--blue);border-color:var(--blue);background:var(--blue-dim);}
 .timer-sync-badge.saved{color:var(--green);border-color:var(--green);background:var(--green-dim);}
 .timer-sync-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+
+/* ══ Intervalos do timer ══ */
 .timer-intervals{margin-top:8px;margin-bottom:8px;}
 .timer-interval-row{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);}
 .timer-interval-row:last-child{border-bottom:none;}
@@ -139,6 +139,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .timer-interval-time{font-size:11px;font-family:'DM Mono',monospace;color:var(--text2);flex:1;}
 .timer-interval-dur{font-size:11px;font-family:'DM Mono',monospace;color:var(--green);}
 .timer-intervals-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.7px;font-weight:500;margin-bottom:6px;}
+
 .subjects-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
 .subject-chip{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .subject-chip:hover{border-color:var(--blue);color:var(--blue);}
@@ -151,6 +152,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .subject-add-inp::placeholder{color:var(--text3);}
 .subject-add-btn{padding:7px 14px;border-radius:8px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .subject-add-btn:hover{border-color:var(--green);color:var(--green);}
+
 .timer-task-inp{width:100%;padding:8px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;margin-bottom:10px;}
 .timer-task-inp:focus{border-color:var(--green);}
 .timer-task-inp::placeholder{color:var(--text3);}
@@ -228,6 +230,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .detail-nav-btn{background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:16px;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
 .detail-nav-btn:hover{border-color:var(--green);color:var(--green);}
 .detail-week-label{font-size:13px;font-weight:600;}
+
+/* ══ Botão editar no detail ══ */
 .detail-edit-btn{font-size:10px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px 8px;cursor:pointer;transition:all 0.15s;}
 .detail-edit-btn:hover{border-color:var(--blue);color:var(--blue);}
 
@@ -262,20 +266,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .modal-btn.cancel:hover{border-color:var(--red);color:var(--red);}
 .modal-restore-note{font-size:11px;color:var(--text3);margin-top:8px;text-align:center;}
 .modal-restore-link{color:var(--blue);cursor:pointer;text-decoration:underline;}
+
+/* ══ Banner "planejando dia futuro" ══ */
 .future-banner{display:flex;align-items:center;gap:8px;background:rgba(55,138,221,0.1);border:1px solid rgba(55,138,221,0.3);border-radius:10px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:var(--blue);}
 .future-banner-icon{font-size:14px;}
-
-/* LEVEL UP MODAL */
-.levelup-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.4s;}
-.levelup-overlay.show{opacity:1;}
-.levelup-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:32px 28px;text-align:center;max-width:320px;width:90%;transform:scale(0.8);transition:transform 0.4s cubic-bezier(.34,1.56,.64,1);}
-.levelup-overlay.show .levelup-box{transform:scale(1);}
-.levelup-img{width:100px;height:100px;object-fit:contain;margin:0 auto 16px;display:block;border-radius:14px;}
-.levelup-emoji{font-size:64px;margin-bottom:12px;display:block;}
-.levelup-title{font-size:13px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
-.levelup-name{font-size:26px;font-weight:700;margin-bottom:8px;}
-.levelup-sub{font-size:13px;color:var(--text3);margin-bottom:20px;line-height:1.5;}
-.levelup-btn{padding:11px 28px;background:var(--green);border:none;border-radius:10px;color:white;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;}
 
 .hidden{display:none!important;}
 </style>
@@ -287,22 +281,12 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <span id="sync-text">Salvando...</span>
 </div>
 
-<!-- LEVEL UP MODAL -->
-<div class="levelup-overlay hidden" id="levelup-overlay">
-  <div class="levelup-box">
-    <div id="levelup-img-wrap"></div>
-    <div class="levelup-title">🎉 Subiu de nível!</div>
-    <div class="levelup-name" id="levelup-name">—</div>
-    <div class="levelup-sub" id="levelup-sub">—</div>
-    <button class="levelup-btn" onclick="closeLevelUp()">Continuar</button>
-  </div>
-</div>
-
-<!-- SETUP -->
+<!-- ══ SETUP ══ -->
 <div id="setup-screen">
   <div class="setup-logo">📋</div>
   <div class="setup-title">Configurar Google Sheets</div>
   <div class="setup-sub">Faça isso <strong style="color:var(--text)">uma vez</strong>. Em outros dispositivos, você pode pular essa etapa — os dados vêm automaticamente da planilha.</div>
+
   <div class="skip-box">
     <div class="skip-box-title">☁️ Já configurou em outro dispositivo?</div>
     <div class="skip-box-desc">Cole a URL do Web App que você criou antes. Os dados da sua conta serão carregados automaticamente.</div>
@@ -313,11 +297,16 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     <button class="btn-primary" onclick="skipSetup()" style="margin-bottom:0">✅ Conectar e entrar</button>
     <div class="login-msg" id="skip-msg" style="margin-top:6px;min-height:16px;"></div>
   </div>
+
   <div class="login-divider"><span>ou configure pela primeira vez</span></div>
+
   <div class="step-box">
     <div class="step-title"><span class="step-num">1</span>Abrir o Google Apps Script</div>
-    <div class="step-body">Acesse <a href="https://script.google.com/home" target="_blank">script.google.com</a>, clique em <strong>"Novo projeto"</strong> e apague o código que aparecer.</div>
+    <div class="step-body">
+      Acesse <a href="https://script.google.com/home" target="_blank">script.google.com</a>, clique em <strong>"Novo projeto"</strong> e apague o código que aparecer.
+    </div>
   </div>
+
   <div class="step-box">
     <div class="step-title"><span class="step-num">2</span>Colar o código do servidor</div>
     <div class="step-body">
@@ -368,6 +357,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
       <span class="copy-btn" onclick="copyScript()">📋 Copiar código</span>
     </div>
   </div>
+
   <div class="step-box">
     <div class="step-title"><span class="step-num">3</span>Publicar como Web App</div>
     <div class="step-body">
@@ -378,6 +368,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
       Copie a URL gerada.
     </div>
   </div>
+
   <div class="step-box">
     <div class="step-title"><span class="step-num">4</span>Criar planilha e pegar ID</div>
     <div class="step-body">
@@ -385,6 +376,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
       <span style="font-family:DM Mono,monospace;font-size:10px;color:var(--yellow)">docs.google.com/spreadsheets/d/<strong>ID_AQUI</strong>/edit</span>
     </div>
   </div>
+
   <div class="step-box">
     <div class="step-title"><span class="step-num">5</span>Cole as informações</div>
     <div class="step-body" style="padding-left:0;margin-top:8px;">
@@ -398,7 +390,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
   </div>
 </div>
 
-<!-- LOGIN -->
+<!-- ══ LOGIN ══ -->
 <div id="login-screen">
   <div class="login-logo">📋</div>
   <div class="login-title">Regras do Dia</div>
@@ -427,9 +419,10 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
   </div>
 </div>
 
-<!-- APP -->
+<!-- ══ APP ══ -->
 <div id="app-screen">
 <div class="container">
+
   <div class="app-header">
     <div>
       <div class="app-title">Regras do Dia</div>
@@ -449,7 +442,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
   </div>
 
   <div class="level-card">
-    <div class="level-icon" id="lv-icon"></div>
+    <div class="level-icon" id="lv-icon">🌱</div>
     <div class="level-info">
       <div class="level-name" id="lv-name">Iniciante</div>
       <div class="level-desc" id="lv-desc">–</div>
@@ -461,7 +454,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
     </div>
   </div>
 
-  <!-- HOJE -->
+  <!-- ══ HOJE ══ -->
   <div class="today-card">
     <div class="section-header">
       <div class="section-label" id="today-section-label">Hoje</div>
@@ -470,7 +463,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
     <div id="today-acts"></div>
   </div>
 
-  <!-- PRÓXIMO DIA -->
+  <!-- ══ PRÓXIMO DIA ══ -->
   <div class="today-card" id="next-day-card">
     <div class="section-header">
       <div class="section-label" id="next-day-label">Amanhã</div>
@@ -495,10 +488,13 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
     </div>
     <input class="timer-task-inp" id="timer-task-inp" placeholder="O que você está estudando?" maxlength="60"/>
     <div class="timer-display" id="timer-display">00:00:00</div>
+
+    <!-- ══ INTERVALOS em tempo real ══ -->
     <div class="timer-intervals hidden" id="timer-intervals-box">
       <div class="timer-intervals-lbl">Intervalos desta sessão</div>
       <div id="timer-intervals-list"></div>
     </div>
+
     <div class="timer-btns">
       <button class="timer-btn primary" id="btn-startstop" onclick="timerStartStop()">Iniciar</button>
       <button class="timer-btn" id="btn-save" onclick="timerSave()">Salvar</button>
@@ -556,6 +552,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
       <button class="tool-btn" onclick="openSheets()">🔗 Ver Planilha</button>
     </div>
   </div>
+
 </div>
 </div>
 
@@ -594,20 +591,6 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  NÍVEIS COM IMAGENS
-//  IDs extraídos dos links do Google Drive fornecidos pelo usuário
-// ══════════════════════════════════════════════════════════════
-const LEVEL_IMAGES = [
-  'https://drive.google.com/uc?export=view&id=1b0pcN2SB16JeA7pNEvzkLdiFqjBAv5FA', // Nível 1 - Iniciante
-  'https://drive.google.com/uc?export=view&id=1F9wwi8nFjgh5SdMZx9BXcAakL__FLamx', // Nível 2 - Aprendiz
-  'https://drive.google.com/uc?export=view&id=1agIqmFuSxy9fv7NSCzPwDpACviSozCTR', // Nível 3 - Dedicado
-  'https://drive.google.com/uc?export=view&id=1wyU8QDiWdE-Vs_DeJZEOMwbMxerTE0WO', // Nível 4 - Consistente
-  'https://drive.google.com/uc?export=view&id=106uUPzCAUtFZr98lbFftcWzsiw-lKPI-', // Nível 5 - Avançado
-  'https://drive.google.com/uc?export=view&id=1ugIVBCxXD_2z4NtAT7PFt2QpPo0O71gb', // Nível 6 - Elite
-  'https://drive.google.com/uc?export=view&id=1VRh3VtDuAnjmg9JhwvRhq92R-dknINUJ', // Nível 7 - Lendário
-];
-
-// ══════════════════════════════════════════════════════════════
 //  CONSTANTES
 // ══════════════════════════════════════════════════════════════
 const defaultSchedule = {
@@ -622,18 +605,7 @@ const defaultSchedule = {
 const TAG_STYLES={'Estudo':{color:'var(--blue)',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},'Trabalho':{color:'var(--red)',tagBg:'var(--red-dim)',tagColor:'var(--red)'},'Saúde':{color:'var(--green)',tagBg:'var(--green-dim)',tagColor:'var(--green)'},'Pessoal':{color:'var(--yellow)',tagBg:'rgba(226,168,75,0.15)',tagColor:'var(--yellow)'},'Outro':{color:'var(--text2)',tagBg:'rgba(139,144,160,0.15)',tagColor:'var(--text2)'}};
 const dayFull=['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
 const monthNames=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-
-// 7 níveis agora (adicionado Lendário)
-const LEVELS=[
-  {min:0,    name:'Iniciante',   icon:'🌱', bar:'#5a5f70'},
-  {min:300,  name:'Aprendiz',    icon:'📖', bar:'#378ADD'},
-  {min:700,  name:'Dedicado',    icon:'⚡', bar:'#E2A84B'},
-  {min:1200, name:'Consistente', icon:'🔥', bar:'#E24B4A'},
-  {min:2000, name:'Avançado',    icon:'💎', bar:'#9B6FE2'},
-  {min:3000, name:'Elite',       icon:'👑', bar:'#F0C040'},
-  {min:5000, name:'Lendário',    icon:'🌟', bar:'#FF6B35'},
-];
-
+const LEVELS=[{min:0,name:'Iniciante',icon:'🌱',bar:'#5a5f70'},{min:300,name:'Aprendiz',icon:'📖',bar:'#378ADD'},{min:700,name:'Dedicado',icon:'⚡',bar:'#E2A84B'},{min:1200,name:'Consistente',icon:'🔥',bar:'#E24B4A'},{min:2000,name:'Avançado',icon:'💎',bar:'#9B6FE2'},{min:3000,name:'Elite',icon:'👑',bar:'#F0C040'}];
 function getLevel(xp){for(let i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i].min)return{lv:i,...LEVELS[i]};return{lv:0,...LEVELS[0]};}
 
 // ══════════════════════════════════════════════════════════════
@@ -664,6 +636,7 @@ async function sheetGet(key){
     return JSON.parse(j.value);
   }catch{return null;}
 }
+
 async function sheetGetUser(user,key){
   if(!sheetsReady())return null;
   try{
@@ -673,6 +646,7 @@ async function sheetGetUser(user,key){
     try{return JSON.parse(j.value);}catch{return j.value;}
   }catch{return null;}
 }
+
 async function sheetGetAll(){
   if(!sheetsReady())return null;
   try{
@@ -706,7 +680,12 @@ function scheduleSave(key,value){
   if(idx>=0)syncQ[idx].value=value;else syncQ.push({key,value});
   clearTimeout(syncTimer);syncTimer=setTimeout(flushSyncQ,2000);
 }
-async function flushSyncQNow(){clearTimeout(syncTimer);return flushSyncQ();}
+
+async function flushSyncQNow(){
+  clearTimeout(syncTimer);
+  return flushSyncQ();
+}
+
 async function flushSyncQ(){
   if(!sheetsReady()||syncing||!syncQ.length)return;
   syncing=true;setSyncUI('spin','salvando...');
@@ -740,65 +719,87 @@ async function manualSync(){
 // ══════════════════════════════════════════════════════════════
 let timerPollInterval=null;
 let lastRemoteTimerSig='';
-function startTimerPolling(){stopTimerPolling();timerPollInterval=setInterval(pollRemoteTimer,5000);}
-function stopTimerPolling(){if(timerPollInterval){clearInterval(timerPollInterval);timerPollInterval=null;}}
+
+function startTimerPolling(){
+  stopTimerPolling();
+  timerPollInterval=setInterval(pollRemoteTimer, 5000);
+}
+function stopTimerPolling(){
+  if(timerPollInterval){clearInterval(timerPollInterval);timerPollInterval=null;}
+}
 
 async function pollRemoteTimer(){
   if(!sheetsReady()||!currentUser)return;
   try{
-    const remote=await sheetGetUser(currentUser,TKEY());
+    const remote=await sheetGetUser(currentUser, TKEY());
     if(!remote)return;
     const sig=JSON.stringify({r:remote.running,e:remote.startEpoch,a:remote.accSec,t:remote.task,s:remote.savedAt});
     if(sig===lastRemoteTimerSig)return;
     lastRemoteTimerSig=sig;
+
     if(timerRunning){
-      if(remote.running){setTimerSyncBadge('active','rodando aqui');return;}
+      if(remote.running){
+        setTimerSyncBadge('active','rodando aqui');
+        return;
+      }
       const localState=lsGet(TKEY());
       const remoteSavedAt=remote.savedAt||0;
       const localSavedAt=localState?.savedAt||0;
-      if(remoteSavedAt<=localSavedAt)return;
+      if(remoteSavedAt <= localSavedAt) return;
       clearInterval(timerInterval);timerRunning=false;
       timerSeconds=remote.accSec||0;
+      // ✅ Atualiza intervalos com os do remoto
       timerIntervals=remote.intervals||[];
       document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
       document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';
       document.getElementById('btn-startstop').classList.remove('primary');
       document.getElementById('timer-card').classList.remove('running');
       const inp2=document.getElementById('timer-task-inp');
-      if(inp2&&remote.task!==undefined)inp2.value=remote.task||'';
-      lsSet(TKEY(),remote);renderTimerIntervals();
+      if(inp2&&remote.task!==undefined) inp2.value=remote.task||'';
+      lsSet(TKEY(),remote);
+      renderTimerIntervals();
       setTimerSyncBadge('saved','pausado remotamente ✓');
-      setTimeout(()=>setTimerSyncBadge('','em espera'),3000);return;
+      setTimeout(()=>setTimerSyncBadge('','em espera'),3000);
+      return;
     }
-    if(remote.running&&remote.startEpoch){
+
+    if(remote.running && remote.startEpoch){
       const elapsed=Math.floor((Date.now()-remote.startEpoch)/1000)+(remote.accSec||0);
-      if(elapsed>0&&elapsed<86400){
-        timerSeconds=elapsed;timerIntervals=remote.intervals||[];
+      if(elapsed>0 && elapsed<86400){
+        timerSeconds=elapsed;
+        timerIntervals=remote.intervals||[];
         const inp=document.getElementById('timer-task-inp');
-        if(inp&&remote.task)inp.value=remote.task;
-        lsSet(TKEY(),remote);_startTimerUI();renderTimerIntervals();
-        setTimerSyncBadge('active','rodando em outro dispositivo');return;
+        if(inp && remote.task) inp.value=remote.task;
+        lsSet(TKEY(), remote);
+        _startTimerUI();
+        renderTimerIntervals();
+        setTimerSyncBadge('active','rodando em outro dispositivo');
+        return;
       }
     }
+
     if(!remote.running){
       const remoteAcc=remote.accSec||0;
       if(remoteAcc!==timerSeconds){
         if(timerRunning){clearInterval(timerInterval);timerRunning=false;}
-        timerSeconds=remoteAcc;timerIntervals=remote.intervals||[];
+        timerSeconds=remoteAcc;
+        timerIntervals=remote.intervals||[];
         document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
         document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';
         document.getElementById('btn-startstop').classList.remove('primary');
         document.getElementById('timer-card').classList.remove('running');
         const inp=document.getElementById('timer-task-inp');
-        if(inp&&remote.task!==undefined)inp.value=remote.task||'';
-        lsSet(TKEY(),remote);renderTimerIntervals();
+        if(inp && remote.task!==undefined) inp.value=remote.task||'';
+        lsSet(TKEY(), remote);
+        renderTimerIntervals();
         setTimerSyncBadge('saved','atualizado ✓');
         setTimeout(()=>setTimerSyncBadge('','em espera'),3000);
       }
     }
   }catch(e){}
 }
-function setTimerSyncBadge(state,label){
+
+function setTimerSyncBadge(state, label){
   const badge=document.getElementById('timer-sync-badge');
   const lbl=document.getElementById('timer-sync-lbl');
   if(!badge||!lbl)return;
@@ -821,6 +822,7 @@ function showSetup(){
   document.getElementById('app-screen').style.display='none';
   document.getElementById('setup-screen').style.display='flex';
 }
+
 async function skipSetup(){
   const url=document.getElementById('inp-skip-url').value.trim();
   const id=document.getElementById('inp-skip-id').value.trim();
@@ -828,13 +830,16 @@ async function skipSetup(){
   if(!url||!url.startsWith('https://script.google.com')){msg.textContent='⚠️ URL inválida.';msg.className='login-msg err';return;}
   if(!id){msg.textContent='⚠️ ID em branco.';msg.className='login-msg err';return;}
   msg.textContent='Testando conexão...';msg.className='login-msg ok';
-  try{const r=await fetch(`${url}?sheetId=${encodeURIComponent(id)}&user=__ping__`);await r.json();}
-  catch(e){msg.textContent='❌ Não conectou. Verifique a URL.';msg.className='login-msg err';return;}
+  try{
+    const r=await fetch(`${url}?sheetId=${encodeURIComponent(id)}&user=__ping__`);
+    await r.json();
+  }catch(e){msg.textContent='❌ Não conectou. Verifique a URL.';msg.className='login-msg err';return;}
   lsSet('rdd_script_url',url);lsSet('rdd_sheet_id',id);
   SCRIPT_URL=url;SHEET_ID=id;
   msg.textContent='✅ Conectado!';
   setTimeout(()=>{document.getElementById('setup-screen').style.display='none';document.getElementById('login-screen').style.display='flex';},700);
 }
+
 async function saveSetup(){
   const url=document.getElementById('inp-script-url').value.trim();
   const id=document.getElementById('inp-sheet-id').value.trim();
@@ -868,14 +873,15 @@ async function doLogin(){
   let storedHash=lsGet('rdd_hash:'+user);
   if(!storedHash&&sheetsReady()){
     msg.textContent='Buscando conta na nuvem...';
-    storedHash=await sheetGetUser(user,hashKey(user));
-    if(storedHash)lsSet('rdd_hash:'+user,storedHash);
+    storedHash=await sheetGetUser(user, hashKey(user));
+    if(storedHash)lsSet('rdd_hash:'+user, storedHash);
   }
   if(!storedHash){msg.textContent='Usuário não encontrado. Crie uma conta!';msg.className='login-msg err';return;}
   const hash=await hashPass(pass);
   if(storedHash!==hash){msg.textContent='Senha incorreta.';msg.className='login-msg err';return;}
   await startSession(user);
 }
+
 async function doRegister(){
   const user=document.getElementById('inp-reg-user').value.trim().toLowerCase();
   const pass=document.getElementById('inp-reg-pass').value;
@@ -885,21 +891,22 @@ async function doRegister(){
   if(lsGet('rdd_hash:'+user)){msg.textContent='Apelido já em uso neste dispositivo.';msg.className='login-msg err';return;}
   if(sheetsReady()){
     msg.textContent='Verificando disponibilidade...';msg.className='login-msg ok';
-    const remoteHash=await sheetGetUser(user,hashKey(user));
+    const remoteHash=await sheetGetUser(user, hashKey(user));
     if(remoteHash){msg.textContent='Apelido já em uso. Escolha outro.';msg.className='login-msg err';return;}
   }
   msg.textContent='Criando conta...';msg.className='login-msg ok';
   const hash=await hashPass(pass);
-  lsSet('rdd_hash:'+user,hash);
+  lsSet('rdd_hash:'+user, hash);
   currentUser=user;
-  if(sheetsReady())await sheetSet(hashKey(user),hash);
+  if(sheetsReady()) await sheetSet(hashKey(user), hash);
   currentUser=null;
   await startSession(user);
 }
+
 async function startSession(user){
   currentUser=user;
   currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};
-  lsSet('rdd_session',{user,ts:Date.now()});
+  lsSet('rdd_session',{user, ts: Date.now()});
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app-screen').style.display='block';
   document.getElementById('user-name-label').textContent=user;
@@ -909,7 +916,9 @@ async function startSession(user){
     showSyncBar('syncing','Carregando dados...',false);setSyncUI('spin','carregando...');
     const all=await sheetGetAll();
     if(all){
-      Object.entries(all).forEach(([k,v])=>{if(!k.startsWith('auth:'))lsSet(k,v);});
+      Object.entries(all).forEach(([k,v])=>{
+        if(!k.startsWith('auth:'))lsSet(k,v);
+      });
       currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};
       restoreTimerFromSheets(all);
       showSyncBar('saved','Dados carregados ✓');setSyncUI('','online ✓');
@@ -919,12 +928,16 @@ async function startSession(user){
   lsSet('rdd_profile:'+user,currentProfile);
   calYear=new Date().getFullYear();calMonth=new Date().getMonth();
   detailAnchor=todayKey();
-  renderSubjects();render();startTimerPolling();
+  renderSubjects();
+  render();
+  startTimerPolling();
 }
+
 function doLogout(){
   if(!confirm('Sair da conta?'))return;
   if(timerRunning){clearInterval(timerInterval);timerSaveLocal();}
-  stopTimerPolling();currentUser=null;currentProfile=null;
+  stopTimerPolling();
+  currentUser=null;currentProfile=null;
   localStorage.removeItem('rdd_session');
   document.getElementById('app-screen').style.display='none';
   document.getElementById('login-screen').style.display='flex';
@@ -934,11 +947,12 @@ function doLogout(){
 function openSheets(){const id=lsGet('rdd_sheet_id');if(id)window.open(`https://docs.google.com/spreadsheets/d/${id}`,'_blank');else alert('Planilha não configurada.');}
 
 // ══════════════════════════════════════════════════════════════
-//  MATÉRIAS
+//  MATÉRIAS SALVAS
 // ══════════════════════════════════════════════════════════════
 function getSubjects(){return lsGet('rdd_subjects:'+currentUser)||['Português','Matemática','Redação'];}
 function saveSubjects(arr){lsSet('rdd_subjects:'+currentUser,arr);scheduleSave('rdd_subjects:'+currentUser,arr);}
 let activeSubject=null;
+
 function renderSubjects(){
   const arr=getSubjects();const row=document.getElementById('subjects-row');row.innerHTML='';
   arr.forEach(name=>{
@@ -975,22 +989,42 @@ function saveActsForDay(dayKey,acts){lsSet(getActsKey(dayKey),acts);scheduleSave
 function toggle(dayKey,id){const data=getDayData(dayKey);if(!data.checks)data.checks={};data.checks[id]=!data.checks[id];saveDayData(dayKey,data);recalcXP();render();}
 function getDayPct(k){const acts=getActsForDay(k);if(!acts.length)return -1;const checks=(getDayData(k).checks||{});return Math.round(acts.filter(a=>checks[a.id]).length/acts.length*100);}
 
-function nextDayKey(){const d=new Date();d.setDate(d.getDate()+1);return d.toISOString().slice(0,10);}
-function openEditNextDay(){openEditModal(nextDayKey());}
+// ══════════════════════════════════════════════════════════════
+//  ✅ FIX 1: PRÓXIMO DIA — helper para calcular chave de amanhã
+// ══════════════════════════════════════════════════════════════
+function nextDayKey(){
+  const d=new Date();d.setDate(d.getDate()+1);return d.toISOString().slice(0,10);
+}
+function openEditNextDay(){
+  openEditModal(nextDayKey());
+}
 function renderNextDay(){
-  const k=nextDayKey();const acts=getActsForDay(k);const dow=dayOfWeek(k);
-  document.getElementById('next-day-label').textContent=`Amanhã · ${dayFull[dow]}`;
-  const el=document.getElementById('next-day-acts');el.innerHTML='';
-  if(!acts.length){el.innerHTML='<div class="empty-day">🌿 Amanhã é descanso</div>';return;}
-  acts.forEach(act=>{
-    const row=document.createElement('div');row.className='act-card';row.style.cursor='default';
-    row.innerHTML=`<div class="act-check" style="border-style:dashed;background:transparent"></div><div class="act-body"><div class="act-name" style="color:${act.color||'var(--text)'}">${act.name}</div><div class="act-meta">${act.meta||''}</div></div><div class="act-tag" style="background:${act.tagBg};color:${act.tagColor}">${act.tag}</div>`;
-    el.appendChild(row);
-  });
+  const k=nextDayKey();
+  const acts=getActsForDay(k);
+  const dow=dayOfWeek(k);
+  const lbl=document.getElementById('next-day-label');
+  const el=document.getElementById('next-day-acts');
+  const card=document.getElementById('next-day-card');
+
+  lbl.textContent=`Amanhã · ${dayFull[dow]}`;
+  el.innerHTML='';
+
+  if(!acts.length){
+    el.innerHTML='<div class="empty-day">🌿 Amanhã é descanso</div>';
+  } else {
+    // Mostra prévia das atividades planejadas (somente leitura — sem toggle)
+    acts.forEach(act=>{
+      const row=document.createElement('div');
+      row.className='act-card';
+      row.style.cursor='default';
+      row.innerHTML=`<div class="act-check" style="border-style:dashed;background:transparent"></div><div class="act-body"><div class="act-name" style="color:${act.color||'var(--text)'}">${act.name}</div><div class="act-meta">${act.meta||''}</div></div><div class="act-tag" style="background:${act.tagBg};color:${act.tagColor}">${act.tag}</div>`;
+      el.appendChild(row);
+    });
+  }
 }
 
 // ══════════════════════════════════════════════════════════════
-//  XP + LEVEL UP
+//  XP
 // ══════════════════════════════════════════════════════════════
 function calcDayDelta(dayKey,isPast){
   const data=lsGet('rdd_day:'+currentUser+':'+dayKey)||{};
@@ -1007,53 +1041,16 @@ function calcTotalXP(){
   }
   return Math.max(0,total);
 }
-
-let lastLevelIndex = -1; // guarda o nível anterior para detectar subida
-
 function recalcXP(){
   const prev=currentProfile?(currentProfile.totalXP||0):0;
-  const prevLv=getLevel(prev).lv;
   currentProfile.totalXP=calcTotalXP();
-  const newLv=getLevel(currentProfile.totalXP).lv;
   const pkey='rdd_profile:'+currentUser;lsSet(pkey,currentProfile);scheduleSave(pkey,currentProfile);
-  const diff=currentProfile.totalXP-prev;
-  if(diff!==0)showXPToast(diff);
-  // Mostra modal de level up se subiu de nível
-  if(newLv>prevLv && lastLevelIndex!==-1){
-    showLevelUpModal(newLv);
-  }
-  lastLevelIndex=newLv;
+  const diff=currentProfile.totalXP-prev;if(diff!==0)showXPToast(diff);
 }
-
 function showXPToast(diff){
   const el=document.getElementById('xp-toast');
   el.textContent=(diff>0?'+':'')+diff+' XP';el.className='xp-toast '+(diff>0?'pos':'neg');
   el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);
-}
-
-function showLevelUpModal(lvIndex){
-  const lv=LEVELS[lvIndex];
-  const img=LEVEL_IMAGES[lvIndex];
-  const wrap=document.getElementById('levelup-img-wrap');
-  if(img){
-    wrap.innerHTML=`<img class="levelup-img" src="${img}" alt="${lv.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="levelup-emoji" style="display:none">${lv.icon}</span>`;
-  } else {
-    wrap.innerHTML=`<span class="levelup-emoji">${lv.icon}</span>`;
-  }
-  document.getElementById('levelup-name').textContent=lv.name;
-  const nextLv=LEVELS[Math.min(lvIndex+1,LEVELS.length-1)];
-  document.getElementById('levelup-sub').textContent=
-    lvIndex<LEVELS.length-1
-      ? `Próximo nível: ${nextLv.name} (${nextLv.min} XP)`
-      : 'Você atingiu o nível máximo! 🌟';
-  const overlay=document.getElementById('levelup-overlay');
-  overlay.classList.remove('hidden');
-  setTimeout(()=>overlay.classList.add('show'),10);
-}
-function closeLevelUp(){
-  const overlay=document.getElementById('levelup-overlay');
-  overlay.classList.remove('show');
-  setTimeout(()=>overlay.classList.add('hidden'),400);
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1084,75 +1081,152 @@ function getWeekKeys(anchorKey){
 function weekLabel(keys){const fmt=k=>new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});return fmt(keys[0])+' – '+fmt(keys[6]);}
 
 // ══════════════════════════════════════════════════════════════
-//  TIMER
+//  ✅ FIX 2: TIMER COM TIMESTAMPS REAIS DE INÍCIO/PAUSA
+//
+//  Estrutura do estado do timer:
+//  {
+//    running: bool,
+//    accSec: number,          // segundos acumulados antes do segmento atual
+//    startEpoch: number|null, // quando este segmento foi iniciado (ms)
+//    task: string,
+//    savedAt: number,         // timestamp do último save (ms)
+//    intervals: [             // ← NOVO: lista de todos os intervalos
+//      { startEpoch, endEpoch, durationSec }
+//    ]
+//  }
 // ══════════════════════════════════════════════════════════════
-let timerRunning=false,timerSeconds=0,timerAccSec=0,timerStartEpoch=null,timerInterval=null,timerIntervals=[];
+let timerRunning=false;
+let timerSeconds=0;      // segundos exibidos no display (acc + elapsed atual)
+let timerAccSec=0;       // segundos acumulados antes do segmento em curso
+let timerStartEpoch=null;// quando o segmento atual foi iniciado
+let timerInterval=null;
+let timerIntervals=[];   // lista de {startEpoch, endEpoch, durationSec}
+
 const TKEY=()=>'rdd_timer:'+currentUser;
-function currentSegmentSec(){if(!timerRunning||!timerStartEpoch)return 0;return Math.floor((Date.now()-timerStartEpoch)/1000);}
-function buildTimerState(){return{running:timerRunning,startEpoch:timerStartEpoch,accSec:timerAccSec,task:document.getElementById('timer-task-inp')?.value||'',savedAt:Date.now(),intervals:timerIntervals};}
+
+// Calcula quantos segundos se passaram no segmento atual
+function currentSegmentSec(){
+  if(!timerRunning||!timerStartEpoch)return 0;
+  return Math.floor((Date.now()-timerStartEpoch)/1000);
+}
+
+function buildTimerState(){
+  return {
+    running: timerRunning,
+    startEpoch: timerStartEpoch,
+    accSec: timerAccSec,
+    task: document.getElementById('timer-task-inp')?.value||'',
+    savedAt: Date.now(),
+    intervals: timerIntervals
+  };
+}
+
 function applyTimerState(t){
-  if(!t)return;
-  timerIntervals=t.intervals||[];
+  if(!t) return;
+  timerIntervals = t.intervals||[];
   const inp=document.getElementById('timer-task-inp');
-  if(inp&&t.task!==undefined)inp.value=t.task||'';
-  if(t.running&&t.startEpoch){
-    const segSec=Math.floor((Date.now()-t.startEpoch)/1000);
-    if(segSec>=0&&segSec<86400){timerAccSec=t.accSec||0;timerStartEpoch=t.startEpoch;timerSeconds=timerAccSec+segSec;lsSet(TKEY(),t);if(!timerRunning)_startTimerUI();return;}
+  if(inp && t.task !== undefined) inp.value = t.task||'';
+
+  if(t.running && t.startEpoch){
+    // Calcula segundos do segmento atual baseado no startEpoch real
+    const segSec = Math.floor((Date.now() - t.startEpoch) / 1000);
+    if(segSec >= 0 && segSec < 86400){
+      timerAccSec = t.accSec || 0;
+      timerStartEpoch = t.startEpoch;
+      timerSeconds = timerAccSec + segSec;
+      lsSet(TKEY(), t);
+      if(!timerRunning) _startTimerUI();
+      return;
+    }
   }
-  timerAccSec=t.accSec||0;timerSeconds=timerAccSec;timerStartEpoch=null;
-  document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
-  document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';
+  // Estado pausado
+  timerAccSec = t.accSec || 0;
+  timerSeconds = timerAccSec;
+  timerStartEpoch = null;
+  document.getElementById('timer-display').textContent = fmtTime(timerSeconds);
+  document.getElementById('btn-startstop').textContent = timerSeconds > 0 ? 'Continuar' : 'Iniciar';
   document.getElementById('btn-startstop').classList.remove('primary');
   document.getElementById('timer-card').classList.remove('running');
-  lsSet(TKEY(),t);renderTimerIntervals();
+  lsSet(TKEY(), t);
+  renderTimerIntervals();
 }
-function timerSaveLocal(){lsSet(TKEY(),buildTimerState());}
+
+function timerSaveLocal(){
+  lsSet(TKEY(), buildTimerState());
+}
+
 async function timerSaveAndPush(){
-  const state=buildTimerState();lsSet(TKEY(),state);
+  const state = buildTimerState();
+  lsSet(TKEY(), state);
   const idx=syncQ.findIndex(e=>e.key===TKEY());
-  if(idx>=0)syncQ[idx].value=state;else syncQ.push({key:TKEY(),value:state});
+  if(idx>=0) syncQ[idx].value=state; else syncQ.push({key:TKEY(), value:state});
   await flushSyncQNow();
   lastRemoteTimerSig=JSON.stringify({r:state.running,e:state.startEpoch,a:state.accSec,t:state.task,s:state.savedAt});
 }
-function timerRestoreFromLocal(){const t=lsGet(TKEY());if(!t)return;applyTimerState(t);}
-function restoreTimerFromSheets(all){
-  const t=all[TKEY()];if(!t)return;
-  if(timerRunning){const local=lsGet(TKEY());if(local&&local.startEpoch&&t.startEpoch&&local.startEpoch>=t.startEpoch)return;}
+
+function timerRestoreFromLocal(){
+  const t=lsGet(TKEY());
+  if(!t) return;
   applyTimerState(t);
 }
+
+function restoreTimerFromSheets(all){
+  const t=all[TKEY()];
+  if(!t) return;
+  if(timerRunning){
+    const local=lsGet(TKEY());
+    if(local && local.startEpoch && t.startEpoch && local.startEpoch >= t.startEpoch) return;
+  }
+  applyTimerState(t);
+}
+
 function _startTimerUI(){
-  if(timerRunning)return;timerRunning=true;
+  if(timerRunning) return;
+  timerRunning=true;
   document.getElementById('btn-startstop').textContent='Pausar';
   document.getElementById('btn-startstop').classList.add('primary');
   document.getElementById('timer-card').classList.add('running');
   setTimerSyncBadge('active','rodando');
   timerInterval=setInterval(()=>{
-    timerSeconds=timerAccSec+currentSegmentSec();
+    timerSeconds = timerAccSec + currentSegmentSec();
     document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
-    if(timerSeconds%30===0)timerSaveLocal();
+    if(timerSeconds % 30 === 0) timerSaveLocal();
   },1000);
 }
+
+// ══ Renderiza a lista de intervalos na UI ══
 function renderTimerIntervals(){
   const box=document.getElementById('timer-intervals-box');
   const list=document.getElementById('timer-intervals-list');
-  if(!timerIntervals.length){box.classList.add('hidden');return;}
-  box.classList.remove('hidden');list.innerHTML='';
+  if(!timerIntervals.length){ box.classList.add('hidden'); return; }
+  box.classList.remove('hidden');
+  list.innerHTML='';
   timerIntervals.forEach((iv,i)=>{
-    const row=document.createElement('div');row.className='timer-interval-row';
-    const icon=iv.endEpoch?'⏸':'▶';
-    const startStr=fmtHHMM(iv.startEpoch);
-    const endStr=iv.endEpoch?fmtHHMM(iv.endEpoch):'rodando...';
-    const durStr=iv.durationSec?fmtHM(iv.durationSec):'—';
+    const row=document.createElement('div');
+    row.className='timer-interval-row';
+    const icon = iv.endEpoch ? '⏸' : '▶';
+    const startStr = fmtHHMM(iv.startEpoch);
+    const endStr   = iv.endEpoch ? fmtHHMM(iv.endEpoch) : 'rodando...';
+    const durStr   = iv.durationSec ? fmtHM(iv.durationSec) : '—';
     row.innerHTML=`<span class="timer-interval-icon">${icon}</span><span class="timer-interval-time">${startStr} → ${endStr}</span><span class="timer-interval-dur">${durStr}</span>`;
     list.appendChild(row);
   });
 }
+
 async function timerStartStop(){
   if(timerRunning){
-    const endEpoch=Date.now();const segSec=currentSegmentSec();
-    if(timerIntervals.length&&!timerIntervals[timerIntervals.length-1].endEpoch){timerIntervals[timerIntervals.length-1].endEpoch=endEpoch;timerIntervals[timerIntervals.length-1].durationSec=segSec;}
-    timerAccSec+=segSec;timerSeconds=timerAccSec;timerStartEpoch=null;
-    clearInterval(timerInterval);timerRunning=false;
+    // ══ PAUSAR ══
+    const endEpoch = Date.now();
+    const segSec = currentSegmentSec();
+    // Fecha o último intervalo aberto
+    if(timerIntervals.length && !timerIntervals[timerIntervals.length-1].endEpoch){
+      timerIntervals[timerIntervals.length-1].endEpoch = endEpoch;
+      timerIntervals[timerIntervals.length-1].durationSec = segSec;
+    }
+    timerAccSec += segSec;
+    timerSeconds = timerAccSec;
+    timerStartEpoch = null;
+    clearInterval(timerInterval); timerRunning=false;
     document.getElementById('timer-display').textContent=fmtTime(timerSeconds);
     document.getElementById('btn-startstop').textContent='Continuar';
     document.getElementById('btn-startstop').classList.remove('primary');
@@ -1162,88 +1236,129 @@ async function timerStartStop(){
     await timerSaveAndPush();
     setTimerSyncBadge('saved','pausado ✓');
     setTimeout(()=>setTimerSyncBadge('','em espera'),3000);
-  }else{
-    timerStartEpoch=Date.now();
-    timerIntervals.push({startEpoch:timerStartEpoch,endEpoch:null,durationSec:null});
-    renderTimerIntervals();_startTimerUI();await timerSaveAndPush();
+  } else {
+    // ══ INICIAR ══
+    timerStartEpoch = Date.now();
+    // Adiciona novo intervalo aberto
+    timerIntervals.push({startEpoch: timerStartEpoch, endEpoch: null, durationSec: null});
+    renderTimerIntervals();
+    _startTimerUI();
+    await timerSaveAndPush();
   }
 }
+
 async function timerSave(){
-  if(timerSeconds===0)return;
-  let finalSec=timerSeconds;
+  if(timerSeconds===0) return;
+  // Se ainda rodando, pause implícito
+  let finalSec = timerSeconds;
   if(timerRunning){
-    const endEpoch=Date.now();const segSec=currentSegmentSec();
-    if(timerIntervals.length&&!timerIntervals[timerIntervals.length-1].endEpoch){timerIntervals[timerIntervals.length-1].endEpoch=endEpoch;timerIntervals[timerIntervals.length-1].durationSec=segSec;}
-    timerAccSec+=segSec;finalSec=timerAccSec;clearInterval(timerInterval);timerRunning=false;
+    const endEpoch = Date.now();
+    const segSec = currentSegmentSec();
+    if(timerIntervals.length && !timerIntervals[timerIntervals.length-1].endEpoch){
+      timerIntervals[timerIntervals.length-1].endEpoch = endEpoch;
+      timerIntervals[timerIntervals.length-1].durationSec = segSec;
+    }
+    timerAccSec += segSec;
+    finalSec = timerAccSec;
+    clearInterval(timerInterval); timerRunning=false;
   }
+
   const k=todayKey();const data=getDayData(k);
   const task=document.getElementById('timer-task-inp')?.value?.trim()||'';
   data.timerSec=(data.timerSec||0)+finalSec;
-  if(!data.sessions)data.sessions=[];
-  data.sessions.push({sec:finalSec,task:task||'Estudo',savedAt:new Date().toISOString(),intervals:JSON.parse(JSON.stringify(timerIntervals))});
+  if(!data.sessions) data.sessions=[];
+  // Salva a sessão com os intervalos reais
+  data.sessions.push({
+    sec: finalSec,
+    task: task||'Estudo',
+    savedAt: new Date().toISOString(),
+    intervals: JSON.parse(JSON.stringify(timerIntervals)) // cópia dos intervalos
+  });
   saveDayData(k,data);
-  timerAccSec=0;timerSeconds=0;timerStartEpoch=null;timerIntervals=[];
+
+  // Reset total
+  timerAccSec=0; timerSeconds=0; timerStartEpoch=null; timerIntervals=[];
   document.getElementById('timer-display').textContent='00:00:00';
   document.getElementById('btn-startstop').textContent='Iniciar';
   document.getElementById('btn-startstop').classList.remove('primary');
   document.getElementById('timer-card').classList.remove('running');
-  if(document.getElementById('timer-task-inp'))document.getElementById('timer-task-inp').value='';
-  activeSubject=null;renderSubjects();renderTimerIntervals();
+  if(document.getElementById('timer-task-inp')) document.getElementById('timer-task-inp').value='';
+  activeSubject=null; renderSubjects();
+  renderTimerIntervals();
+
   const resetState={running:false,accSec:0,startEpoch:null,task:'',savedAt:Date.now(),intervals:[]};
   lsSet(TKEY(),resetState);
   const idx=syncQ.findIndex(e=>e.key===TKEY());
-  if(idx>=0)syncQ[idx].value=resetState;else syncQ.push({key:TKEY(),value:resetState});
+  if(idx>=0) syncQ[idx].value=resetState; else syncQ.push({key:TKEY(),value:resetState});
   lastRemoteTimerSig=JSON.stringify({r:false,e:null,a:0,t:'',s:resetState.savedAt});
+
   setTimerSyncBadge('saved','sessão salva — sincronizando...');
-  await flushSyncQNow();recalcXP();render();
+  await flushSyncQNow();
+  recalcXP(); render();
   setTimerSyncBadge('saved','sessão salva ✓');
   setTimeout(()=>setTimerSyncBadge('','em espera'),3000);
+
   const btn=document.getElementById('btn-save');
   btn.textContent='Salvo ✓';btn.style.color='var(--green)';
   setTimeout(()=>{btn.textContent='Salvar';btn.style.color='';},1800);
 }
+
 async function timerReset(){
   if(!confirm('Zerar o cronômetro?'))return;
-  if(timerRunning){clearInterval(timerInterval);timerRunning=false;}
-  timerAccSec=0;timerSeconds=0;timerStartEpoch=null;timerIntervals=[];
+  if(timerRunning){ clearInterval(timerInterval); timerRunning=false; }
+  timerAccSec=0; timerSeconds=0; timerStartEpoch=null; timerIntervals=[];
   document.getElementById('timer-display').textContent='00:00:00';
   document.getElementById('btn-startstop').textContent='Iniciar';
   document.getElementById('btn-startstop').classList.remove('primary');
   document.getElementById('timer-card').classList.remove('running');
-  activeSubject=null;renderSubjects();renderTimerIntervals();
+  activeSubject=null; renderSubjects();
+  renderTimerIntervals();
+
   const resetState={running:false,accSec:0,startEpoch:null,task:'',savedAt:Date.now(),intervals:[]};
   lsSet(TKEY(),resetState);
   const idx=syncQ.findIndex(e=>e.key===TKEY());
-  if(idx>=0)syncQ[idx].value=resetState;else syncQ.push({key:TKEY(),value:resetState});
+  if(idx>=0) syncQ[idx].value=resetState; else syncQ.push({key:TKEY(),value:resetState});
   lastRemoteTimerSig=JSON.stringify({r:false,e:null,a:0,t:'',s:resetState.savedAt});
   setTimerSyncBadge('saved','zerado — sincronizando...');
-  await flushSyncQNow();setTimerSyncBadge('','em espera');
+  await flushSyncQNow();
+  setTimerSyncBadge('','em espera');
 }
+
 function deleteSession(dayKey,idx){
   const data=getDayData(dayKey);if(!data.sessions||!data.sessions[idx])return;
   data.timerSec=Math.max(0,(data.timerSec||0)-(data.sessions[idx].sec||0));
   data.sessions.splice(idx,1);saveDayData(dayKey,data);recalcXP();render();
 }
+
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden&&timerRunning)timerSaveLocal();
-  if(!document.hidden&&currentUser)pollRemoteTimer();
+  if(document.hidden && timerRunning) timerSaveLocal();
+  if(!document.hidden && currentUser) pollRemoteTimer();
 });
-window.addEventListener('beforeunload',()=>{if(timerRunning)timerSaveLocal();});
+window.addEventListener('beforeunload',()=>{ if(timerRunning) timerSaveLocal(); });
 
 // ══════════════════════════════════════════════════════════════
-//  EDIT MODAL
+//  ✅ FIX 1: EDIT MODAL — suporte a dias futuros
 // ══════════════════════════════════════════════════════════════
 let editingDayKey=null,modalActs=[];
 function openEditModal(dayKey){
-  editingDayKey=dayKey;modalActs=JSON.parse(JSON.stringify(getActsForDay(dayKey)));
-  const today=todayKey();const isFuture=dayKey>today;
+  editingDayKey=dayKey;
+  modalActs=JSON.parse(JSON.stringify(getActsForDay(dayKey)));
+  const today=todayKey();
+  const isFuture=dayKey>today;
   document.getElementById('modal-title').textContent=(isFuture?'Planejar · ':'Editar · ')+dayFull[dayOfWeek(dayKey)];
   document.getElementById('modal-sub').textContent=new Date(dayKey+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})+(isFuture?' (planejamento futuro)':'');
+  // Banner informativo para dias futuros
   const bannerEl=document.getElementById('modal-future-banner');
-  if(isFuture){bannerEl.innerHTML='<div class="future-banner"><span class="future-banner-icon">📅</span>Você está planejando um dia futuro. As atividades serão salvas e estarão prontas quando chegar o dia.</div>';}
-  else{bannerEl.innerHTML='';}
-  document.getElementById('add-name').value='';document.getElementById('add-meta').value='';document.getElementById('add-tag').value='Estudo';
-  renderModalActs();document.getElementById('edit-modal').classList.remove('hidden');
+  if(isFuture){
+    bannerEl.innerHTML='<div class="future-banner"><span class="future-banner-icon">📅</span>Você está planejando um dia futuro. As atividades serão salvas e estarão prontas quando chegar o dia.</div>';
+  } else {
+    bannerEl.innerHTML='';
+  }
+  document.getElementById('add-name').value='';
+  document.getElementById('add-meta').value='';
+  document.getElementById('add-tag').value='Estudo';
+  renderModalActs();
+  document.getElementById('edit-modal').classList.remove('hidden');
 }
 function renderModalActs(){
   const el=document.getElementById('modal-acts-list');el.innerHTML='';
@@ -1274,7 +1389,10 @@ function saveEditModal(){
   const data=getDayData(editingDayKey);
   const validIds=new Set(modalActs.map(a=>a.id));
   Object.keys(data.checks||{}).forEach(id=>{if(!validIds.has(id))delete data.checks[id];});
-  saveDayData(editingDayKey,data);closeModal('edit-modal');recalcXP();render();
+  saveDayData(editingDayKey,data);
+  closeModal('edit-modal');
+  recalcXP();
+  render(); // ← atualiza tanto hoje quanto amanhã
 }
 function closeModal(id){document.getElementById(id).classList.add('hidden');}
 
@@ -1298,7 +1416,12 @@ function renderCal(){
     const num=document.createElement('div');num.className='cal-num';num.textContent=new Date(k+'T12:00:00').getDate();
     cell.appendChild(num);
     if(pct>=0&&!isFuture){const dot=document.createElement('div');dot.className='cal-dot';dot.style.background=pct===100?'white':pct>0?'var(--green)':'var(--text3)';cell.appendChild(dot);}
-    cell.onclick=()=>{detailAnchor=k;renderDetail();if(isFuture)openEditModal(k);};
+    // ✅ Clique em qualquer dia (inclusive futuro) abre detalhes + permite editar
+    cell.onclick=()=>{
+      detailAnchor=k;
+      renderDetail();
+      if(isFuture) openEditModal(k); // abre planejamento direto no calendário
+    };
     grid.appendChild(cell);
   });
 }
@@ -1323,7 +1446,7 @@ function renderXPHistory(){
 }
 
 // ══════════════════════════════════════════════════════════════
-//  DETAIL
+//  DETAIL — com botão editar em cada dia
 // ══════════════════════════════════════════════════════════════
 let detailAnchor=todayKey();
 function detailMove(n){const d=new Date(detailAnchor+'T12:00:00');d.setDate(d.getDate()+n*7);detailAnchor=d.toISOString().slice(0,10);renderDetail();}
@@ -1337,9 +1460,13 @@ function renderDetail(){
     const dateEl=document.createElement('div');dateEl.className='detail-day-date';dateEl.textContent=new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
     hdr.appendChild(nameEl);hdr.appendChild(dateEl);
     if(acts.length&&k<=today){const pct=getDayPct(k);const badge=document.createElement('div');badge.className='detail-day-badge';badge.style.background=pct===100?'rgba(29,158,117,0.2)':pct>0?'rgba(226,168,75,0.2)':'rgba(90,95,112,0.2)';badge.style.color=pct===100?'var(--green)':pct>0?'var(--yellow)':'var(--text3)';badge.textContent=pct+'%';hdr.appendChild(badge);}
-    const editBtn=document.createElement('button');editBtn.className='detail-edit-btn';
-    editBtn.textContent=k>today?'📅 Planejar':'✏️ Editar';editBtn.onclick=()=>openEditModal(k);
-    hdr.appendChild(editBtn);block.appendChild(hdr);
+    // ✅ Botão editar em cada dia do detail (inclusive futuros)
+    const editBtn=document.createElement('button');
+    editBtn.className='detail-edit-btn';
+    editBtn.textContent=k>today?'📅 Planejar':'✏️ Editar';
+    editBtn.onclick=()=>openEditModal(k);
+    hdr.appendChild(editBtn);
+    block.appendChild(hdr);
     if(!acts.length){const em=document.createElement('div');em.className='detail-empty';em.textContent=k>today?'📅 Sem planejamento ainda':'🌿 Descanso';block.appendChild(em);}
     else{
       const checks=(getDayData(k).checks||{});const sessions=(getDayData(k).sessions||[]);
@@ -1347,8 +1474,11 @@ function renderDetail(){
       if(sessions.length){
         sessions.forEach((s,si)=>{
           const tr=document.createElement('div');tr.className='detail-act-row';
+          // ✅ Mostra os intervalos da sessão se existirem
           let intervalsHtml='';
-          if(s.intervals&&s.intervals.length){intervalsHtml=s.intervals.map(iv=>`<div style="font-size:10px;color:var(--text3);padding-left:20px;font-family:'DM Mono',monospace">${fmtHHMM(iv.startEpoch)}→${fmtHHMM(iv.endEpoch)} (${fmtHM(iv.durationSec||0)})</div>`).join('');}
+          if(s.intervals && s.intervals.length){
+            intervalsHtml=s.intervals.map(iv=>`<div style="font-size:10px;color:var(--text3);padding-left:20px;font-family:'DM Mono',monospace">${fmtHHMM(iv.startEpoch)}→${fmtHHMM(iv.endEpoch)} (${fmtHM(iv.durationSec||0)})</div>`).join('');
+          }
           tr.innerHTML=`<div style="flex:1"><div style="display:flex;align-items:center;gap:8px"><div class="detail-check done" style="background:var(--blue)"></div><div class="detail-act-name done" style="font-style:italic">⏱ ${s.task||'Estudo'}</div><span class="detail-act-time">${fmtHM(s.sec||0)}</span>${k===today?`<button class="session-del" onclick="deleteSession('${k}',${si})">×</button>`:''}</div>${intervalsHtml}</div>`;
           block.appendChild(tr);
         });
@@ -1359,30 +1489,17 @@ function renderDetail(){
 }
 
 // ══════════════════════════════════════════════════════════════
-//  RENDER LEVEL — usa imagem do Drive
+//  RENDER
 // ══════════════════════════════════════════════════════════════
 function renderLevel(){
   const xp=currentProfile?(currentProfile.totalXP||0):0;const lv=getLevel(xp);
   const ni=Math.min(lv.lv+1,LEVELS.length-1);const next=LEVELS[ni];
   const pct=lv.lv===LEVELS.length-1?100:Math.round((xp-lv.min)/(next.min-lv.min)*100);
-
-  // Atualiza o ícone com imagem ou emoji fallback
-  const iconEl=document.getElementById('lv-icon');
-  const imgUrl=LEVEL_IMAGES[lv.lv];
-  if(imgUrl){
-    iconEl.innerHTML=`<img src="${imgUrl}" alt="${lv.name}" title="Nível ${lv.lv+1}: ${lv.name}" onerror="this.outerHTML='<span class=\\'emoji-fallback\\'>${lv.icon}</span>'">`;
-  } else {
-    iconEl.innerHTML=`<span class="emoji-fallback">${lv.icon}</span>`;
-  }
-
-  document.getElementById('lv-name').textContent=lv.name;
-  document.getElementById('lv-desc').textContent=lv.lv<LEVELS.length-1?`${xp-lv.min} / ${next.min-lv.min} XP para ${next.name}`:'Nível máximo! 🌟';
-  document.getElementById('lv-xp-label').textContent=`XP total: ${xp}`;
-  document.getElementById('lv-xp-val').textContent=`Nível ${lv.lv+1}`;
-  document.getElementById('lv-bar').style.width=pct+'%';
-  document.getElementById('lv-bar').style.background=lv.bar;
+  document.getElementById('lv-icon').textContent=lv.icon;document.getElementById('lv-name').textContent=lv.name;
+  document.getElementById('lv-desc').textContent=lv.lv<LEVELS.length-1?`${xp-lv.min} / ${next.min-lv.min} XP para ${next.name}`:'Nível máximo! 👑';
+  document.getElementById('lv-xp-label').textContent=`XP total: ${xp}`;document.getElementById('lv-xp-val').textContent=`Nível ${lv.lv+1}`;
+  document.getElementById('lv-bar').style.width=pct+'%';document.getElementById('lv-bar').style.background=lv.bar;
 }
-
 function renderToday(){
   const k=todayKey();const acts=getActsForDay(k);
   document.getElementById('today-label').textContent=fmtToday();
@@ -1395,7 +1512,6 @@ function renderToday(){
     card.onclick=()=>toggle(k,act.id);el.appendChild(card);
   });
 }
-
 function renderTimerSessions(){
   const k=todayKey();const sessions=(getDayData(k).sessions||[]);
   const box=document.getElementById('sessions-box');const list=document.getElementById('sessions-list');
@@ -1403,15 +1519,25 @@ function renderTimerSessions(){
   box.classList.remove('hidden');list.innerHTML='';
   sessions.forEach((s,i)=>{
     const row=document.createElement('div');row.className='session-row';
+    // Exibe horário da 1ª e última marcação, se disponível
     let timeDetail='';
-    if(s.intervals&&s.intervals.length){const first=s.intervals[0];const last=s.intervals[s.intervals.length-1];timeDetail=` · ${fmtHHMM(first.startEpoch)}–${fmtHHMM(last.endEpoch)}`;}
+    if(s.intervals && s.intervals.length){
+      const first=s.intervals[0];
+      const last=s.intervals[s.intervals.length-1];
+      timeDetail=` · ${fmtHHMM(first.startEpoch)}–${fmtHHMM(last.endEpoch)}`;
+    }
     row.innerHTML=`<span class="session-name">⏱ ${s.task||'Estudo'}${timeDetail}</span><span class="session-time">${fmtHM(s.sec||0)}</span><button class="session-del" onclick="deleteSession('${k}',${i})">×</button>`;
     list.appendChild(row);
   });
 }
-
 function render(){
-  renderLevel();renderToday();renderNextDay();renderCal();renderXPHistory();renderDetail();renderTimerSessions();
+  renderLevel();
+  renderToday();
+  renderNextDay();      // ✅ sempre atualiza o card de amanhã
+  renderCal();
+  renderXPHistory();
+  renderDetail();
+  renderTimerSessions();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1442,16 +1568,32 @@ function showStats(){
 (async function init(){
   SCRIPT_URL=lsGet('rdd_script_url')||'';
   SHEET_ID=lsGet('rdd_sheet_id')||'';
-  if(!SCRIPT_URL||!SHEET_ID){document.getElementById('setup-screen').style.display='flex';return;}
-  let savedRaw=localStorage.getItem('rdd_session');let savedUser=null;
+
+  if(!SCRIPT_URL||!SHEET_ID){
+    document.getElementById('setup-screen').style.display='flex';
+    return;
+  }
+
+  let savedRaw = localStorage.getItem('rdd_session');
+  let savedUser = null;
   if(savedRaw){
     try{
-      const parsed=JSON.parse(savedRaw);
-      if(parsed&&typeof parsed==='object'&&parsed.user){savedUser=parsed.user;}
-      else if(typeof parsed==='string'){savedUser=parsed;}
-    }catch{savedUser=savedRaw;}
+      const parsed = JSON.parse(savedRaw);
+      if(parsed && typeof parsed === 'object' && parsed.user){
+        savedUser = parsed.user;
+      }else if(typeof parsed === 'string'){
+        savedUser = parsed;
+      }
+    }catch{
+      savedUser = savedRaw;
+    }
   }
-  if(savedUser){await startSession(savedUser);return;}
+
+  if(savedUser){
+    await startSession(savedUser);
+    return;
+  }
+
   document.getElementById('login-screen').style.display='flex';
 })();
 </script>
