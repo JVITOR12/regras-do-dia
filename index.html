@@ -538,14 +538,46 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
 
 <script>
 const defaultSchedule = {
-  0:[{id:'s0_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s0_b',name:'Biblioteca',meta:'3h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s0_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'}],
-  1:[{id:'s1_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s1_b',name:'Biblioteca',meta:'2h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s1_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'}],
-  2:[{id:'s2_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s2_b',name:'Biblioteca',meta:'1h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s2_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'}],
-  3:[{id:'s3_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s3_b',name:'Biblioteca',meta:'3h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s3_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'}],
-  4:[{id:'s4_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s4_b',name:'Biblioteca',meta:'2h · Levar o PC',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},{id:'s4_c',name:'100% Serviço',meta:'14h – 16h',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'}],
-  5:[{id:'s5_a',name:'Estudar em Casa',meta:'Manhã · 3h',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'}],
-  6:[],
-};
+  0: [
+    {id:'s0_a', name:'Estudo 1 (Manhã)', meta:'7h30 - 8h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s0_b', name:'Estudo 2 (Manhã)', meta:'8h40 - 10h40 (2h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s0_c', name:'Biblioteca (Tarde)', meta:'12h30 - 14h00 (1h30)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s0_d', name:'100% Serviço', meta:'14h00 - 16h00', color:'var(--red)', tag:'Trabalho', tagBg:'var(--red-dim)', tagColor:'var(--red)'},
+    {id:'s0_e', name:'Biblioteca (Tarde)', meta:'16h00 - 17h30 (1h30)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'}
+  ],
+  1: [
+    {id:'s1_a', name:'Estudo 1 (Manhã)', meta:'7h30 - 8h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s1_b', name:'Estudo 2 (Manhã)', meta:'8h40 - 10h40 (2h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s1_c', name:'Biblioteca (Tarde)', meta:'12h30 - 14h00 (1h30)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s1_d', name:'100% Serviço', meta:'14h00 - 16h00', color:'var(--red)', tag:'Trabalho', tagBg:'var(--red-dim)', tagColor:'var(--red)'},
+    {id:'s1_e', name:'Biblioteca (Tarde)', meta:'16h00 - 16h30 (30 min)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'}
+  ],
+  2: [
+    {id:'s2_a', name:'Estudo 1 (Manhã)', meta:'7h30 - 8h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s2_b', name:'Estudo 2 (Manhã)', meta:'8h40 - 10h40 (2h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s2_c', name:'Biblioteca (Tarde)', meta:'12h30 - 13h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s2_d', name:'100% Serviço', meta:'14h00 - 16h00', color:'var(--red)', tag:'Trabalho', tagBg:'var(--red-dim)', tagColor:'var(--red)'}
+  ],
+  3: [
+    {id:'s3_a', name:'Estudo 1 (Manhã)', meta:'7h30 - 8h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s3_b', name:'Estudo 2 (Manhã)', meta:'8h40 - 10h40 (2h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s3_c', name:'Biblioteca (Tarde)', meta:'12h30 - 14h00 (1h30)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s3_d', name:'100% Serviço', meta:'14h00 - 16h00', color(--red)', tag:'Trabalho', tagBg:'var(--red-dim)', tagColor:'var(--red)'},
+    {id:'s3_e', name:'Biblioteca (Tarde)', meta:'16h00 - 17h30 (1h30)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'}
+  ],
+  4: [
+    {id:'s4_a', name:'Estudo 1 (Manhã)', meta:'7h30 - 8h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s4_b', name:'Estudo 2 (Manhã)', meta:'8h40 - 10h40 (2h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s4_c', name:'Biblioteca (Tarde)', meta:'12h30 - 14h00 (1h30)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s4_d', name:'100% Serviço', meta:'14h00 - 16h00', color:'var(--red)', tag:'Trabalho', tagBg:'var(--red-dim)', tagColor:'var(--red)'},
+    {id:'s4_e', name:'Biblioteca (Tarde)', meta:'16h00 - 16h30 (30 min)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'}
+  ],
+  5: [
+    {id:'s5_a', name:'Estudo 1 (Manhã)', meta:'7h30 - 8h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
+    {id:'s5_b', name:'Estudo 2 (Manhã)', meta:'8h40 - 10h40 (2h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'}
+  ]
+  6: []
+}
 const TAG_STYLES={'Estudo':{color:'var(--blue)',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},'Trabalho':{color:'var(--red)',tagBg:'var(--red-dim)',tagColor:'var(--red)'},'Saúde':{color:'var(--green)',tagBg:'var(--green-dim)',tagColor:'var(--green)'},'Pessoal':{color:'var(--yellow)',tagBg:'rgba(226,168,75,0.15)',tagColor:'var(--yellow)'},'Outro':{color:'var(--text2)',tagBg:'rgba(139,144,160,0.15)',tagColor:'var(--text2)'}};
 const dayFull=['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
 const monthNames=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
