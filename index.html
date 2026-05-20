@@ -491,7 +491,13 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
     </div>
     <div id="detail-list"></div>
   </div>
-
+<div class="today-card" id="loose-card">
+  <div class="section-header">
+    <div class="section-label">📌 Atividades Avulsas</div>
+    <button class="edit-day-btn" onclick="document.getElementById('loose-modal').classList.remove('hidden')">+ Adicionar</button>
+  </div>
+  <div id="loose-list"></div>
+</div>
   <div class="tools-card">
     <div class="section-label">📦 Dados</div>
     <div class="tools-grid">
@@ -535,6 +541,29 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
 </div>
 
 <div class="xp-toast" id="xp-toast"></div>
+<div class="modal-overlay hidden" id="loose-modal" onclick="if(event.target===this)closeModal('loose-modal')">
+  <div class="modal-box">
+    <div class="modal-title">📌 Nova Atividade Avulsa</div>
+    <div class="modal-sub">Será perguntado diariamente até você concluir</div>
+    <div class="modal-add-form" style="margin-top:8px">
+      <input id="loose-name" placeholder="Nome da atividade" maxlength="60"/>
+      <div class="modal-add-row">
+        <input id="loose-meta" placeholder="Descrição / prazo"/>
+        <select id="loose-tag">
+          <option value="Estudo">📘 Estudo</option>
+          <option value="Trabalho">💼 Trabalho</option>
+          <option value="Saúde">🏃 Saúde</option>
+          <option value="Pessoal">🎯 Pessoal</option>
+          <option value="Outro">✨ Outro</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn cancel" onclick="closeModal('loose-modal')">Cancelar</button>
+      <button class="modal-btn ok" onclick="addLooseAct(document.getElementById('loose-name').value.trim(),document.getElementById('loose-meta').value.trim(),document.getElementById('loose-tag').value);document.getElementById('loose-name').value='';document.getElementById('loose-meta').value='';closeModal('loose-modal')">Salvar</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const defaultSchedule = {
@@ -616,7 +645,7 @@ async function hashPass(p){const buf=await crypto.subtle.digest('SHA-256',new Te
 function hashKey(user){return 'auth:hash:'+user;}
 async function doLogin(){const user=document.getElementById('inp-user').value.trim().toLowerCase();const pass=document.getElementById('inp-pass').value;const msg=document.getElementById('login-msg');if(!user||!pass){msg.textContent='Preencha apelido e senha.';msg.className='login-msg err';return;}msg.textContent='Verificando...';msg.className='login-msg ok';let storedHash=lsGet('rdd_hash:'+user);if(!storedHash&&sheetsReady()){msg.textContent='Buscando conta na nuvem...';storedHash=await sheetGetUser(user,hashKey(user));if(storedHash)lsSet('rdd_hash:'+user,storedHash);}if(!storedHash){msg.textContent='Usuário não encontrado. Crie uma conta!';msg.className='login-msg err';return;}const hash=await hashPass(pass);if(storedHash!==hash){msg.textContent='Senha incorreta.';msg.className='login-msg err';return;}await startSession(user);}
 async function doRegister(){const user=document.getElementById('inp-reg-user').value.trim().toLowerCase();const pass=document.getElementById('inp-reg-pass').value;const msg=document.getElementById('register-msg');if(!user||pass.length<4){msg.textContent='Apelido e senha (mín. 4 chars).';msg.className='login-msg err';return;}if(!/^[a-z0-9_]+$/.test(user)){msg.textContent='Só letras minúsculas, números e _.';msg.className='login-msg err';return;}if(lsGet('rdd_hash:'+user)){msg.textContent='Apelido já em uso neste dispositivo.';msg.className='login-msg err';return;}if(sheetsReady()){msg.textContent='Verificando disponibilidade...';msg.className='login-msg ok';const remoteHash=await sheetGetUser(user,hashKey(user));if(remoteHash){msg.textContent='Apelido já em uso. Escolha outro.';msg.className='login-msg err';return;}}msg.textContent='Criando conta...';msg.className='login-msg ok';const hash=await hashPass(pass);lsSet('rdd_hash:'+user,hash);currentUser=user;if(sheetsReady())await sheetSet(hashKey(user),hash);currentUser=null;await startSession(user);}
-async function startSession(user){currentUser=user;currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};lsSet('rdd_session',{user,ts:Date.now()});document.getElementById('login-screen').style.display='none';document.getElementById('app-screen').style.display='block';document.getElementById('user-name-label').textContent=user;document.getElementById('user-avatar').textContent=user[0].toUpperCase();timerRestoreFromLocal();if(sheetsReady()){showSyncBar('syncing','Carregando dados...',false);setSyncUI('spin','carregando...');const all=await sheetGetAll();if(all){Object.entries(all).forEach(([k,v])=>{if(!k.startsWith('auth:'))lsSet(k,v);});currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};restoreTimerFromSheets(all);showSyncBar('saved','Dados carregados ✓');setSyncUI('','online ✓');}else{showSyncBar('error','Usando dados locais');setSyncUI('err','offline');}}currentProfile.totalXP=calcTotalXP();lsSet('rdd_profile:'+user,currentProfile);calYear=new Date().getFullYear();calMonth=new Date().getMonth();detailAnchor=todayKey();renderSubjects();render();startTimerPolling();}
+async function startSession(user){currentUser=user;currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};lsSet('rdd_session',{user,ts:Date.now()});document.getElementById('login-screen').style.display='none';document.getElementById('app-screen').style.display='block';document.getElementById('user-name-label').textContent=user;document.getElementById('user-avatar').textContent=user[0].toUpperCase();timerRestoreFromLocal();if(sheetsReady()){showSyncBar('syncing','Carregando dados...',false);setSyncUI('spin','carregando...');const all=await sheetGetAll();if(all){Object.entries(all).forEach(([k,v])=>{if(!k.startsWith('auth:'))lsSet(k,v);});currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};restoreTimerFromSheets(all);showSyncBar('saved','Dados carregados ✓');setSyncUI('','online ✓');}else{showSyncBar('error','Usando dados locais');setSyncUI('err','offline');}}currentProfile.totalXP=calcTotalXP();lsSet('rdd_profile:'+user,currentProfile);calYear=new Date().getFullYear();calMonth=new Date().getMonth();detailAnchor=todayKey();renderSubjects();render();renderLoosePanel();startTimerPolling();setTimeout(checkLooseActs,1200);}
 function doLogout(){if(!confirm('Sair da conta?'))return;if(timerRunning){clearInterval(timerInterval);timerSaveLocal();}stopTimerPolling();currentUser=null;currentProfile=null;localStorage.removeItem('rdd_session');document.getElementById('app-screen').style.display='none';document.getElementById('login-screen').style.display='flex';document.getElementById('inp-user').value='';document.getElementById('inp-pass').value='';document.getElementById('login-msg').textContent='';showLogin();}
 function openSheets(){const id=lsGet('rdd_sheet_id');if(id)window.open(`https://docs.google.com/spreadsheets/d/${id}`,'_blank');else alert('Planilha não configurada.');}
 function getSubjects(){return lsGet('rdd_subjects:'+currentUser)||['Português','Matemática','Redação'];}
@@ -657,6 +686,64 @@ let timerStartEpoch=null;
 let timerInterval=null;
 let timerIntervals=[];
 const TKEY=()=>'rdd_timer:'+currentUser;
+function getLooseActs(){return lsGet('rdd_loose:'+currentUser)||[];}
+function saveLooseActs(arr){lsSet('rdd_loose:'+currentUser,arr);scheduleSave('rdd_loose:'+currentUser,arr);}
+function getLooseSnoozed(){return lsGet('rdd_loose_snoozed:'+currentUser)||{};}
+function saveLooseSnoozed(obj){lsSet('rdd_loose_snoozed:'+currentUser,obj);scheduleSave('rdd_loose_snoozed:'+currentUser,obj);}
+
+function checkLooseActs(){
+  const today=todayKey();
+  const acts=getLooseActs().filter(a=>!a.done);
+  const snoozed=getLooseSnoozed();
+  const pending=acts.filter(a=>snoozed[a.id]!==today);
+  if(!pending.length)return;
+  askNextLoose(pending,0,today,snoozed);
+}
+function askNextLoose(pending,idx,today,snoozed){
+  if(idx>=pending.length)return;
+  const act=pending[idx];
+  const yes=confirm(`📋 Atividade avulsa pendente:\n\n"${act.name}"\n\nDeseja adicionar ao seu dia de hoje?`);
+  if(yes){
+    const dayActs=getActsForDay(today);
+    const style=TAG_STYLES[act.tag]||TAG_STYLES['Outro'];
+    dayActs.push({id:'loose_'+act.id+'_'+Date.now(),name:act.name,meta:act.meta||'',tag:act.tag,...style});
+    saveActsForDay(today,dayActs);
+    const all=getLooseActs();
+    const i=all.findIndex(a=>a.id===act.id);
+    if(i>=0){all[i].done=true;saveLooseActs(all);}
+    render();
+    askNextLoose(pending,idx+1,today,snoozed);
+  } else {
+    snoozed[act.id]=today;
+    saveLooseSnoozed(snoozed);
+    askNextLoose(pending,idx+1,today,snoozed);
+  }
+}
+function addLooseAct(name,meta,tag){
+  const acts=getLooseActs();
+  acts.push({id:'la_'+Date.now(),name,meta:meta||'',tag:tag||'Pessoal',done:false,createdAt:todayKey()});
+  saveLooseActs(acts);
+  renderLoosePanel();
+}
+function deleteLooseAct(id){
+  saveLooseActs(getLooseActs().filter(a=>a.id!==id));
+  renderLoosePanel();
+}
+function renderLoosePanel(){
+  const el=document.getElementById('loose-list');
+  if(!el)return;
+  const acts=getLooseActs();
+  el.innerHTML='';
+  if(!acts.length){el.innerHTML='<div class="empty-day">Nenhuma atividade avulsa</div>';return;}
+  acts.forEach(act=>{
+    const row=document.createElement('div');
+    row.className='modal-act-row';
+    row.style.opacity=act.done?'0.4':'1';
+    const style=TAG_STYLES[act.tag]||TAG_STYLES['Outro'];
+    row.innerHTML=`<div style="flex:1"><div class="modal-act-name" style="color:${style.color};${act.done?'text-decoration:line-through':''}">${act.name}</div><div class="modal-act-meta">${act.meta||''}</div></div><div style="font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;background:${style.tagBg};color:${style.tagColor}">${act.tag}</div>${!act.done?`<button class="modal-act-del" onclick="deleteLooseAct('${act.id}')">×</button>`:'<span style="font-size:11px;color:var(--green)">✓</span>'}`;
+    el.appendChild(row);
+  });
+}
 function currentSegmentSec(){if(!timerRunning||!timerStartEpoch)return 0;return Math.floor((Date.now()-timerStartEpoch)/1000);}
 function buildTimerState(){return{running:timerRunning,startEpoch:timerStartEpoch,accSec:timerAccSec,task:document.getElementById('timer-task-inp')?.value||'',savedAt:Date.now(),intervals:timerIntervals};}
 function applyTimerState(t){if(!t)return;timerIntervals=t.intervals||[];const inp=document.getElementById('timer-task-inp');if(inp&&t.task!==undefined)inp.value=t.task||'';if(t.running&&t.startEpoch){const segSec=Math.floor((Date.now()-t.startEpoch)/1000);if(segSec>=0&&segSec<86400){timerAccSec=t.accSec||0;timerStartEpoch=t.startEpoch;timerSeconds=timerAccSec+segSec;lsSet(TKEY(),t);if(!timerRunning)_startTimerUI();return;}}timerAccSec=t.accSec||0;timerSeconds=timerAccSec;timerStartEpoch=null;document.getElementById('timer-display').textContent=fmtTime(timerSeconds);document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';document.getElementById('btn-startstop').classList.remove('primary');document.getElementById('timer-card').classList.remove('running');lsSet(TKEY(),t);renderTimerIntervals();}
