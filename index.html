@@ -14,7 +14,8 @@
   --green:#1D9E75;--green-dim:rgba(29,158,117,0.15);
   --blue:#378ADD;--blue-dim:rgba(55,138,221,0.15);
   --red:#E24B4A;--red-dim:rgba(226,75,74,0.15);
-  --yellow:#E2A84B;
+  --yellow:#E2A84B;--yellow-dim:rgba(226,168,75,0.15);
+  --purple:#7F77DD;--purple-dim:rgba(127,119,221,0.15);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
@@ -33,7 +34,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .step-title{font-size:13px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;}
 .step-body{font-size:12px;color:var(--text3);line-height:1.75;padding-left:30px;}
 .step-body a{color:var(--blue);text-decoration:none;}
-.step-body a:hover{text-decoration:underline;}
 .step-body strong{color:var(--text2);}
 .code-block{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:12px;margin:8px 0;font-family:'DM Mono',monospace;font-size:10.5px;color:var(--yellow);line-height:1.7;overflow-x:auto;white-space:pre;max-height:200px;overflow-y:auto;}
 .copy-btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--blue);cursor:pointer;background:var(--blue-dim);border:1px solid rgba(55,138,221,0.3);border-radius:6px;padding:4px 10px;margin-top:4px;transition:all 0.15s;}
@@ -76,7 +76,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .sync-dot.err{background:var(--red);}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 .level-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
-.level-icon{width:56px;height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}.level-icon img{width:56px;height:56px;object-fit:contain;border-radius:10px;transition:transform 0.3s;}.level-icon img:hover{transform:scale(1.08);}
+.level-icon{width:56px;height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.level-icon img{width:56px;height:56px;object-fit:contain;border-radius:10px;transition:transform 0.3s;}
+.level-icon img:hover{transform:scale(1.08);}
 .level-info{flex:1;}
 .level-name{font-size:14px;font-weight:600;}
 .level-desc{font-size:11px;color:var(--text3);margin-top:1px;}
@@ -113,13 +115,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .timer-sync-badge.active{color:var(--blue);border-color:var(--blue);background:var(--blue-dim);}
 .timer-sync-badge.saved{color:var(--green);border-color:var(--green);background:var(--green-dim);}
 .timer-sync-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
-.timer-intervals{margin-top:8px;margin-bottom:8px;}
-.timer-interval-row{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);}
-.timer-interval-row:last-child{border-bottom:none;}
-.timer-interval-icon{font-size:11px;width:16px;text-align:center;flex-shrink:0;}
-.timer-interval-time{font-size:11px;font-family:'DM Mono',monospace;color:var(--text2);flex:1;}
-.timer-interval-dur{font-size:11px;font-family:'DM Mono',monospace;color:var(--green);}
-.timer-intervals-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.7px;font-weight:500;margin-bottom:6px;}
 .subjects-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
 .subject-chip{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .subject-chip:hover{border-color:var(--blue);color:var(--blue);}
@@ -234,8 +229,64 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .modal-restore-note{font-size:11px;color:var(--text3);margin-top:8px;text-align:center;}
 .modal-restore-link{color:var(--blue);cursor:pointer;text-decoration:underline;}
 .future-banner{display:flex;align-items:center;gap:8px;background:rgba(55,138,221,0.1);border:1px solid rgba(55,138,221,0.3);border-radius:10px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:var(--blue);}
-.future-banner-icon{font-size:14px;}
 .hidden{display:none!important;}
+
+/* ═══════════════════════════════════════════
+   MÓDULO METAS DE QUESTÕES — NOVOS ESTILOS
+═══════════════════════════════════════════ */
+.metas-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:12px;}
+.metas-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.metas-title{font-size:14px;font-weight:600;color:var(--text);}
+.metas-date{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;}
+.meta-row{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:12px 13px;margin-bottom:8px;transition:border-color 0.2s;}
+.meta-row.concluida{border-color:rgba(29,158,117,0.4);}
+.meta-row.falhou{border-color:rgba(226,75,74,0.3);}
+.meta-row-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.meta-materia-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.meta-materia-nome{font-size:13px;font-weight:600;flex:1;}
+.meta-status-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;}
+.meta-status-badge.ok{background:rgba(29,158,117,0.2);color:var(--green);}
+.meta-status-badge.fail{background:rgba(226,75,74,0.2);color:var(--red);}
+.meta-status-badge.pend{background:rgba(139,144,160,0.15);color:var(--text3);}
+.meta-progress-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.meta-progress-bar{flex:1;height:5px;background:var(--bg2);border-radius:99px;overflow:hidden;}
+.meta-progress-fill{height:100%;border-radius:99px;transition:width 0.4s cubic-bezier(.4,0,.2,1);}
+.meta-progress-nums{font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);white-space:nowrap;}
+.meta-input-row{display:flex;gap:8px;align-items:center;}
+.meta-input{flex:1;padding:7px 10px;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;text-align:center;}
+.meta-input:focus{border-color:var(--green);}
+.meta-input::placeholder{color:var(--text3);font-family:'DM Sans',sans-serif;font-size:12px;}
+.meta-input-label{font-size:11px;color:var(--text3);}
+.meta-save-btn{padding:7px 14px;border-radius:8px;background:var(--green);border:none;color:white;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:opacity 0.15s;white-space:nowrap;}
+.meta-save-btn:hover{opacity:0.85;}
+.meta-xp-preview{font-size:11px;font-family:'DM Mono',monospace;margin-top:6px;padding:5px 9px;border-radius:7px;display:inline-flex;align-items:center;gap:5px;}
+.meta-xp-preview.pos{background:rgba(29,158,117,0.12);color:var(--green);}
+.meta-xp-preview.neg{background:rgba(226,75,74,0.12);color:var(--red);}
+.meta-xp-preview.neutro{background:rgba(139,144,160,0.1);color:var(--text3);}
+.metas-resumo{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.resumo-box{background:var(--bg3);border-radius:9px;padding:10px;text-align:center;}
+.resumo-num{font-size:20px;font-weight:600;font-family:'DM Mono',monospace;}
+.resumo-lbl{font-size:10px;color:var(--text3);margin-top:2px;}
+.meta-config-btn{font-size:11px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:4px 10px;cursor:pointer;transition:all 0.15s;}
+.meta-config-btn:hover{border-color:var(--purple);color:var(--purple);}
+.meta-config-modal .modal-box{background:var(--bg2);}
+.meta-config-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;margin-bottom:7px;}
+.meta-config-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.meta-config-name{font-size:13px;font-weight:500;flex:1;}
+.meta-config-inp{width:64px;padding:6px 8px;background:var(--bg2);border:1px solid var(--border2);border-radius:7px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;text-align:center;}
+.meta-config-inp:focus{border-color:var(--green);}
+.meta-config-del{background:transparent;border:none;color:var(--text3);font-size:16px;cursor:pointer;transition:color 0.15s;}
+.meta-config-del:hover{color:var(--red);}
+.meta-add-materia-row{display:flex;gap:6px;margin-top:10px;}
+.meta-add-materia-inp{flex:1;padding:8px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;}
+.meta-add-materia-inp:focus{border-color:var(--purple);}
+.meta-add-materia-inp::placeholder{color:var(--text3);}
+.meta-cor-sel{padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;cursor:pointer;width:40px;height:36px;}
+.meta-add-btn{padding:8px 14px;border-radius:8px;background:var(--purple-dim);border:1px solid rgba(127,119,221,0.4);color:var(--purple);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.meta-add-btn:hover{background:rgba(127,119,221,0.25);}
+.meta-falha-aviso{background:rgba(226,75,74,0.08);border:1px solid rgba(226,75,74,0.25);border-radius:10px;padding:10px 13px;margin-top:10px;font-size:12px;color:var(--red);line-height:1.6;}
+.penalty-info{background:rgba(127,119,221,0.08);border:1px solid rgba(127,119,221,0.2);border-radius:10px;padding:10px 13px;margin-bottom:12px;font-size:12px;color:var(--text3);line-height:1.6;}
+.penalty-info strong{color:var(--purple);}
 </style>
 </head>
 <body>
@@ -248,10 +299,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <div id="setup-screen">
   <div class="setup-logo">📋</div>
   <div class="setup-title">Configurar Google Sheets</div>
-  <div class="setup-sub">Faça isso <strong style="color:var(--text)">uma vez</strong>. Em outros dispositivos, você pode pular essa etapa — os dados vêm automaticamente da planilha.</div>
+  <div class="setup-sub">Faça isso <strong style="color:var(--text)">uma vez</strong>. Em outros dispositivos, você pode pular essa etapa.</div>
   <div class="skip-box">
     <div class="skip-box-title">☁️ Já configurou em outro dispositivo?</div>
-    <div class="skip-box-desc">Cole a URL do Web App que você criou antes. Os dados da sua conta serão carregados automaticamente.</div>
+    <div class="skip-box-desc">Cole a URL do Web App que você criou antes.</div>
     <div class="field-label">URL do Web App (Apps Script)</div>
     <input class="field-input mono" id="inp-skip-url" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom:8px"/>
     <div class="field-label">ID da Planilha</div>
@@ -262,12 +313,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <div class="login-divider"><span>ou configure pela primeira vez</span></div>
   <div class="step-box">
     <div class="step-title"><span class="step-num">1</span>Abrir o Google Apps Script</div>
-    <div class="step-body">Acesse <a href="https://script.google.com/home" target="_blank">script.google.com</a>, clique em <strong>"Novo projeto"</strong> e apague o código que aparecer.</div>
+    <div class="step-body">Acesse <a href="https://script.google.com/home" target="_blank">script.google.com</a>, clique em <strong>"Novo projeto"</strong> e apague o código.</div>
   </div>
   <div class="step-box">
     <div class="step-title"><span class="step-num">2</span>Colar o código do servidor</div>
     <div class="step-body">
-      Cole o código abaixo e salve (Ctrl+S):
       <div class="code-block" id="apps-script-code">const SHEET_NAME = 'Dados';
 
 function doPost(e) {
@@ -318,18 +368,12 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
     <div class="step-title"><span class="step-num">3</span>Publicar como Web App</div>
     <div class="step-body">
       <strong>Implantar → Nova implantação</strong><br>
-      • Tipo: <strong>App da Web</strong><br>
-      • Executar como: <strong>Eu mesmo</strong><br>
-      • Acesso: <strong>Qualquer pessoa</strong><br>
-      Copie a URL gerada.
+      • Tipo: <strong>App da Web</strong> · Executar como: <strong>Eu mesmo</strong> · Acesso: <strong>Qualquer pessoa</strong>
     </div>
   </div>
   <div class="step-box">
     <div class="step-title"><span class="step-num">4</span>Criar planilha e pegar ID</div>
-    <div class="step-body">
-      Crie uma <a href="https://sheets.new" target="_blank">planilha nova</a>. Copie o ID da URL:<br>
-      <span style="font-family:DM Mono,monospace;font-size:10px;color:var(--yellow)">docs.google.com/spreadsheets/d/<strong>ID_AQUI</strong>/edit</span>
-    </div>
+    <div class="step-body">Crie uma <a href="https://sheets.new" target="_blank">planilha nova</a>. Copie o ID da URL: <span style="font-family:DM Mono,monospace;font-size:10px;color:var(--yellow)">docs.google.com/spreadsheets/d/<strong>ID</strong>/edit</span></div>
   </div>
   <div class="step-box">
     <div class="step-title"><span class="step-num">5</span>Cole as informações</div>
@@ -405,6 +449,43 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
     </div>
   </div>
 
+  <!-- ═══ MÓDULO METAS DE QUESTÕES ═══ -->
+  <div class="metas-card" id="metas-card">
+    <div class="metas-header">
+      <div>
+        <div class="metas-title">📚 Metas de Questões — Hoje</div>
+        <div class="metas-date" id="metas-date-lbl">–</div>
+      </div>
+      <button class="meta-config-btn" onclick="openMetaConfig()">⚙️ Configurar</button>
+    </div>
+
+    <div class="penalty-info">
+      <strong>Sistema de penalidade:</strong> cada questão abaixo da meta = −2 XP. Cumprir 100% da meta = +15 XP bônus por matéria. Registre suas questões até meia-noite.
+    </div>
+
+    <div class="metas-resumo">
+      <div class="resumo-box">
+        <div class="resumo-num" id="resumo-total-acertos" style="color:var(--green)">0</div>
+        <div class="resumo-lbl">Acertos hoje</div>
+      </div>
+      <div class="resumo-box">
+        <div class="resumo-num" id="resumo-total-meta" style="color:var(--text2)">0</div>
+        <div class="resumo-lbl">Meta total</div>
+      </div>
+      <div class="resumo-box">
+        <div class="resumo-num" id="resumo-xp-metas" style="color:var(--purple)">0</div>
+        <div class="resumo-lbl">XP de metas</div>
+      </div>
+    </div>
+
+    <div id="metas-list"></div>
+
+    <div id="metas-empty" class="hidden" style="text-align:center;padding:18px;color:var(--text3);font-size:13px;">
+      Nenhuma matéria configurada.<br>Clique em ⚙️ Configurar para começar.
+    </div>
+  </div>
+  <!-- ═══ FIM MÓDULO METAS ═══ -->
+
   <div class="today-card">
     <div class="section-header">
       <div class="section-label" id="today-section-label">Hoje</div>
@@ -431,24 +512,20 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
     </div>
     <div id="subjects-row" class="subjects-row"></div>
     <div class="subject-add-row">
-      <input class="subject-add-inp" id="new-subject-inp" placeholder="Nova matéria (ex: Português)..." maxlength="30" onkeydown="if(event.key==='Enter')addSubject()"/>
+      <input class="subject-add-inp" id="new-subject-inp" placeholder="Nova matéria..." maxlength="30" onkeydown="if(event.key==='Enter')addSubject()"/>
       <button class="subject-add-btn" onclick="addSubject()">+ Salvar</button>
     </div>
     <input class="timer-task-inp" id="timer-task-inp" placeholder="O que você está estudando?" maxlength="60"/>
-   <div class="timer-display" id="timer-display">00:00:00</div>
-<div id="timer-day-total" style="text-align:center;font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px;"></div>
-    <div class="timer-intervals hidden" id="timer-intervals-box">
-      <div class="timer-intervals-lbl">Intervalos desta sessão</div>
-      <div id="timer-intervals-list"></div>
-    </div>
+    <div class="timer-display" id="timer-display">00:00:00</div>
+    <div id="timer-day-total" style="text-align:center;font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px;"></div>
     <div class="timer-btns">
       <button class="timer-btn primary" id="btn-startstop" onclick="timerStartStop()">Iniciar</button>
       <button class="timer-btn" id="btn-save" onclick="timerSave()">Salvar</button>
       <button class="timer-btn danger" onclick="timerReset()">Zerar</button>
       <div style="display:flex;gap:6px;margin-top:8px;align-items:center">
-  <input id="manual-time-inp" class="subject-add-inp" placeholder="Adicionar tempo manual (ex: 1h30 ou 90min)" style="flex:1"/>
-  <button class="subject-add-btn" onclick="addManualTime()">+ Adicionar</button>
-</div>
+        <input id="manual-time-inp" class="subject-add-inp" placeholder="Tempo manual (ex: 1h30)" style="flex:1"/>
+        <button class="subject-add-btn" onclick="addManualTime()">+ Adicionar</button>
+      </div>
     </div>
     <div class="sessions-box hidden" id="sessions-box">
       <div class="session-lbl">Sessões salvas hoje</div>
@@ -492,13 +569,15 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
     </div>
     <div id="detail-list"></div>
   </div>
-<div class="today-card" id="loose-card">
-  <div class="section-header">
-    <div class="section-label">📌 Atividades Avulsas</div>
-    <button class="edit-day-btn" onclick="document.getElementById('loose-modal').classList.remove('hidden')">+ Adicionar</button>
+
+  <div class="today-card" id="loose-card">
+    <div class="section-header">
+      <div class="section-label">📌 Atividades Avulsas</div>
+      <button class="edit-day-btn" onclick="document.getElementById('loose-modal').classList.remove('hidden')">+ Adicionar</button>
+    </div>
+    <div id="loose-list"></div>
   </div>
-  <div id="loose-list"></div>
-</div>
+
   <div class="tools-card">
     <div class="section-label">📦 Dados</div>
     <div class="tools-grid">
@@ -511,6 +590,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
 </div>
 </div>
 
+<!-- Modal editar dia -->
 <div class="modal-overlay hidden" id="edit-modal" onclick="if(event.target===this)closeModal('edit-modal')">
   <div class="modal-box">
     <div class="modal-title" id="modal-title">Editar atividades</div>
@@ -541,7 +621,7 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
   </div>
 </div>
 
-<div class="xp-toast" id="xp-toast"></div>
+<!-- Modal atividades avulsas -->
 <div class="modal-overlay hidden" id="loose-modal" onclick="if(event.target===this)closeModal('loose-modal')">
   <div class="modal-box">
     <div class="modal-title">📌 Nova Atividade Avulsa</div>
@@ -566,89 +646,346 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
   </div>
 </div>
 
+<!-- Modal configurar metas -->
+<div class="modal-overlay hidden meta-config-modal" id="meta-config-modal" onclick="if(event.target===this)closeModal('meta-config-modal')">
+  <div class="modal-box">
+    <div class="modal-title">⚙️ Configurar Metas de Questões</div>
+    <div class="modal-sub">Defina a meta diária de questões para cada matéria</div>
+
+    <div class="modal-section">Matérias e metas</div>
+    <div id="meta-config-list"></div>
+
+    <div class="modal-section">Adicionar matéria</div>
+    <div class="meta-add-materia-row">
+      <input class="meta-add-materia-inp" id="meta-nova-nome" placeholder="Ex: Direito Administrativo" maxlength="40" onkeydown="if(event.key==='Enter')addMetaMateria()"/>
+      <input type="color" class="meta-cor-sel" id="meta-nova-cor" value="#378ADD" title="Escolha a cor"/>
+      <button class="meta-add-btn" onclick="addMetaMateria()">+ Adicionar</button>
+    </div>
+
+    <div style="margin-top:12px;padding:10px 12px;background:rgba(127,119,221,0.08);border:1px solid rgba(127,119,221,0.2);border-radius:10px;font-size:12px;color:var(--text3);line-height:1.6;">
+      <strong style="color:var(--purple)">Como funciona:</strong><br>
+      • Meta cumprida (≥ meta) = <span style="color:var(--green)">+15 XP bônus</span><br>
+      • Cada questão abaixo da meta = <span style="color:var(--red)">−2 XP</span><br>
+      • Registre sempre antes de meia-noite
+    </div>
+
+    <div class="modal-btns">
+      <button class="modal-btn cancel" onclick="closeModal('meta-config-modal')">Cancelar</button>
+      <button class="modal-btn ok" onclick="saveMetaConfig()">Salvar configuração</button>
+    </div>
+  </div>
+</div>
+
+<div class="xp-toast" id="xp-toast"></div>
+
 <script>
+/* ═══════════════════════════════════════════════
+   DADOS PADRÃO DO SCHEDULE
+═══════════════════════════════════════════════ */
 const defaultSchedule = {
-  0: [
-    {id:'s0_a', name:'Estudo 1 (Manhã)', meta:'7h30 - 8h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s0_b', name:'Estudo 2 (Manhã)', meta:'8h40 - 10h40 (2h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s0_c', name:'Biblioteca (Tarde)', meta:'12h30 - 14h00 (1h30)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s0_d', name:'100% Serviço', meta:'14h00 - 16h00', color:'var(--red)', tag:'Trabalho', tagBg:'var(--red-dim)', tagColor:'var(--red)'},
-    {id:'s0_e', name:'Biblioteca (Tarde)', meta:'16h00 - 17h30 (1h30)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'}
+  0:[
+    {id:'s0_a',name:'Estudo 1 (Manhã)',meta:'7h30 - 8h30 (1h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s0_b',name:'Estudo 2 (Manhã)',meta:'8h40 - 10h40 (2h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s0_c',name:'Biblioteca (Tarde)',meta:'12h30 - 14h00 (1h30)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s0_d',name:'100% Serviço',meta:'14h00 - 16h00',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'},
+    {id:'s0_e',name:'Biblioteca (Tarde)',meta:'16h00 - 17h30 (1h30)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'}
   ],
-  1: [
-    {id:'s1_a', name:'Estudo 1 (Manhã)', meta:'7h30 - 8h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s1_b', name:'Estudo 2 (Manhã)', meta:'8h40 - 10h40 (2h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s1_c', name:'Biblioteca (Tarde)', meta:'12h30 - 14h00 (1h30)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s1_d', name:'100% Serviço', meta:'14h00 - 16h00', color:'var(--red)', tag:'Trabalho', tagBg:'var(--red-dim)', tagColor:'var(--red)'},
-    {id:'s1_e', name:'Biblioteca (Tarde)', meta:'16h00 - 16h30 (30 min)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'}
+  1:[
+    {id:'s1_a',name:'Estudo 1 (Manhã)',meta:'7h30 - 8h30 (1h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s1_b',name:'Estudo 2 (Manhã)',meta:'8h40 - 10h40 (2h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s1_c',name:'Biblioteca (Tarde)',meta:'12h30 - 14h00 (1h30)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s1_d',name:'100% Serviço',meta:'14h00 - 16h00',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'},
+    {id:'s1_e',name:'Biblioteca (Tarde)',meta:'16h00 - 16h30 (30 min)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'}
   ],
-  2: [
-    {id:'s2_a', name:'Estudo 1 (Manhã)', meta:'7h30 - 8h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s2_b', name:'Estudo 2 (Manhã)', meta:'8h40 - 10h40 (2h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s2_c', name:'Biblioteca (Tarde)', meta:'12h30 - 13h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s2_d', name:'100% Serviço', meta:'14h00 - 16h00', color:'var(--red)', tag:'Trabalho', tagBg:'var(--red-dim)', tagColor:'var(--red)'}
+  2:[
+    {id:'s2_a',name:'Estudo 1 (Manhã)',meta:'7h30 - 8h30 (1h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s2_b',name:'Estudo 2 (Manhã)',meta:'8h40 - 10h40 (2h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s2_c',name:'Biblioteca (Tarde)',meta:'12h30 - 13h30 (1h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s2_d',name:'100% Serviço',meta:'14h00 - 16h00',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'}
   ],
-  3: [
-    {id:'s3_a', name:'Estudo 1 (Manhã)', meta:'7h30 - 8h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s3_b', name:'Estudo 2 (Manhã)', meta:'8h40 - 10h40 (2h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s3_c', name:'Biblioteca (Tarde)', meta:'12h30 - 14h00 (1h30)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s3_d', name:'100% Serviço', meta:'14h00 - 16h00', color:'var(--red)', tag:'Trabalho', tagBg:'var(--red-dim)', tagColor:'var(--red)'},
-    {id:'s3_e', name:'Biblioteca (Tarde)', meta:'16h00 - 17h30 (1h30)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'}
+  3:[
+    {id:'s3_a',name:'Estudo 1 (Manhã)',meta:'7h30 - 8h30 (1h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s3_b',name:'Estudo 2 (Manhã)',meta:'8h40 - 10h40 (2h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s3_c',name:'Biblioteca (Tarde)',meta:'12h30 - 14h00 (1h30)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s3_d',name:'100% Serviço',meta:'14h00 - 16h00',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'},
+    {id:'s3_e',name:'Biblioteca (Tarde)',meta:'16h00 - 17h30 (1h30)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'}
   ],
-  4: [
-    {id:'s4_a', name:'Estudo 1 (Manhã)', meta:'7h30 - 8h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s4_b', name:'Estudo 2 (Manhã)', meta:'8h40 - 10h40 (2h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s4_c', name:'Biblioteca (Tarde)', meta:'12h30 - 14h00 (1h30)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s4_d', name:'100% Serviço', meta:'14h00 - 16h00', color:'var(--red)', tag:'Trabalho', tagBg:'var(--red-dim)', tagColor:'var(--red)'},
-    {id:'s4_e', name:'Biblioteca (Tarde)', meta:'16h00 - 16h30 (30 min)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'}
+  4:[
+    {id:'s4_a',name:'Estudo 1 (Manhã)',meta:'7h30 - 8h30 (1h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s4_b',name:'Estudo 2 (Manhã)',meta:'8h40 - 10h40 (2h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s4_c',name:'Biblioteca (Tarde)',meta:'12h30 - 14h00 (1h30)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s4_d',name:'100% Serviço',meta:'14h00 - 16h00',color:'var(--red)',tag:'Trabalho',tagBg:'var(--red-dim)',tagColor:'var(--red)'},
+    {id:'s4_e',name:'Biblioteca (Tarde)',meta:'16h00 - 16h30 (30 min)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'}
   ],
-  5: [
-    {id:'s5_a', name:'Estudo 1 (Manhã)', meta:'7h30 - 8h30 (1h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'},
-    {id:'s5_b', name:'Estudo 2 (Manhã)', meta:'8h40 - 10h40 (2h)', color:'var(--blue)', tag:'Estudo', tagBg:'var(--blue-dim)', tagColor:'var(--blue)'}
- ],
-  6: []
-}
-const TAG_STYLES={'Estudo':{color:'var(--blue)',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},'Trabalho':{color:'var(--red)',tagBg:'var(--red-dim)',tagColor:'var(--red)'},'Saúde':{color:'var(--green)',tagBg:'var(--green-dim)',tagColor:'var(--green)'},'Pessoal':{color:'var(--yellow)',tagBg:'rgba(226,168,75,0.15)',tagColor:'var(--yellow)'},'Outro':{color:'var(--text2)',tagBg:'rgba(139,144,160,0.15)',tagColor:'var(--text2)'}};
+  5:[
+    {id:'s5_a',name:'Estudo 1 (Manhã)',meta:'7h30 - 8h30 (1h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+    {id:'s5_b',name:'Estudo 2 (Manhã)',meta:'8h40 - 10h40 (2h)',color:'var(--blue)',tag:'Estudo',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'}
+  ],
+  6:[]
+};
+
+const TAG_STYLES={
+  'Estudo':{color:'var(--blue)',tagBg:'var(--blue-dim)',tagColor:'var(--blue)'},
+  'Trabalho':{color:'var(--red)',tagBg:'var(--red-dim)',tagColor:'var(--red)'},
+  'Saúde':{color:'var(--green)',tagBg:'var(--green-dim)',tagColor:'var(--green)'},
+  'Pessoal':{color:'var(--yellow)',tagBg:'rgba(226,168,75,0.15)',tagColor:'var(--yellow)'},
+  'Outro':{color:'var(--text2)',tagBg:'rgba(139,144,160,0.15)',tagColor:'var(--text2)'}
+};
+
 const dayFull=['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
 const monthNames=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-const LEVEL_IMGS=['data:image/png;base64,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','data:image/png;base64,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','data:image/png;base64,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','data:image/png;base64,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','data:image/png;base64,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','data:image/png;base64,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','data:image/png;base64,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'];
-const LEVELS=[{min:0,name:'Iniciante',icon:0,bar:'#5a5f70'},{min:300,name:'Aprendiz',icon:1,bar:'#378ADD'},{min:700,name:'Dedicado',icon:2,bar:'#E2A84B'},{min:1200,name:'Consistente',icon:3,bar:'#E24B4A'},{min:2000,name:'Avançado',icon:4,bar:'#9B6FE2'},{min:3000,name:'Elite',icon:5,bar:'#F0C040'}];
-function getLevel(xp){for(let i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i].min)return{lv:i,...LEVELS[i]};return{lv:0,...LEVELS[0]};}
+
+const LEVEL_IMGS=['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAABECAYAAADtAUf/AAALkUlEQVR4nO2ZaZBc1XMLkDFjGNqMNo02o2nGjKamZpqamZqaqampqampqampZpq2mqampoa2tqampqZ6enp6enr6+nr6+nr6enp6enr6+nr6+nr6+nr6+nr6enp6enr6enr6enp6enp6enr6enp6enr6enp6enp6enr6enr6enp6enp6enp6enr6enp6+nr6enr6enr6enr6enp6enp6enr6enr6enr6enr6enr6enp6enr6enp6enp6enr6enr6enr6enp6enr6enr6enr6enp6enr6enr6enr6enp6enp6enp6enp6enp6enp6enr6enr6enp6enp6enr6enp6enr6enr6enr6enp6enp6enr6enr6enp6enr6enp6enp6enr6enr6enp6enr6enr6enr6enp6enr6enp6enr6enr6enp6enr6enp6enr6enr6enr6enr6enr6enr6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enr6enr6enr6enr6enr6enr6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enr6enr6enr6enr6enr6enr6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAABDCAYAAADwBHdHAAANGklEQVR4nO2ZeXxUVZbHf2+tqarUlpBKUoFACNmBhISwGRZBQNnC6jKCCPbYauMyOq2tjt14pg/adjcoq7iCYiMujbIqAoJACIEsEAJhXxISAklVJZXalzsfPE2fGRKS2B7PfOD/qep9b937q//z3Pve574gr+qquqr+H2jq1BoxDEsACuz/XFJXVy+RSExAf2yAAKQ5OXneMvQxgXJsW2bPni2AxGKxK+K+PXosqL6+np07dxIOh8lkMgAKYNy4caK1KaAlFosLmKKwioI2rwAYuRyOo0cpFApYloXrushBSWkiiVgsRjwex3MDTNOETMW2TRsXpuVGBVJr3ASuBYA0J3enLMufzUDi6JSiS+IQAAAASUVORK5CYII=','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAABDCAYAAABk4t61AAANBBIAA==','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAA/CAYAAACW2FpzAAAQtElEQVR4nO2aeZQV1bWHf7mqurobeqABARkUQYFGGUAFBDooKCoo','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAABGCAYAAAC+ANZHAAANq0lEQVR4nO2ZaXRVVZQHf2/ee2+8JMMkQEIIIAQIcYgGCCIgIBAhQoCAA==','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAABCCAYAAAA7WKTiAAAOWklEQVR4nO2ZaXRWVZbHf2+tqarUlpBKUoFACNmBhISwGRZBQNnC6jKCCPbYauMyOq2tjt14pg/adjcoq7iCYiMujbIqAoJACIEsEAJhXxISAklVJZXalzsfPE2fGRKS2B7PfOD/qep9b937q//z3Pve574gr+qquqr+H2jq1BoxDEsACuz/XFJXVy+RSExAf2yAAKQ5OXneMvQxgXJsW2bPni2AxGKxK+K+PXosqL6+np07dxIOh8lkMgAKYNy4caK1KaAlFosLmKKwioI2rwAYuRyOo0cpFApYloXrushBSWkiiVgsRjwex3MDTNOETMW2TRsXpuVGBVJr3ASuBYA0J3enLMufzUDi6JSiS+IQAAAASUVORK5CYII='];
+
+const LEVELS=[
+  {min:0,name:'Iniciante',lv:0,bar:'#5a5f70'},
+  {min:300,name:'Aprendiz',lv:1,bar:'#378ADD'},
+  {min:700,name:'Dedicado',lv:2,bar:'#E2A84B'},
+  {min:1200,name:'Consistente',lv:3,bar:'#E24B4A'},
+  {min:2000,name:'Avançado',lv:4,bar:'#9B6FE2'},
+  {min:3000,name:'Elite',lv:5,bar:'#F0C040'}
+];
+
+function getLevel(xp){for(let i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i].min)return LEVELS[i];return LEVELS[0];}
+
+/* ═══ STORAGE ═══ */
 function lsGet(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch{return null;}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
-let SCRIPT_URL='', SHEET_ID='';
+
+let SCRIPT_URL='',SHEET_ID='';
 function sheetsReady(){return SCRIPT_URL&&SHEET_ID;}
 async function sheetSet(key,value){if(!sheetsReady())return false;try{const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({sheetId:SHEET_ID,user:currentUser,key,value:JSON.stringify(value)})});const j=await res.json();return j.ok;}catch{return false;}}
 async function sheetGet(key){if(!sheetsReady())return null;try{const res=await fetch(`${SCRIPT_URL}?sheetId=${encodeURIComponent(SHEET_ID)}&user=${encodeURIComponent(currentUser)}&key=${encodeURIComponent(key)}`);const j=await res.json();if(!j.ok||j.value===null)return null;return JSON.parse(j.value);}catch{return null;}}
 async function sheetGetUser(user,key){if(!sheetsReady())return null;try{const res=await fetch(`${SCRIPT_URL}?sheetId=${encodeURIComponent(SHEET_ID)}&user=${encodeURIComponent(user)}&key=${encodeURIComponent(key)}`);const j=await res.json();if(!j.ok||j.value===null||j.value==='null')return null;try{return JSON.parse(j.value);}catch{return j.value;}}catch{return null;}}
 async function sheetGetAll(){if(!sheetsReady())return null;try{const res=await fetch(`${SCRIPT_URL}?sheetId=${encodeURIComponent(SHEET_ID)}&user=${encodeURIComponent(currentUser)}`);const j=await res.json();if(!j.ok)return null;const result={};Object.entries(j.value||{}).forEach(([k,v])=>{try{result[k]=JSON.parse(v);}catch{result[k]=v;}});return result;}catch{return null;}}
+
 let syncQ=[],syncing=false,syncTimer=null;
 function setSyncUI(state,label){const dot=document.getElementById('sync-dot'),lbl=document.getElementById('sync-lbl');if(!dot)return;dot.className='sync-dot'+(state==='spin'?' spin':state==='err'?' err':'');if(lbl)lbl.textContent=label||state;}
 function showSyncBar(type,text,ms=2500){const bar=document.getElementById('sync-bar');document.getElementById('sync-icon').textContent=type==='syncing'?'🔄':type==='saved'?'✅':'❌';document.getElementById('sync-text').textContent=text;bar.className='show '+type;if(ms)setTimeout(()=>bar.className='',ms);}
 function scheduleSave(key,value){const idx=syncQ.findIndex(e=>e.key===key);if(idx>=0)syncQ[idx].value=value;else syncQ.push({key,value});clearTimeout(syncTimer);syncTimer=setTimeout(flushSyncQ,2000);}
 async function flushSyncQNow(){clearTimeout(syncTimer);return flushSyncQ();}
 async function flushSyncQ(){if(!sheetsReady()||syncing||!syncQ.length)return;syncing=true;setSyncUI('spin','salvando...');const batch=[...syncQ];syncQ=[];let allOk=true;for(const{key,value}of batch){const ok=await sheetSet(key,value);if(!ok){syncQ.push({key,value});allOk=false;}}syncing=false;if(allOk)setSyncUI('','salvo ✓');else{setSyncUI('err','erro');setTimeout(flushSyncQ,5000);}}
-async function manualSync(){if(!sheetsReady()){alert('Configure a planilha primeiro.');return;}showSyncBar('syncing','Sincronizando...',false);setSyncUI('spin','sincronizando...');await flushSyncQ();const all=await sheetGetAll();if(all){let changed=false;Object.entries(all).forEach(([k,v])=>{if(JSON.stringify(lsGet(k))!==JSON.stringify(v)){lsSet(k,v);changed=true;}});if(changed){currentProfile.totalXP=calcTotalXP();lsSet('rdd_profile:'+currentUser,currentProfile);recalcXP();render();}restoreTimerFromSheets(all);showSyncBar('saved','Sincronizado ✓');}else{showSyncBar('error','Erro ao conectar');}}
-let timerPollInterval=null;let lastRemoteTimerSig='';
-function startTimerPolling(){stopTimerPolling();timerPollInterval=setInterval(pollRemoteTimer, 5000);}
-function stopTimerPolling(){if(timerPollInterval){clearInterval(timerPollInterval);timerPollInterval=null;}}
-async function pollRemoteTimer(){if(!sheetsReady()||!currentUser)return;try{const remote=await sheetGetUser(currentUser, TKEY());if(!remote)return;const sig=JSON.stringify({r:remote.running,e:remote.startEpoch,a:remote.accSec,t:remote.task,s:remote.savedAt});if(sig===lastRemoteTimerSig)return;lastRemoteTimerSig=sig;if(timerRunning){if(remote.running){setTimerSyncBadge('active','rodando aqui');return;}const localState=lsGet(TKEY());const remoteSavedAt=remote.savedAt||0;const localSavedAt=localState?.savedAt||0;if(remoteSavedAt<=localSavedAt)return;clearInterval(timerInterval);timerRunning=false;timerSeconds=remote.accSec||0;timerIntervals=remote.intervals||[];document.getElementById('timer-display').textContent=fmtTime(timerSeconds);document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';document.getElementById('btn-startstop').classList.remove('primary');document.getElementById('timer-card').classList.remove('running');const inp2=document.getElementById('timer-task-inp');if(inp2&&remote.task!==undefined)inp2.value=remote.task||'';lsSet(TKEY(),remote);renderTimerIntervals();setTimerSyncBadge('saved','pausado remotamente ✓');setTimeout(()=>setTimerSyncBadge('','em espera'),3000);return;}if(remote.running&&remote.startEpoch){const elapsed=Math.floor((Date.now()-remote.startEpoch)/1000)+(remote.accSec||0);if(elapsed>0&&elapsed<86400){timerSeconds=elapsed;timerIntervals=remote.intervals||[];const inp=document.getElementById('timer-task-inp');if(inp&&remote.task)inp.value=remote.task;lsSet(TKEY(),remote);_startTimerUI();renderTimerIntervals();setTimerSyncBadge('active','rodando em outro dispositivo');return;}}if(!remote.running){const remoteAcc=remote.accSec||0;if(remoteAcc!==timerSeconds){if(timerRunning){clearInterval(timerInterval);timerRunning=false;}timerSeconds=remoteAcc;timerIntervals=remote.intervals||[];document.getElementById('timer-display').textContent=fmtTime(timerSeconds);document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';document.getElementById('btn-startstop').classList.remove('primary');document.getElementById('timer-card').classList.remove('running');const inp=document.getElementById('timer-task-inp');if(inp&&remote.task!==undefined)inp.value=remote.task||'';lsSet(TKEY(),remote);renderTimerIntervals();setTimerSyncBadge('saved','atualizado ✓');setTimeout(()=>setTimerSyncBadge('','em espera'),3000);}}}catch(e){}}
-function setTimerSyncBadge(state,label){const badge=document.getElementById('timer-sync-badge');const lbl=document.getElementById('timer-sync-lbl');if(!badge||!lbl)return;badge.className='timer-sync-badge'+(state==='active'?' active':state==='saved'?' saved':'');lbl.textContent=label||'em espera';}
-const APPS_SCRIPT_CODE=document.getElementById('apps-script-code').textContent;
-function copyScript(){navigator.clipboard.writeText(APPS_SCRIPT_CODE).then(()=>{const btn=document.querySelector('.copy-btn');btn.textContent='✅ Copiado!';setTimeout(()=>btn.textContent='📋 Copiar código',2000);});}
-function showSetup(){document.getElementById('login-screen').style.display='none';document.getElementById('app-screen').style.display='none';document.getElementById('setup-screen').style.display='flex';}
-async function skipSetup(){const url=document.getElementById('inp-skip-url').value.trim();const id=document.getElementById('inp-skip-id').value.trim();const msg=document.getElementById('skip-msg');if(!url||!url.startsWith('https://script.google.com')){msg.textContent='⚠️ URL inválida.';msg.className='login-msg err';return;}if(!id){msg.textContent='⚠️ ID em branco.';msg.className='login-msg err';return;}msg.textContent='Testando conexão...';msg.className='login-msg ok';try{const r=await fetch(`${url}?sheetId=${encodeURIComponent(id)}&user=__ping__`);await r.json();}catch(e){msg.textContent='❌ Não conectou. Verifique a URL.';msg.className='login-msg err';return;}lsSet('rdd_script_url',url);lsSet('rdd_sheet_id',id);SCRIPT_URL=url;SHEET_ID=id;msg.textContent='✅ Conectado!';setTimeout(()=>{document.getElementById('setup-screen').style.display='none';document.getElementById('login-screen').style.display='flex';},700);}
-async function saveSetup(){const url=document.getElementById('inp-script-url').value.trim();const id=document.getElementById('inp-sheet-id').value.trim();const msg=document.getElementById('setup-msg');if(!url||!url.startsWith('https://script.google.com')){msg.textContent='⚠️ URL inválida.';return;}if(!id){msg.textContent='⚠️ ID em branco.';return;}msg.textContent='Testando...';try{const r=await fetch(`${url}?sheetId=${encodeURIComponent(id)}&user=__test__`);await r.json();}catch(e){msg.textContent='❌ Não conectou.';return;}lsSet('rdd_script_url',url);lsSet('rdd_sheet_id',id);SCRIPT_URL=url;SHEET_ID=id;msg.textContent='✅ Configurado!';setTimeout(()=>{document.getElementById('setup-screen').style.display='none';document.getElementById('login-screen').style.display='flex';},700);}
+async function manualSync(){if(!sheetsReady()){alert('Configure a planilha primeiro.');return;}showSyncBar('syncing','Sincronizando...',false);setSyncUI('spin','sincronizando...');await flushSyncQ();const all=await sheetGetAll();if(all){let changed=false;Object.entries(all).forEach(([k,v])=>{if(JSON.stringify(lsGet(k))!==JSON.stringify(v)){lsSet(k,v);changed=true;}});if(changed){currentProfile.totalXP=calcTotalXP();lsSet('rdd_profile:'+currentUser,currentProfile);recalcXP();render();}showSyncBar('saved','Sincronizado ✓');}else{showSyncBar('error','Erro ao conectar');setSyncUI('err','offline');}}
+
 let currentUser=null,currentProfile=null;
 function showLogin(){document.getElementById('login-form').classList.remove('hidden');document.getElementById('register-form').classList.add('hidden');}
 function showRegister(){document.getElementById('register-form').classList.remove('hidden');document.getElementById('login-form').classList.add('hidden');}
 async function hashPass(p){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('rdd25_'+p));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
 function hashKey(user){return 'auth:hash:'+user;}
-async function doLogin(){const user=document.getElementById('inp-user').value.trim().toLowerCase();const pass=document.getElementById('inp-pass').value;const msg=document.getElementById('login-msg');if(!user||!pass){msg.textContent='Preencha apelido e senha.';msg.className='login-msg err';return;}msg.textContent='Verificando...';msg.className='login-msg ok';let storedHash=lsGet('rdd_hash:'+user);if(!storedHash&&sheetsReady()){msg.textContent='Buscando conta na nuvem...';storedHash=await sheetGetUser(user,hashKey(user));if(storedHash)lsSet('rdd_hash:'+user,storedHash);}if(!storedHash){msg.textContent='Usuário não encontrado. Crie uma conta!';msg.className='login-msg err';return;}const hash=await hashPass(pass);if(storedHash!==hash){msg.textContent='Senha incorreta.';msg.className='login-msg err';return;}await startSession(user);}
-async function doRegister(){const user=document.getElementById('inp-reg-user').value.trim().toLowerCase();const pass=document.getElementById('inp-reg-pass').value;const msg=document.getElementById('register-msg');if(!user||pass.length<4){msg.textContent='Apelido e senha (mín. 4 chars).';msg.className='login-msg err';return;}if(!/^[a-z0-9_]+$/.test(user)){msg.textContent='Só letras minúsculas, números e _.';msg.className='login-msg err';return;}if(lsGet('rdd_hash:'+user)){msg.textContent='Apelido já em uso neste dispositivo.';msg.className='login-msg err';return;}if(sheetsReady()){msg.textContent='Verificando disponibilidade...';msg.className='login-msg ok';const remoteHash=await sheetGetUser(user,hashKey(user));if(remoteHash){msg.textContent='Apelido já em uso. Escolha outro.';msg.className='login-msg err';return;}}msg.textContent='Criando conta...';msg.className='login-msg ok';const hash=await hashPass(pass);lsSet('rdd_hash:'+user,hash);currentUser=user;if(sheetsReady())await sheetSet(hashKey(user),hash);currentUser=null;await startSession(user);}
-async function startSession(user){currentUser=user;currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};lsSet('rdd_session',{user,ts:Date.now()});document.getElementById('login-screen').style.display='none';document.getElementById('app-screen').style.display='block';document.getElementById('user-name-label').textContent=user;document.getElementById('user-avatar').textContent=user[0].toUpperCase();timerRestoreFromLocal();if(sheetsReady()){showSyncBar('syncing','Carregando dados...',false);setSyncUI('spin','carregando...');const all=await sheetGetAll();if(all){Object.entries(all).forEach(([k,v])=>{if(!k.startsWith('auth:'))lsSet(k,v);});currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};currentProfile.totalXP=calcTotalXP();lsSet('rdd_profile:'+user,currentProfile);restoreTimerFromSheets(all);showSyncBar('saved','Dados carregados ✓');setSyncUI('','online ✓');}else{showSyncBar('error','Usando dados locais');setSyncUI('err','offline');}}currentProfile.totalXP=calcTotalXP();lsSet('rdd_profile:'+user,currentProfile);calYear=new Date().getFullYear();calMonth=new Date().getMonth();detailAnchor=todayKey();renderSubjects();render();renderLoosePanel();startTimerPolling();setTimeout(checkLooseActs,1200);}
-function doLogout(){if(!confirm('Sair da conta?'))return;if(timerRunning){clearInterval(timerInterval);timerSaveLocal();}stopTimerPolling();currentUser=null;currentProfile=null;localStorage.removeItem('rdd_session');document.getElementById('app-screen').style.display='none';document.getElementById('login-screen').style.display='flex';document.getElementById('inp-user').value='';document.getElementById('inp-pass').value='';document.getElementById('login-msg').textContent='';showLogin();}
+async function doLogin(){const user=document.getElementById('inp-user').value.trim().toLowerCase();const pass=document.getElementById('inp-pass').value;const msg=document.getElementById('login-msg');if(!user||!pass){msg.textContent='Preencha apelido e senha.';msg.className='login-msg err';return;}msg.textContent='Verificando...';msg.className='login-msg ok';let storedHash=lsGet('rdd_hash:'+user);if(!storedHash&&sheetsReady()){msg.textContent='Buscando conta na nuvem...';storedHash=await sheetGetUser(user,hashKey(user));if(storedHash)lsSet('rdd_hash:'+user,storedHash);}if(!storedHash){msg.textContent='Usuário não encontrado.';msg.className='login-msg err';return;}const hash=await hashPass(pass);if(storedHash!==hash){msg.textContent='Senha incorreta.';msg.className='login-msg err';return;}await startSession(user);}
+async function doRegister(){const user=document.getElementById('inp-reg-user').value.trim().toLowerCase();const pass=document.getElementById('inp-reg-pass').value;const msg=document.getElementById('register-msg');if(!user||pass.length<4){msg.textContent='Apelido e senha (mín. 4 chars).';msg.className='login-msg err';return;}if(!/^[a-z0-9_]+$/.test(user)){msg.textContent='Só letras minúsculas, números e _.';msg.className='login-msg err';return;}if(lsGet('rdd_hash:'+user)){msg.textContent='Apelido já em uso neste dispositivo.';msg.className='login-msg err';return;}if(sheetsReady()){msg.textContent='Verificando disponibilidade...';msg.className='login-msg ok';const remoteHash=await sheetGetUser(user,hashKey(user));if(remoteHash){msg.textContent='Apelido já em uso.';msg.className='login-msg err';return;}}msg.textContent='Criando conta...';msg.className='login-msg ok';const hash=await hashPass(pass);lsSet('rdd_hash:'+user,hash);currentUser=user;if(sheetsReady())await sheetSet(hashKey(user),hash);currentUser=null;await startSession(user);}
+async function startSession(user){currentUser=user;currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};lsSet('rdd_session',{user,ts:Date.now()});document.getElementById('login-screen').style.display='none';document.getElementById('app-screen').style.display='block';document.getElementById('user-name-label').textContent=user;document.getElementById('user-avatar').textContent=user[0].toUpperCase();timerRestoreFromLocal();if(sheetsReady()){showSyncBar('syncing','Carregando dados...',false);setSyncUI('spin','carregando...');const all=await sheetGetAll();if(all){Object.entries(all).forEach(([k,v])=>{if(!k.startsWith('auth:'))lsSet(k,v);});currentProfile=lsGet('rdd_profile:'+user)||{totalXP:0};currentProfile.totalXP=calcTotalXP();lsSet('rdd_profile:'+user,currentProfile);showSyncBar('saved','Dados carregados ✓');setSyncUI('','online ✓');}else{showSyncBar('error','Usando dados locais');setSyncUI('err','offline');}}currentProfile.totalXP=calcTotalXP();lsSet('rdd_profile:'+user,currentProfile);calYear=new Date().getFullYear();calMonth=new Date().getMonth();detailAnchor=todayKey();renderSubjects();render();renderLoosePanel();setTimeout(checkLooseActs,1200);}
+function doLogout(){if(!confirm('Sair da conta?'))return;if(timerRunning){clearInterval(timerInterval);timerSaveLocal();}currentUser=null;currentProfile=null;localStorage.removeItem('rdd_session');document.getElementById('app-screen').style.display='none';document.getElementById('login-screen').style.display='flex';document.getElementById('inp-user').value='';document.getElementById('inp-pass').value='';document.getElementById('login-msg').textContent='';showLogin();}
 function openSheets(){const id=lsGet('rdd_sheet_id');if(id)window.open(`https://docs.google.com/spreadsheets/d/${id}`,'_blank');else alert('Planilha não configurada.');}
+
+/* ═══════════════════════════════════════════════
+   MÓDULO METAS DE QUESTÕES
+═══════════════════════════════════════════════ */
+
+// Matérias padrão pré-configuradas
+const DEFAULT_METAS_CONFIG = [
+  {id:'mat_port', nome:'Português', cor:'#1D9E75', metaDiaria:30},
+  {id:'mat_mat',  nome:'Matemática', cor:'#378ADD', metaDiaria:20},
+  {id:'mat_adm',  nome:'Dir. Administrativo', cor:'#E2A84B', metaDiaria:30},
+  {id:'mat_const',nome:'Constitucional', cor:'#7F77DD', metaDiaria:25},
+];
+
+// Temp para modal de config
+let metaConfigTemp = [];
+
+function getMetasConfig(){
+  return lsGet('rdd_metas_config:'+currentUser) || JSON.parse(JSON.stringify(DEFAULT_METAS_CONFIG));
+}
+
+function saveMetasConfig(cfg){
+  lsSet('rdd_metas_config:'+currentUser, cfg);
+  scheduleSave('rdd_metas_config:'+currentUser, cfg);
+}
+
+function getMetasDayKey(dayKey){
+  return 'rdd_metas_day:'+currentUser+':'+dayKey;
+}
+
+function getMetasDayData(dayKey){
+  return lsGet(getMetasDayKey(dayKey)) || {};
+}
+
+function saveMetasDayData(dayKey, data){
+  const key = getMetasDayKey(dayKey);
+  lsSet(key, data);
+  scheduleSave(key, data);
+}
+
+// Calcula XP de metas de um dia
+function calcMetasXP(dayKey){
+  const cfg = getMetasConfig();
+  const data = getMetasDayData(dayKey);
+  const today = todayKey();
+  const isPast = dayKey < today;
+  // Só aplica penalidade em dias passados ou hoje com registro
+  let xp = 0;
+  cfg.forEach(mat => {
+    const acertos = data[mat.id] !== undefined ? data[mat.id] : null;
+    if(acertos === null) {
+      // Dia passado sem registro: penalidade total
+      if(isPast) xp -= mat.metaDiaria * 2;
+      return;
+    }
+    if(acertos >= mat.metaDiaria){
+      xp += 15; // bônus
+    } else {
+      const falta = mat.metaDiaria - acertos;
+      xp -= falta * 2;
+    }
+  });
+  return xp;
+}
+
+function renderMetasPanel(){
+  if(!currentUser) return;
+  const today = todayKey();
+  const cfg = getMetasConfig();
+  const data = getMetasDayData(today);
+
+  document.getElementById('metas-date-lbl').textContent =
+    new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+
+  const listEl = document.getElementById('metas-list');
+  const emptyEl = document.getElementById('metas-empty');
+
+  if(!cfg.length){
+    listEl.innerHTML = '';
+    emptyEl.classList.remove('hidden');
+    document.getElementById('resumo-total-acertos').textContent = '0';
+    document.getElementById('resumo-total-meta').textContent = '0';
+    document.getElementById('resumo-xp-metas').textContent = '0';
+    return;
+  }
+  emptyEl.classList.add('hidden');
+  listEl.innerHTML = '';
+
+  let totalAcertos = 0;
+  let totalMeta = 0;
+  cfg.forEach(mat => {
+    totalMeta += mat.metaDiaria;
+    const acertos = data[mat.id] !== undefined ? data[mat.id] : 0;
+    totalAcertos += acertos;
+
+    const pct = Math.min(100, Math.round((acertos / mat.metaDiaria) * 100));
+    const concluida = acertos >= mat.metaDiaria;
+    const temRegistro = data[mat.id] !== undefined;
+
+    const row = document.createElement('div');
+    row.className = 'meta-row' + (concluida ? ' concluida' : '');
+
+    // Preview de XP desta matéria
+    let xpPreview = 0;
+    let xpClass = 'neutro';
+    let xpText = 'Sem registro';
+    if(temRegistro){
+      if(concluida){ xpPreview = 15; xpClass='pos'; xpText='+15 XP bônus ✓'; }
+      else { xpPreview = -(mat.metaDiaria - acertos)*2; xpClass='neg'; xpText=`${xpPreview} XP (faltam ${mat.metaDiaria - acertos} questões)`; }
+    }
+
+    row.innerHTML = `
+      <div class="meta-row-top">
+        <div class="meta-materia-dot" style="background:${mat.cor}"></div>
+        <div class="meta-materia-nome">${mat.nome}</div>
+        ${temRegistro ? `<div class="meta-status-badge ${concluida?'ok':'fail'}">${concluida?'✓ Meta':'Em andamento'}</div>` : '<div class="meta-status-badge pend">Pendente</div>'}
+      </div>
+      <div class="meta-progress-row">
+        <div class="meta-progress-bar">
+          <div class="meta-progress-fill" style="width:${pct}%;background:${mat.cor}"></div>
+        </div>
+        <div class="meta-progress-nums">${acertos}/${mat.metaDiaria}</div>
+      </div>
+      <div class="meta-input-row">
+        <span class="meta-input-label">Acertos:</span>
+        <input class="meta-input" type="number" min="0" max="999"
+          id="inp-meta-${mat.id}"
+          value="${temRegistro ? acertos : ''}"
+          placeholder="0"
+        />
+        <button class="meta-save-btn" onclick="registrarAcertos('${mat.id}')">Salvar</button>
+      </div>
+      <div class="meta-xp-preview ${xpClass}">${xpText}</div>
+    `;
+    listEl.appendChild(row);
+  });
+
+  // Resumo
+  const xpMetas = calcMetasXP(today);
+  document.getElementById('resumo-total-acertos').textContent = totalAcertos;
+  document.getElementById('resumo-total-meta').textContent = totalMeta;
+  document.getElementById('resumo-xp-metas').textContent = (xpMetas >= 0 ? '+' : '') + xpMetas;
+}
+
+function registrarAcertos(matId){
+  const inp = document.getElementById('inp-meta-'+matId);
+  const val = parseInt(inp.value);
+  if(isNaN(val) || val < 0){ inp.focus(); return; }
+  const today = todayKey();
+  const data = getMetasDayData(today);
+  data[matId] = val;
+  saveMetasDayData(today, data);
+  recalcXP();
+  renderMetasPanel();
+  renderLevel();
+  showXPToast(0); // atualiza sem mostrar toast
+  renderXPHistory();
+}
+
+// Modal configurar metas
+function openMetaConfig(){
+  metaConfigTemp = JSON.parse(JSON.stringify(getMetasConfig()));
+  renderMetaConfigList();
+  document.getElementById('meta-config-modal').classList.remove('hidden');
+}
+
+function renderMetaConfigList(){
+  const el = document.getElementById('meta-config-list');
+  el.innerHTML = '';
+  metaConfigTemp.forEach((mat, i) => {
+    const row = document.createElement('div');
+    row.className = 'meta-config-row';
+    row.innerHTML = `
+      <div class="meta-config-dot" style="background:${mat.cor}"></div>
+      <div class="meta-config-name">${mat.nome}</div>
+      <span style="font-size:11px;color:var(--text3)">Meta:</span>
+      <input class="meta-config-inp" type="number" min="1" max="999"
+        value="${mat.metaDiaria}"
+        onchange="metaConfigTemp[${i}].metaDiaria=Math.max(1,parseInt(this.value)||1)"
+      />
+      <button class="meta-config-del" onclick="metaConfigTemp.splice(${i},1);renderMetaConfigList()">×</button>
+    `;
+    el.appendChild(row);
+  });
+}
+
+function addMetaMateria(){
+  const nome = document.getElementById('meta-nova-nome').value.trim();
+  const cor = document.getElementById('meta-nova-cor').value;
+  if(!nome) return;
+  metaConfigTemp.push({
+    id: 'mat_'+Date.now(),
+    nome,
+    cor,
+    metaDiaria: 20
+  });
+  document.getElementById('meta-nova-nome').value = '';
+  renderMetaConfigList();
+}
+
+function saveMetaConfig(){
+  saveMetasConfig(metaConfigTemp);
+  closeModal('meta-config-modal');
+  recalcXP();
+  render();
+}
+
+/* ═══════════════════════════════════════════════
+   SUBJECTS / TIMER
+═══════════════════════════════════════════════ */
 function getSubjects(){return lsGet('rdd_subjects:'+currentUser)||['Português','Matemática','Redação'];}
 function saveSubjects(arr){lsSet('rdd_subjects:'+currentUser,arr);scheduleSave('rdd_subjects:'+currentUser,arr);}
 let activeSubject=null;
@@ -656,6 +993,10 @@ function renderSubjects(){const arr=getSubjects();const row=document.getElementB
 function selectSubject(name,chipEl){if(activeSubject===name){activeSubject=null;document.getElementById('timer-task-inp').value='';}else{activeSubject=name;document.getElementById('timer-task-inp').value=name;}renderSubjects();}
 function removeSubject(name,e){e.stopPropagation();const arr=getSubjects().filter(s=>s!==name);saveSubjects(arr);if(activeSubject===name){activeSubject=null;document.getElementById('timer-task-inp').value='';}renderSubjects();}
 function addSubject(){const inp=document.getElementById('new-subject-inp');const name=inp.value.trim();if(!name)return;const arr=getSubjects();if(!arr.includes(name)){arr.push(name);saveSubjects(arr);}inp.value='';activeSubject=name;document.getElementById('timer-task-inp').value=name;renderSubjects();}
+
+/* ═══════════════════════════════════════════════
+   DAY DATA
+═══════════════════════════════════════════════ */
 function getDayData(k){return lsGet('rdd_day:'+currentUser+':'+k)||{checks:{},timerSec:0,sessions:[]};}
 function saveDayData(k,data){const key='rdd_day:'+currentUser+':'+k;lsSet(key,data);scheduleSave(key,data);}
 function isChecked(dayKey,id){return !!(getDayData(dayKey).checks||{})[id];}
@@ -666,203 +1007,198 @@ function toggle(dayKey,id){const data=getDayData(dayKey);if(!data.checks)data.ch
 function getDayPct(k){const acts=getActsForDay(k);if(!acts.length)return -1;const checks=(getDayData(k).checks||{});return Math.round(acts.filter(a=>checks[a.id]).length/acts.length*100);}
 function nextDayKey(){const d=new Date();d.setDate(d.getDate()+1);return d.toISOString().slice(0,10);}
 function openEditNextDay(){openEditModal(nextDayKey());}
-function renderNextDay(){const k=nextDayKey();const acts=getActsForDay(k);const dow=dayOfWeek(k);const lbl=document.getElementById('next-day-label');const el=document.getElementById('next-day-acts');const card=document.getElementById('next-day-card');lbl.textContent=`Amanhã · ${dayFull[dow]}`;el.innerHTML='';if(!acts.length){el.innerHTML='<div class="empty-day">🌿 Amanhã é descanso</div>';}else{acts.forEach(act=>{const row=document.createElement('div');row.className='act-card';row.style.cursor='default';row.innerHTML=`<div class="act-check" style="border-style:dashed;background:transparent"></div><div class="act-body"><div class="act-name" style="color:${act.color||'var(--text)'}">${act.name}</div><div class="act-meta">${act.meta||''}</div></div><div class="act-tag" style="background:${act.tagBg};color:${act.tagColor}">${act.tag}</div>`;el.appendChild(row);});}}
-function calcDayDelta(dayKey,isPast){const data=lsGet('rdd_day:'+currentUser+':'+dayKey)||{};const acts=getActsForDay(dayKey);if(!acts.length)return 0;const checks=data.checks||{};const xp=currentProfile?(currentProfile.totalXP||0):0;const lv=getLevel(xp).lv;const penaltyMult=[1,1.5,2,3,4,5];const mult=penaltyMult[lv]||5;let delta=0;acts.forEach(a=>{if(checks[a.id])delta+=5;else if(isPast)delta-=Math.round(5*mult);});delta+=Math.min(Math.floor((data.timerSec||0)/1800)*5);return delta;}
-function calcTotalXP() {
-  const today = todayKey();
-  const penaltyMult = [1, 1.5, 2, 3, 4, 5];
-  let total = 0;
 
-  // Ordena os dias cronologicamente para calcular o XP de forma progressiva
-  const dayKeys = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    if (k && k.startsWith('rdd_day:' + currentUser + ':')) {
-      dayKeys.push(k.replace('rdd_day:' + currentUser + ':', ''));
+/* ═══════════════════════════════════════════════
+   XP CALC — inclui metas de questões
+═══════════════════════════════════════════════ */
+function calcDayDelta(dayKey,isPast){
+  const data=lsGet('rdd_day:'+currentUser+':'+dayKey)||{};
+  const acts=getActsForDay(dayKey);
+  if(!acts.length)return calcMetasXP(dayKey);
+  const checks=data.checks||{};
+  const xp=currentProfile?(currentProfile.totalXP||0):0;
+  const lv=getLevel(xp).lv;
+  const penaltyMult=[1,1.5,2,3,4,5];
+  const mult=penaltyMult[lv]||5;
+  let delta=0;
+  acts.forEach(a=>{if(checks[a.id])delta+=5;else if(isPast)delta-=Math.round(5*mult);});
+  delta+=Math.min(Math.floor((data.timerSec||0)/1800)*5);
+  delta+=calcMetasXP(dayKey);
+  return delta;
+}
+
+function calcTotalXP(){
+  const today=todayKey();
+  const penaltyMult=[1,1.5,2,3,4,5];
+  let total=0;
+  const dayKeys=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(k&&k.startsWith('rdd_day:'+currentUser+':')){
+      dayKeys.push(k.replace('rdd_day:'+currentUser+':',''));
     }
   }
-  dayKeys.sort(); // Ordena do dia mais antigo ao mais recente
-
-  // Calcula o XP progressivamente, dia após dia
-  dayKeys.forEach(dk => {
-    const acts = getActsForDay(dk);
-    if (!acts.length) return;
-
-    const data = getDayData(dk);
-    const checks = data.checks || {};
-    const isPast = dk < today;
-    
-    // Obtém o nível baseado no XP acumulado ATÉ aquele dia específico
-    const currentLv = getLevel(Math.max(0, total)).lv;
-    const mult = penaltyMult[currentLv] || 5;
-    
-    let delta = 0;
-    acts.forEach(a => {
-      if (checks[a.id]) delta += 5;
-      else if (isPast) delta -= Math.round(5 * mult);
-    });
-
-    const sec = data.timerSec || 0;
-    delta += Math.floor(sec / 1800) * 5;
-    
-    total += delta;
+  // Também pega dias que só têm metas
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(k&&k.startsWith('rdd_metas_day:'+currentUser+':')){
+      const dk=k.replace('rdd_metas_day:'+currentUser+':','');
+      if(!dayKeys.includes(dk)) dayKeys.push(dk);
+    }
+  }
+  dayKeys.sort();
+  dayKeys.forEach(dk=>{
+    const acts=getActsForDay(dk);
+    const data=getDayData(dk);
+    const checks=data.checks||{};
+    const isPast=dk<today;
+    const currentLv=getLevel(Math.max(0,total)).lv;
+    const mult=penaltyMult[currentLv]||5;
+    let delta=0;
+    if(acts.length){
+      acts.forEach(a=>{
+        if(checks[a.id])delta+=5;
+        else if(isPast)delta-=Math.round(5*mult);
+      });
+      const sec=data.timerSec||0;
+      delta+=Math.floor(sec/1800)*5;
+    }
+    delta+=calcMetasXP(dk);
+    total+=delta;
   });
-
-  return Math.max(0, total);
+  return Math.max(0,total);
 }
+
 function recalcXP(){
   if(!currentProfile)return;
   const prev=currentProfile.totalXP||0;
   const novo=calcTotalXP();
   if(novo===prev)return;
-  currentProfile.totalXP=novo;const pkey='rdd_profile:'+currentUser;lsSet(pkey,currentProfile);scheduleSave(pkey,currentProfile);const diff=currentProfile.totalXP-prev;if(diff!==0)showXPToast(diff);}
-function showXPToast(diff){const el=document.getElementById('xp-toast');el.textContent=(diff>0?'+':'')+diff+' XP';el.className='xp-toast '+(diff>0?'pos':'neg');el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
-function todayKey(){return new Date().toISOString().slice(0,10);}
-function dayOfWeek(k){const d=new Date(k+'T12:00:00');return d.getDay()===0?6:d.getDay()-1;}
-function fmtToday(){return new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});}
-function fmtHM(s){return`${Math.floor(s/3600)}h${String(Math.floor((s%3600)/60)).padStart(2,'0')}min`;}
-function updateTimerDayTotal(){
-  const k=todayKey();
-  const sec=(getDayData(k).timerSec||0);
-  const live=timerRunning?currentSegmentSec()+timerAccSec:timerAccSec;
-  const total=sec+(live>0?live:0);
-  const el=document.getElementById('timer-day-total');
-  if(el)el.textContent=total>0?`Total hoje: ${fmtHM(total)}`:'';
+  const diff=novo-prev;
+  currentProfile.totalXP=novo;
+  const pkey='rdd_profile:'+currentUser;
+  lsSet(pkey,currentProfile);
+  scheduleSave(pkey,currentProfile);
+  if(diff!==0)showXPToast(diff);
 }
-function fmtTime(s){return[Math.floor(s/3600),Math.floor((s%3600)/60),s%60].map(v=>String(v).padStart(2,'0')).join(':');}
-function fmtHHMM(epoch){if(!epoch)return'--:--';const d=new Date(epoch);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
-function getMonthDays(year,month){const first=new Date(year,month,1);const last=new Date(year,month+1,0);const startDow=first.getDay()===0?6:first.getDay()-1;const days=[];for(let i=0;i<startDow;i++)days.push(null);for(let d=1;d<=last.getDate();d++)days.push(`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`);return days;}
-function getWeekKeys(anchorKey){const d=new Date(anchorKey+'T12:00:00');const dow=d.getDay()===0?6:d.getDay()-1;const mon=new Date(d);mon.setDate(d.getDate()-dow);return Array.from({length:7},(_,i)=>{const x=new Date(mon);x.setDate(mon.getDate()+i);return x.toISOString().slice(0,10);});}
-function weekLabel(keys){const fmt=k=>new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});return fmt(keys[0])+' – '+fmt(keys[6]);}
-let timerRunning=false;
-let timerSeconds=0;
-let timerAccSec=0;
-let timerStartEpoch=null;
-let timerInterval=null;
-let timerIntervals=[];
+
+function showXPToast(diff){
+  if(diff===0)return;
+  const el=document.getElementById('xp-toast');
+  el.textContent=(diff>0?'+':'')+diff+' XP';
+  el.className='xp-toast '+(diff>0?'pos':'neg');
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+/* ═══════════════════════════════════════════════
+   TIMER
+═══════════════════════════════════════════════ */
+let timerRunning=false,timerSeconds=0,timerAccSec=0,timerStartEpoch=null,timerInterval=null;
 const TKEY=()=>'rdd_timer:'+currentUser;
+function fmtTime(s){return[Math.floor(s/3600),Math.floor((s%3600)/60),s%60].map(v=>String(v).padStart(2,'0')).join(':');}
+function fmtHM(s){return`${Math.floor(s/3600)}h${String(Math.floor((s%3600)/60)).padStart(2,'0')}min`;}
+function currentSegmentSec(){if(!timerRunning||!timerStartEpoch)return 0;return Math.floor((Date.now()-timerStartEpoch)/1000);}
+function timerSaveLocal(){lsSet(TKEY(),{running:timerRunning,startEpoch:timerStartEpoch,accSec:timerAccSec,task:document.getElementById('timer-task-inp')?.value||''});}
+function timerRestoreFromLocal(){const t=lsGet(TKEY());if(!t)return;timerAccSec=t.accSec||0;if(t.running&&t.startEpoch){const seg=Math.floor((Date.now()-t.startEpoch)/1000);if(seg>=0&&seg<86400){timerSeconds=timerAccSec+seg;timerStartEpoch=t.startEpoch;if(!timerRunning)_startTimerUI();return;}}timerSeconds=timerAccSec;document.getElementById('timer-display').textContent=fmtTime(timerSeconds);document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';document.getElementById('btn-startstop').classList.remove('primary');document.getElementById('timer-card').classList.remove('running');}
+function _startTimerUI(){if(timerRunning)return;timerRunning=true;document.getElementById('btn-startstop').textContent='Pausar';document.getElementById('btn-startstop').classList.add('primary');document.getElementById('timer-card').classList.add('running');document.getElementById('timer-sync-badge').className='timer-sync-badge active';document.getElementById('timer-sync-lbl').textContent='rodando';timerInterval=setInterval(()=>{timerSeconds=timerAccSec+currentSegmentSec();document.getElementById('timer-display').textContent=fmtTime(timerSeconds);updateTimerDayTotal();if(timerSeconds%30===0)timerSaveLocal();},1000);}
+async function timerStartStop(){if(timerRunning){const seg=currentSegmentSec();timerAccSec+=seg;timerSeconds=timerAccSec;timerStartEpoch=null;clearInterval(timerInterval);timerRunning=false;document.getElementById('timer-display').textContent=fmtTime(timerSeconds);document.getElementById('btn-startstop').textContent='Continuar';document.getElementById('btn-startstop').classList.remove('primary');document.getElementById('timer-card').classList.remove('running');document.getElementById('timer-sync-badge').className='timer-sync-badge saved';document.getElementById('timer-sync-lbl').textContent='pausado';timerSaveLocal();}else{timerStartEpoch=Date.now();_startTimerUI();timerSaveLocal();}}
+async function timerSave(){if(timerSeconds===0)return;let finalSec=timerSeconds;if(timerRunning){const seg=currentSegmentSec();timerAccSec+=seg;finalSec=timerAccSec;clearInterval(timerInterval);timerRunning=false;}const k=todayKey();const data=getDayData(k);const task=document.getElementById('timer-task-inp')?.value?.trim()||'';data.timerSec=(data.timerSec||0)+finalSec;if(!data.sessions)data.sessions=[];data.sessions.push({sec:finalSec,task:task||'Estudo',savedAt:new Date().toISOString()});saveDayData(k,data);timerAccSec=0;timerSeconds=0;timerStartEpoch=null;document.getElementById('timer-display').textContent='00:00:00';document.getElementById('btn-startstop').textContent='Iniciar';document.getElementById('btn-startstop').classList.remove('primary');document.getElementById('timer-card').classList.remove('running');if(document.getElementById('timer-task-inp'))document.getElementById('timer-task-inp').value='';activeSubject=null;renderSubjects();lsSet(TKEY(),{running:false,accSec:0,startEpoch:null,task:''});recalcXP();render();const btn=document.getElementById('btn-save');btn.textContent='Salvo ✓';btn.style.color='var(--green)';setTimeout(()=>{btn.textContent='Salvar';btn.style.color='';},1800);updateTimerDayTotal();}
+async function timerReset(){if(!confirm('Zerar o cronômetro?'))return;if(timerRunning){clearInterval(timerInterval);timerRunning=false;}timerAccSec=0;timerSeconds=0;timerStartEpoch=null;document.getElementById('timer-display').textContent='00:00:00';document.getElementById('btn-startstop').textContent='Iniciar';document.getElementById('btn-startstop').classList.remove('primary');document.getElementById('timer-card').classList.remove('running');activeSubject=null;renderSubjects();lsSet(TKEY(),{running:false,accSec:0,startEpoch:null,task:''});}
+function updateTimerDayTotal(){const k=todayKey();const sec=(getDayData(k).timerSec||0);const live=timerRunning?currentSegmentSec()+timerAccSec:timerAccSec;const total=sec+(live>0?live:0);const el=document.getElementById('timer-day-total');if(el)el.textContent=total>0?`Total hoje: ${fmtHM(total)}`:'';};
+function parseManualTime(str){str=str.trim().toLowerCase();let total=0;const h=str.match(/(\d+)\s*h/);const m=str.match(/(\d+)\s*(min|m)\b/);if(h)total+=parseInt(h[1])*3600;if(m)total+=parseInt(m[1])*60;if(!h&&!m){const n=parseInt(str);if(!isNaN(n))total=n*60;}return total;}
+async function addManualTime(){const inp=document.getElementById('manual-time-inp');const sec=parseManualTime(inp.value);if(!sec||sec<=0){inp.focus();return;}const task=document.getElementById('timer-task-inp')?.value?.trim()||'';const k=todayKey();const data=getDayData(k);data.timerSec=(data.timerSec||0)+sec;if(!data.sessions)data.sessions=[];data.sessions.push({sec,task:task||'Estudo',savedAt:new Date().toISOString(),manual:true});saveDayData(k,data);inp.value='';recalcXP();render();}
+function deleteSession(dayKey,idx){const data=getDayData(dayKey);if(!data.sessions||!data.sessions[idx])return;data.timerSec=Math.max(0,(data.timerSec||0)-(data.sessions[idx].sec||0));data.sessions.splice(idx,1);saveDayData(dayKey,data);recalcXP();render();}
+
+/* ═══════════════════════════════════════════════
+   LOOSE ACTS
+═══════════════════════════════════════════════ */
 function getLooseActs(){return lsGet('rdd_loose:'+currentUser)||[];}
 function saveLooseActs(arr){lsSet('rdd_loose:'+currentUser,arr);scheduleSave('rdd_loose:'+currentUser,arr);}
 function getLooseSnoozed(){return lsGet('rdd_loose_snoozed:'+currentUser)||{};}
 function saveLooseSnoozed(obj){lsSet('rdd_loose_snoozed:'+currentUser,obj);scheduleSave('rdd_loose_snoozed:'+currentUser,obj);}
+function checkLooseActs(){const today=todayKey();const acts=getLooseActs().filter(a=>!a.done);const snoozed=getLooseSnoozed();const pending=acts.filter(a=>snoozed[a.id]!==today);if(!pending.length)return;askNextLoose(pending,0,today,snoozed);}
+function askNextLoose(pending,idx,today,snoozed){if(idx>=pending.length)return;const act=pending[idx];const yes=confirm(`📋 Atividade avulsa pendente:\n\n"${act.name}"\n\nDeseja adicionar ao seu dia de hoje?`);if(yes){const dayActs=getActsForDay(today);const style=TAG_STYLES[act.tag]||TAG_STYLES['Outro'];dayActs.push({id:'loose_'+act.id+'_'+Date.now(),name:act.name,meta:act.meta||'',tag:act.tag,...style});saveActsForDay(today,dayActs);const all=getLooseActs();const i=all.findIndex(a=>a.id===act.id);if(i>=0){all[i].done=true;saveLooseActs(all);}render();askNextLoose(pending,idx+1,today,snoozed);}else{snoozed[act.id]=today;saveLooseSnoozed(snoozed);askNextLoose(pending,idx+1,today,snoozed);}}
+function addLooseAct(name,meta,tag){const acts=getLooseActs();acts.push({id:'la_'+Date.now(),name,meta:meta||'',tag:tag||'Pessoal',done:false,createdAt:todayKey()});saveLooseActs(acts);renderLoosePanel();}
+function deleteLooseAct(id){saveLooseActs(getLooseActs().filter(a=>a.id!==id));renderLoosePanel();}
+function renderLoosePanel(){const el=document.getElementById('loose-list');if(!el)return;const acts=getLooseActs();el.innerHTML='';if(!acts.length){el.innerHTML='<div class="empty-day">Nenhuma atividade avulsa</div>';return;}acts.filter(a=>!a.done).forEach(act=>{const row=document.createElement('div');row.className='modal-act-row';const style=TAG_STYLES[act.tag]||TAG_STYLES['Outro'];row.innerHTML=`<div style="flex:1"><div class="modal-act-name" style="color:${style.color}">${act.name}</div><div class="modal-act-meta">${act.meta||''}</div></div><div style="font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;background:${style.tagBg};color:${style.tagColor}">${act.tag}</div><button class="modal-act-del" onclick="deleteLooseAct('${act.id}')">×</button>`;el.appendChild(row);});}
 
-function checkLooseActs(){
-  const today=todayKey();
-  const acts=getLooseActs().filter(a=>!a.done);
-  const snoozed=getLooseSnoozed();
-  const pending=acts.filter(a=>snoozed[a.id]!==today);
-  if(!pending.length)return;
-  askNextLoose(pending,0,today,snoozed);
+/* ═══════════════════════════════════════════════
+   CALENDAR & HISTORY
+═══════════════════════════════════════════════ */
+let calYear=new Date().getFullYear(),calMonth=new Date().getMonth();
+function calMove(n){calMonth+=n;if(calMonth<0){calMonth=11;calYear--;}if(calMonth>11){calMonth=0;calYear++;}renderCal();}
+function getMonthDays(year,month){const first=new Date(year,month,1);const last=new Date(year,month+1,0);const startDow=first.getDay()===0?6:first.getDay()-1;const days=[];for(let i=0;i<startDow;i++)days.push(null);for(let d=1;d<=last.getDate();d++)days.push(`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`);return days;}
+function pctClass(p){if(p<0)return'no-schedule';if(p===0)return'pct-0';if(p<50)return'pct-25';if(p<75)return'pct-50';if(p<100)return'pct-75';return'pct-100';}
+function renderCal(){document.getElementById('cal-month-label').textContent=monthNames[calMonth]+' '+calYear;const days=getMonthDays(calYear,calMonth);const today=todayKey();const grid=document.getElementById('cal-grid');grid.innerHTML='';days.forEach(k=>{const cell=document.createElement('div');if(!k){cell.className='cal-cell empty';grid.appendChild(cell);return;}const pct=getDayPct(k);const isFuture=k>today;cell.className='cal-cell '+pctClass(isFuture?-2:pct);if(k===today)cell.classList.add('today');if(isFuture)cell.classList.add('future');const num=document.createElement('div');num.className='cal-num';num.textContent=new Date(k+'T12:00:00').getDate();cell.appendChild(num);if(pct>=0&&!isFuture){const dot=document.createElement('div');dot.className='cal-dot';dot.style.background=pct===100?'white':pct>0?'var(--green)':'var(--text3)';cell.appendChild(dot);}cell.onclick=()=>{detailAnchor=k;renderDetail();if(isFuture)openEditModal(k);};grid.appendChild(cell);});}
+function todayKey(){return new Date().toISOString().slice(0,10);}
+function dayOfWeek(k){const d=new Date(k+'T12:00:00');return d.getDay()===0?6:d.getDay()-1;}
+function fmtToday(){return new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});}
+function fmtHHMM(epoch){if(!epoch)return'--:--';const d=new Date(epoch);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+function renderXPHistory(){const today=todayKey();const days=[];for(let i=6;i>=0;i--){const d=new Date(today+'T12:00:00');d.setDate(d.getDate()-i);days.push(d.toISOString().slice(0,10));}const el=document.getElementById('xp-history-list');el.innerHTML='';days.forEach(k=>{const isPast=k<today;const acts=getActsForDay(k);const row=document.createElement('div');row.className='xp-day-row';const dateEl=document.createElement('div');dateEl.className='xp-day-date';dateEl.textContent=new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});const nameEl=document.createElement('div');nameEl.className='xp-day-name';const deltaEl=document.createElement('div');if(!acts.length&&!Object.keys(getMetasDayData(k)).length){nameEl.textContent=dayFull[dayOfWeek(k)]+' · Descanso';deltaEl.className='xp-day-delta zero';deltaEl.textContent='—';}else{const delta=calcDayDelta(k,isPast);const pct=getDayPct(k);nameEl.textContent=dayFull[dayOfWeek(k)]+(isPast?` · ${pct>=0?pct+'%':'—'}`:' · hoje');deltaEl.className='xp-day-delta '+(delta>0?'pos':delta<0?'neg':'zero');deltaEl.textContent=(delta>0?'+':'')+delta+' XP';}row.appendChild(dateEl);row.appendChild(nameEl);row.appendChild(deltaEl);el.appendChild(row);});}
+
+let detailAnchor=todayKey();
+function detailMove(n){const d=new Date(detailAnchor+'T12:00:00');d.setDate(d.getDate()+n*7);detailAnchor=d.toISOString().slice(0,10);renderDetail();}
+function getWeekKeys(anchorKey){const d=new Date(anchorKey+'T12:00:00');const dow=d.getDay()===0?6:d.getDay()-1;const mon=new Date(d);mon.setDate(d.getDate()-dow);return Array.from({length:7},(_,i)=>{const x=new Date(mon);x.setDate(mon.getDate()+i);return x.toISOString().slice(0,10);});}
+function weekLabel(keys){const fmt=k=>new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});return fmt(keys[0])+' – '+fmt(keys[6]);}
+function renderDetail(){const keys=getWeekKeys(detailAnchor);document.getElementById('detail-week-label').textContent=weekLabel(keys);const today=todayKey();const el=document.getElementById('detail-list');el.innerHTML='';keys.forEach((k,i)=>{const acts=getActsForDay(k);const metaData=getMetasDayData(k);const cfg=getMetasConfig();const block=document.createElement('div');block.className='detail-day-block';const hdr=document.createElement('div');hdr.className='detail-day-header';const nameEl=document.createElement('div');nameEl.className='detail-day-name';nameEl.textContent=dayFull[i];const dateEl=document.createElement('div');dateEl.className='detail-day-date';dateEl.textContent=new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});hdr.appendChild(nameEl);hdr.appendChild(dateEl);if(acts.length&&k<=today){const pct=getDayPct(k);const badge=document.createElement('div');badge.className='detail-day-badge';badge.style.background=pct===100?'rgba(29,158,117,0.2)':pct>0?'rgba(226,168,75,0.2)':'rgba(90,95,112,0.2)';badge.style.color=pct===100?'var(--green)':pct>0?'var(--yellow)':'var(--text3)';badge.textContent=pct+'%';hdr.appendChild(badge);}const editBtn=document.createElement('button');editBtn.className='detail-edit-btn';editBtn.textContent=k>today?'📅 Planejar':'✏️ Editar';editBtn.onclick=()=>openEditModal(k);hdr.appendChild(editBtn);block.appendChild(hdr);if(!acts.length){const em=document.createElement('div');em.className='detail-empty';em.textContent=k>today?'📅 Sem planejamento ainda':'🌿 Descanso';block.appendChild(em);}else{const checks=(getDayData(k).checks||{});const sessions=(getDayData(k).sessions||[]);acts.forEach(act=>{const done=!!checks[act.id];const row=document.createElement('div');row.className='detail-act-row';row.innerHTML=`<div class="detail-check ${done?'done':'miss'}"></div><div class="detail-act-name ${done?'done':''}">${act.name}</div><div class="detail-act-time">${act.meta||''}</div>`;block.appendChild(row);});if(sessions.length){sessions.forEach((s,si)=>{const tr=document.createElement('div');tr.className='detail-act-row';tr.innerHTML=`<div style="flex:1"><div style="display:flex;align-items:center;gap:8px"><div class="detail-check done" style="background:var(--blue)"></div><div class="detail-act-name done" style="font-style:italic">⏱ ${s.task||'Estudo'}</div><span class="detail-act-time">${fmtHM(s.sec||0)}</span>${k===today?`<button class="session-del" onclick="deleteSession('${k}',${si})">×</button>`:''}</div></div>`;block.appendChild(tr);});}}
+  // Metas do dia no detail
+  if(cfg.length && Object.keys(metaData).length){const metaHeader=document.createElement('div');metaHeader.style.cssText='font-size:10px;color:var(--purple);font-weight:500;text-transform:uppercase;letter-spacing:0.7px;margin-top:8px;margin-bottom:4px;';metaHeader.textContent='📚 Questões';block.appendChild(metaHeader);cfg.forEach(mat=>{if(metaData[mat.id]===undefined)return;const acertos=metaData[mat.id];const ok=acertos>=mat.metaDiaria;const mr=document.createElement('div');mr.className='detail-act-row';mr.innerHTML=`<div class="detail-check ${ok?'done':'miss'}" style="${ok?'':'background:rgba(226,75,74,0.2);border-color:var(--red)'}"></div><div class="detail-act-name ${ok?'done':''}" style="color:${mat.cor}">${mat.nome}</div><div class="detail-act-time" style="color:${ok?'var(--green)':'var(--red)'}">${acertos}/${mat.metaDiaria}</div>`;block.appendChild(mr);});}
+  el.appendChild(block);});}
+
+/* ═══════════════════════════════════════════════
+   LEVEL + TODAY + RENDER
+═══════════════════════════════════════════════ */
+function renderLevel(){const xp=currentProfile?(currentProfile.totalXP||0):0;const lv=getLevel(xp);const ni=Math.min(LEVELS.indexOf(lv)+1,LEVELS.length-1);const next=LEVELS[ni];const pct=lv===LEVELS[LEVELS.length-1]?100:Math.round((xp-lv.min)/(next.min-lv.min)*100);const idx=LEVELS.indexOf(lv);document.getElementById('lv-icon').innerHTML=`<img src='${LEVEL_IMGS[Math.min(idx,LEVEL_IMGS.length-1)]||LEVEL_IMGS[0]}' alt='${lv.name}'>`;document.getElementById('lv-name').textContent=lv.name;document.getElementById('lv-desc').textContent=lv===LEVELS[LEVELS.length-1]?'Nível máximo! 👑':`${xp-lv.min} / ${next.min-lv.min} XP para ${next.name}`;document.getElementById('lv-xp-label').textContent=`XP total: ${xp}`;document.getElementById('lv-xp-val').textContent=`Nível ${idx+1}`;document.getElementById('lv-bar').style.width=pct+'%';document.getElementById('lv-bar').style.background=lv.bar;}
+function renderNextDay(){const k=nextDayKey();const acts=getActsForDay(k);const dow=dayOfWeek(k);document.getElementById('next-day-label').textContent=`Amanhã · ${dayFull[dow]}`;const el=document.getElementById('next-day-acts');el.innerHTML='';if(!acts.length){el.innerHTML='<div class="empty-day">🌿 Amanhã é descanso</div>';}else{acts.forEach(act=>{const row=document.createElement('div');row.className='act-card';row.style.cursor='default';row.innerHTML=`<div class="act-check" style="border-style:dashed;background:transparent"></div><div class="act-body"><div class="act-name" style="color:${act.color||'var(--text)'}">${act.name}</div><div class="act-meta">${act.meta||''}</div></div><div class="act-tag" style="background:${act.tagBg};color:${act.tagColor}">${act.tag}</div>`;el.appendChild(row);});}}
+function renderToday(){const k=todayKey();const acts=getActsForDay(k);document.getElementById('today-label').textContent=fmtToday();document.getElementById('today-section-label').textContent=acts.length?`Hoje · ${acts.filter(a=>isChecked(k,a.id)).length}/${acts.length} feitas`:'Hoje · Descanso';const el=document.getElementById('today-acts');el.innerHTML='';if(!acts.length){el.innerHTML='<div class="empty-day">🌿 Sem atividades hoje</div>';return;}acts.forEach(act=>{const done=isChecked(k,act.id);const card=document.createElement('div');card.className='act-card'+(done?' done':'');card.innerHTML=`<div class="act-check"></div><div class="act-body"><div class="act-name" style="color:${act.color||'var(--text)'}">${act.name}</div><div class="act-meta">${act.meta||''}</div></div><div class="act-tag" style="background:${act.tagBg};color:${act.tagColor}">${act.tag}</div>`;card.onclick=()=>toggle(k,act.id);el.appendChild(card);});}
+function renderTimerSessions(){const k=todayKey();const sessions=(getDayData(k).sessions||[]);const box=document.getElementById('sessions-box');const list=document.getElementById('sessions-list');if(!sessions.length){box.classList.add('hidden');return;}box.classList.remove('hidden');list.innerHTML='';sessions.forEach((s,i)=>{const row=document.createElement('div');row.className='session-row';row.innerHTML=`<span class="session-name">⏱ ${s.task||'Estudo'}</span><span class="session-time">${fmtHM(s.sec||0)}</span><button class="session-del" onclick="deleteSession('${k}',${i})">×</button>`;list.appendChild(row);});}
+
+function render(){
+  renderLevel();
+  renderToday();
+  renderNextDay();
+  renderCal();
+  renderXPHistory();
+  renderDetail();
+  renderTimerSessions();
+  renderMetasPanel();
+  updateTimerDayTotal();
 }
-function askNextLoose(pending,idx,today,snoozed){
-  if(idx>=pending.length)return;
-  const act=pending[idx];
-  const yes=confirm(`📋 Atividade avulsa pendente:\n\n"${act.name}"\n\nDeseja adicionar ao seu dia de hoje?`);
-  if(yes){
-    const dayActs=getActsForDay(today);
-    const style=TAG_STYLES[act.tag]||TAG_STYLES['Outro'];
-    dayActs.push({id:'loose_'+act.id+'_'+Date.now(),name:act.name,meta:act.meta||'',tag:act.tag,...style});
-    saveActsForDay(today,dayActs);
-    const all=getLooseActs();
-    const i=all.findIndex(a=>a.id===act.id);
-    if(i>=0){all[i].done=true;saveLooseActs(all);}
-    render();
-    askNextLoose(pending,idx+1,today,snoozed);
-  } else {
-    snoozed[act.id]=today;
-    saveLooseSnoozed(snoozed);
-    askNextLoose(pending,idx+1,today,snoozed);
-  }
-}
-function addLooseAct(name,meta,tag){
-  const acts=getLooseActs();
-  acts.push({id:'la_'+Date.now(),name,meta:meta||'',tag:tag||'Pessoal',done:false,createdAt:todayKey()});
-  saveLooseActs(acts);
-  renderLoosePanel();
-}
-function deleteLooseAct(id){
-  saveLooseActs(getLooseActs().filter(a=>a.id!==id));
-  renderLoosePanel();
-}
-function renderLoosePanel(){
-  const el=document.getElementById('loose-list');
-  if(!el)return;
-  const acts=getLooseActs();
-  el.innerHTML='';
-  if(!acts.length){el.innerHTML='<div class="empty-day">Nenhuma atividade avulsa</div>';return;}
-acts.filter(a=>!a.done).forEach(act=>{
-    const row=document.createElement('div');
-    row.className='modal-act-row';
-    row.style.opacity='1';
-    const style=TAG_STYLES[act.tag]||TAG_STYLES['Outro'];
-    row.innerHTML=`<div style="flex:1"><div class="modal-act-name" style="color:${style.color};${act.done?'text-decoration:line-through':''}">${act.name}</div><div class="modal-act-meta">${act.meta||''}</div></div><div style="font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;background:${style.tagBg};color:${style.tagColor}">${act.tag}</div><button class="modal-act-del" onclick="deleteLooseAct('${act.id}')">×</button>`;
-    el.appendChild(row);
-  });
-}
-function currentSegmentSec(){if(!timerRunning||!timerStartEpoch)return 0;return Math.floor((Date.now()-timerStartEpoch)/1000);}
-function buildTimerState(){return{running:timerRunning,startEpoch:timerStartEpoch,accSec:timerAccSec,task:document.getElementById('timer-task-inp')?.value||'',savedAt:Date.now(),intervals:timerIntervals};}
-function applyTimerState(t){if(!t)return;timerIntervals=t.intervals||[];const inp=document.getElementById('timer-task-inp');if(inp&&t.task!==undefined)inp.value=t.task||'';if(t.running&&t.startEpoch){const segSec=Math.floor((Date.now()-t.startEpoch)/1000);if(segSec>=0&&segSec<86400){timerAccSec=t.accSec||0;timerStartEpoch=t.startEpoch;timerSeconds=timerAccSec+segSec;lsSet(TKEY(),t);if(!timerRunning)_startTimerUI();return;}}timerAccSec=t.accSec||0;timerSeconds=timerAccSec;timerStartEpoch=null;document.getElementById('timer-display').textContent=fmtTime(timerSeconds);document.getElementById('btn-startstop').textContent=timerSeconds>0?'Continuar':'Iniciar';document.getElementById('btn-startstop').classList.remove('primary');document.getElementById('timer-card').classList.remove('running');lsSet(TKEY(),t);renderTimerIntervals();}
-function timerSaveLocal(){lsSet(TKEY(),buildTimerState());}
-async function timerSaveAndPush(){const state=buildTimerState();lsSet(TKEY(),state);const idx=syncQ.findIndex(e=>e.key===TKEY());if(idx>=0)syncQ[idx].value=state;else syncQ.push({key:TKEY(),value:state});await flushSyncQNow();lastRemoteTimerSig=JSON.stringify({r:state.running,e:state.startEpoch,a:state.accSec,t:state.task,s:state.savedAt});}
-function timerRestoreFromLocal(){const t=lsGet(TKEY());if(!t)return;applyTimerState(t);}
-function restoreTimerFromSheets(all){const t=all[TKEY()];if(!t)return;if(timerRunning){const local=lsGet(TKEY());if(local&&local.startEpoch&&t.startEpoch&&local.startEpoch>=t.startEpoch)return;}applyTimerState(t);}
-function _startTimerUI(){if(timerRunning)return;timerRunning=true;document.getElementById('btn-startstop').textContent='Pausar';document.getElementById('btn-startstop').classList.add('primary');document.getElementById('timer-card').classList.add('running');setTimerSyncBadge('active','rodando');timerInterval=setInterval(()=>{timerSeconds=timerAccSec+currentSegmentSec();document.getElementById('timer-display').textContent=fmtTime(timerSeconds);if(timerSeconds%30===0)timerSaveLocal();},1000);}
-function renderTimerIntervals(){const box=document.getElementById('timer-intervals-box');const list=document.getElementById('timer-intervals-list');if(!timerIntervals.length){box.classList.add('hidden');return;}box.classList.remove('hidden');list.innerHTML='';timerIntervals.forEach((iv,i)=>{const row=document.createElement('div');row.className='timer-interval-row';const icon=iv.endEpoch?'⏸':'▶';const startStr=fmtHHMM(iv.startEpoch);const endStr=iv.endEpoch?fmtHHMM(iv.endEpoch):'rodando...';const durStr=iv.durationSec?fmtHM(iv.durationSec):'—';row.innerHTML=`<span class="timer-interval-icon">${icon}</span><span class="timer-interval-time">${startStr} → ${endStr}</span><span class="timer-interval-dur">${durStr}</span>`;list.appendChild(row);});}
-async function timerStartStop(){if(timerRunning){const endEpoch=Date.now();const segSec=currentSegmentSec();if(timerIntervals.length&&!timerIntervals[timerIntervals.length-1].endEpoch){timerIntervals[timerIntervals.length-1].endEpoch=endEpoch;timerIntervals[timerIntervals.length-1].durationSec=segSec;}timerAccSec+=segSec;timerSeconds=timerAccSec;timerStartEpoch=null;clearInterval(timerInterval);timerRunning=false;document.getElementById('timer-display').textContent=fmtTime(timerSeconds);document.getElementById('btn-startstop').textContent='Continuar';document.getElementById('btn-startstop').classList.remove('primary');document.getElementById('timer-card').classList.remove('running');renderTimerIntervals();setTimerSyncBadge('saved','pausado — sincronizando...');await timerSaveAndPush();setTimerSyncBadge('saved','pausado ✓');setTimeout(()=>setTimerSyncBadge('','em espera'),3000);}else{timerStartEpoch=Date.now();timerIntervals.push({startEpoch:timerStartEpoch,endEpoch:null,durationSec:null});renderTimerIntervals();_startTimerUI();await timerSaveAndPush();}}
-async function timerSave(){if(timerSeconds===0)return;let finalSec=timerSeconds;if(timerRunning){const endEpoch=Date.now();const segSec=currentSegmentSec();if(timerIntervals.length&&!timerIntervals[timerIntervals.length-1].endEpoch){timerIntervals[timerIntervals.length-1].endEpoch=endEpoch;timerIntervals[timerIntervals.length-1].durationSec=segSec;}timerAccSec+=segSec;finalSec=timerAccSec;clearInterval(timerInterval);timerRunning=false;}const k=todayKey();const data=getDayData(k);const task=document.getElementById('timer-task-inp')?.value?.trim()||'';data.timerSec=(data.timerSec||0)+finalSec;if(!data.sessions)data.sessions=[];data.sessions.push({sec:finalSec,task:task||'Estudo',savedAt:new Date().toISOString(),intervals:JSON.parse(JSON.stringify(timerIntervals))});saveDayData(k,data);timerAccSec=0;timerSeconds=0;timerStartEpoch=null;timerIntervals=[];document.getElementById('timer-display').textContent='00:00:00';document.getElementById('btn-startstop').textContent='Iniciar';document.getElementById('btn-startstop').classList.remove('primary');document.getElementById('timer-card').classList.remove('running');if(document.getElementById('timer-task-inp'))document.getElementById('timer-task-inp').value='';activeSubject=null;renderSubjects();renderTimerIntervals();const resetState={running:false,accSec:0,startEpoch:null,task:'',savedAt:Date.now(),intervals:[]};lsSet(TKEY(),resetState);const idx=syncQ.findIndex(e=>e.key===TKEY());if(idx>=0)syncQ[idx].value=resetState;else syncQ.push({key:TKEY(),value:resetState});lastRemoteTimerSig=JSON.stringify({r:false,e:null,a:0,t:'',s:resetState.savedAt});setTimerSyncBadge('saved','sessão salva — sincronizando...');await flushSyncQNow();recalcXP();render();setTimerSyncBadge('saved','sessão salva ✓');setTimeout(()=>setTimerSyncBadge('','em espera'),3000);const btn=document.getElementById('btn-save');btn.textContent='Salvo ✓';btn.style.color='var(--green)';setTimeout(()=>{btn.textContent='Salvar';btn.style.color='';},1800);updateTimerDayTotal();}
-async function timerReset(){if(!confirm('Zerar o cronômetro?'))return;if(timerRunning){clearInterval(timerInterval);timerRunning=false;}timerAccSec=0;timerSeconds=0;timerStartEpoch=null;timerIntervals=[];document.getElementById('timer-display').textContent='00:00:00';document.getElementById('btn-startstop').textContent='Iniciar';document.getElementById('btn-startstop').classList.remove('primary');document.getElementById('timer-card').classList.remove('running');activeSubject=null;renderSubjects();renderTimerIntervals();const resetState={running:false,accSec:0,startEpoch:null,task:'',savedAt:Date.now(),intervals:[]};lsSet(TKEY(),resetState);const idx=syncQ.findIndex(e=>e.key===TKEY());if(idx>=0)syncQ[idx].value=resetState;else syncQ.push({key:TKEY(),value:resetState});lastRemoteTimerSig=JSON.stringify({r:false,e:null,a:0,t:'',s:resetState.savedAt});setTimerSyncBadge('saved','zerado — sincronizando...');await flushSyncQNow();setTimerSyncBadge('','em espera');}
-function parseManualTime(str){
-  str=str.trim().toLowerCase();let total=0;
-  const h=str.match(/(\d+)\s*h/);const m=str.match(/(\d+)\s*(min|m)\b/);
-  if(h)total+=parseInt(h[1])*3600;if(m)total+=parseInt(m[1])*60;
-  if(!h&&!m){const n=parseInt(str);if(!isNaN(n))total=n*60;}
-  return total;
-}
-async function addManualTime(){
-  const inp=document.getElementById('manual-time-inp');
-  const sec=parseManualTime(inp.value);
-  if(!sec||sec<=0){inp.focus();return;}
-  const task=document.getElementById('timer-task-inp')?.value?.trim()||'';
-  const k=todayKey();const data=getDayData(k);
-  data.timerSec=(data.timerSec||0)+sec;
-  if(!data.sessions)data.sessions=[];
-  data.sessions.push({sec,task:task||'Estudo',savedAt:new Date().toISOString(),manual:true});
-  saveDayData(k,data);inp.value='';recalcXP();render();
-}
-function deleteSession(dayKey,idx){const data=getDayData(dayKey);if(!data.sessions||!data.sessions[idx])return;data.timerSec=Math.max(0,(data.timerSec||0)-(data.sessions[idx].sec||0));data.sessions.splice(idx,1);saveDayData(dayKey,data);recalcXP();render();}
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&timerRunning)timerSaveLocal();if(!document.hidden&&currentUser)pollRemoteTimer();});
-window.addEventListener('beforeunload',()=>{if(timerRunning)timerSaveLocal();});
+
+/* ═══════════════════════════════════════════════
+   EDIT MODAL
+═══════════════════════════════════════════════ */
 let editingDayKey=null,modalActs=[];
-function openEditModal(dayKey){editingDayKey=dayKey;modalActs=JSON.parse(JSON.stringify(getActsForDay(dayKey)));const today=todayKey();const isFuture=dayKey>today;document.getElementById('modal-title').textContent=(isFuture?'Planejar · ':'Editar · ')+dayFull[dayOfWeek(dayKey)];document.getElementById('modal-sub').textContent=new Date(dayKey+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})+(isFuture?' (planejamento futuro)':'');const bannerEl=document.getElementById('modal-future-banner');if(isFuture){bannerEl.innerHTML='<div class="future-banner"><span class="future-banner-icon">📅</span>Você está planejando um dia futuro. As atividades serão salvas e estarão prontas quando chegar o dia.</div>';}else{bannerEl.innerHTML='';}document.getElementById('add-name').value='';document.getElementById('add-meta').value='';document.getElementById('add-tag').value='Estudo';renderModalActs();document.getElementById('edit-modal').classList.remove('hidden');}
+function openEditModal(dayKey){editingDayKey=dayKey;modalActs=JSON.parse(JSON.stringify(getActsForDay(dayKey)));const today=todayKey();const isFuture=dayKey>today;document.getElementById('modal-title').textContent=(isFuture?'Planejar · ':'Editar · ')+dayFull[dayOfWeek(dayKey)];document.getElementById('modal-sub').textContent=new Date(dayKey+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})+(isFuture?' (planejamento futuro)':'');const bannerEl=document.getElementById('modal-future-banner');if(isFuture){bannerEl.innerHTML='<div class="future-banner"><span>📅</span>Você está planejando um dia futuro.</div>';}else{bannerEl.innerHTML='';}document.getElementById('add-name').value='';document.getElementById('add-meta').value='';document.getElementById('add-tag').value='Estudo';renderModalActs();document.getElementById('edit-modal').classList.remove('hidden');}
 function renderModalActs(){const el=document.getElementById('modal-acts-list');el.innerHTML='';if(!modalActs.length){el.innerHTML='<div style="padding:10px 0;color:var(--text3);font-size:12px;">Nenhuma atividade 🌿</div>';return;}modalActs.forEach((act,i)=>{const row=document.createElement('div');row.className='modal-act-row';row.innerHTML=`<div style="flex:1"><div class="modal-act-name" style="color:${act.color||'var(--text)'}">${act.name}</div><div class="modal-act-meta">${act.meta||''}</div></div><div style="font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;white-space:nowrap;background:${act.tagBg};color:${act.tagColor}">${act.tag}</div><button class="modal-act-del" onclick="removeModalAct(${i})">×</button>`;el.appendChild(row);});}
 function removeModalAct(i){modalActs.splice(i,1);renderModalActs();}
 function addModalAct(){const name=document.getElementById('add-name').value.trim();const meta=document.getElementById('add-meta').value.trim();const tag=document.getElementById('add-tag').value;if(!name){document.getElementById('add-name').focus();return;}const style=TAG_STYLES[tag]||TAG_STYLES['Outro'];modalActs.push({id:'custom_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),name,meta,tag,...style});document.getElementById('add-name').value='';document.getElementById('add-meta').value='';renderModalActs();}
 function restoreDefault(){if(!confirm('Restaurar rotina padrão?'))return;modalActs=JSON.parse(JSON.stringify(defaultSchedule[dayOfWeek(editingDayKey)]||[]));localStorage.removeItem(getActsKey(editingDayKey));renderModalActs();}
 function saveEditModal(){saveActsForDay(editingDayKey,modalActs);const data=getDayData(editingDayKey);const validIds=new Set(modalActs.map(a=>a.id));Object.keys(data.checks||{}).forEach(id=>{if(!validIds.has(id))delete data.checks[id];});saveDayData(editingDayKey,data);closeModal('edit-modal');recalcXP();render();}
 function closeModal(id){document.getElementById(id).classList.add('hidden');}
-let calYear=new Date().getFullYear(),calMonth=new Date().getMonth();
-function calMove(n){calMonth+=n;if(calMonth<0){calMonth=11;calYear--;}if(calMonth>11){calMonth=0;calYear++;}renderCal();}
-function pctClass(p){if(p<0)return'no-schedule';if(p===0)return'pct-0';if(p<50)return'pct-25';if(p<75)return'pct-50';if(p<100)return'pct-75';return'pct-100';}
-function renderCal(){document.getElementById('cal-month-label').textContent=monthNames[calMonth]+' '+calYear;const days=getMonthDays(calYear,calMonth);const today=todayKey();const grid=document.getElementById('cal-grid');grid.innerHTML='';days.forEach(k=>{const cell=document.createElement('div');if(!k){cell.className='cal-cell empty';grid.appendChild(cell);return;}const pct=getDayPct(k);const isFuture=k>today;cell.className='cal-cell '+pctClass(isFuture?-2:pct);if(k===today)cell.classList.add('today');if(isFuture)cell.classList.add('future');const num=document.createElement('div');num.className='cal-num';num.textContent=new Date(k+'T12:00:00').getDate();cell.appendChild(num);if(pct>=0&&!isFuture){const dot=document.createElement('div');dot.className='cal-dot';dot.style.background=pct===100?'white':pct>0?'var(--green)':'var(--text3)';cell.appendChild(dot);}cell.onclick=()=>{detailAnchor=k;renderDetail();if(isFuture)openEditModal(k);};grid.appendChild(cell);});}
-function renderXPHistory(){const today=todayKey();const days=[];for(let i=6;i>=0;i--){const d=new Date(today+'T12:00:00');d.setDate(d.getDate()-i);days.push(d.toISOString().slice(0,10));}const el=document.getElementById('xp-history-list');el.innerHTML='';days.forEach(k=>{const isPast=k<today;const acts=getActsForDay(k);const row=document.createElement('div');row.className='xp-day-row';const dateEl=document.createElement('div');dateEl.className='xp-day-date';dateEl.textContent=new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});const nameEl=document.createElement('div');nameEl.className='xp-day-name';const deltaEl=document.createElement('div');if(!acts.length){nameEl.textContent=dayFull[dayOfWeek(k)]+' · Descanso';deltaEl.className='xp-day-delta zero';deltaEl.textContent='—';}else{const delta=calcDayDelta(k,isPast);const pct=getDayPct(k);nameEl.textContent=dayFull[dayOfWeek(k)]+(isPast?` · ${pct}%`:' · hoje');deltaEl.className='xp-day-delta '+(delta>0?'pos':delta<0?'neg':'zero');deltaEl.textContent=(delta>0?'+':'')+delta+' XP';}row.appendChild(dateEl);row.appendChild(nameEl);row.appendChild(deltaEl);el.appendChild(row);});}
-let detailAnchor=todayKey();
-function detailMove(n){const d=new Date(detailAnchor+'T12:00:00');d.setDate(d.getDate()+n*7);detailAnchor=d.toISOString().slice(0,10);renderDetail();}
-function renderDetail(){const keys=getWeekKeys(detailAnchor);document.getElementById('detail-week-label').textContent=weekLabel(keys);const today=todayKey();const el=document.getElementById('detail-list');el.innerHTML='';keys.forEach((k,i)=>{const acts=getActsForDay(k);const block=document.createElement('div');block.className='detail-day-block';const hdr=document.createElement('div');hdr.className='detail-day-header';const nameEl=document.createElement('div');nameEl.className='detail-day-name';nameEl.textContent=dayFull[i];const dateEl=document.createElement('div');dateEl.className='detail-day-date';dateEl.textContent=new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});hdr.appendChild(nameEl);hdr.appendChild(dateEl);if(acts.length&&k<=today){const pct=getDayPct(k);const badge=document.createElement('div');badge.className='detail-day-badge';badge.style.background=pct===100?'rgba(29,158,117,0.2)':pct>0?'rgba(226,168,75,0.2)':'rgba(90,95,112,0.2)';badge.style.color=pct===100?'var(--green)':pct>0?'var(--yellow)':'var(--text3)';badge.textContent=pct+'%';hdr.appendChild(badge);}const editBtn=document.createElement('button');editBtn.className='detail-edit-btn';editBtn.textContent=k>today?'📅 Planejar':'✏️ Editar';editBtn.onclick=()=>openEditModal(k);hdr.appendChild(editBtn);block.appendChild(hdr);if(!acts.length){const em=document.createElement('div');em.className='detail-empty';em.textContent=k>today?'📅 Sem planejamento ainda':'🌿 Descanso';block.appendChild(em);}else{const checks=(getDayData(k).checks||{});const sessions=(getDayData(k).sessions||[]);acts.forEach(act=>{const done=!!checks[act.id];const row=document.createElement('div');row.className='detail-act-row';row.innerHTML=`<div class="detail-check ${done?'done':'miss'}"></div><div class="detail-act-name ${done?'done':''}">${act.name}</div><div class="detail-act-time">${act.meta||''}</div>`;block.appendChild(row);});if(sessions.length){sessions.forEach((s,si)=>{const tr=document.createElement('div');tr.className='detail-act-row';let intervalsHtml='';if(s.intervals&&s.intervals.length){intervalsHtml=s.intervals.map(iv=>`<div style="font-size:10px;color:var(--text3);padding-left:20px;font-family:'DM Mono',monospace">${fmtHHMM(iv.startEpoch)}→${fmtHHMM(iv.endEpoch)} (${fmtHM(iv.durationSec||0)})</div>`).join('');}tr.innerHTML=`<div style="flex:1"><div style="display:flex;align-items:center;gap:8px"><div class="detail-check done" style="background:var(--blue)"></div><div class="detail-act-name done" style="font-style:italic">⏱ ${s.task||'Estudo'}</div><span class="detail-act-time">${fmtHM(s.sec||0)}</span>${k===today?`<button class="session-del" onclick="deleteSession('${k}',${si})">×</button>`:''}</div>${intervalsHtml}</div>`;block.appendChild(tr);});}}el.appendChild(block);});}
-function renderLevel(){
-  const xp=currentProfile?(currentProfile.totalXP||0):0;const lv=getLevel(xp);
-  const ni=Math.min(lv.lv+1,LEVELS.length-1);const next=LEVELS[ni];
-  const pct=lv.lv===LEVELS.length-1?100:Math.round((xp-lv.min)/(next.min-lv.min)*100);
-  document.getElementById('lv-icon').innerHTML=`<img src='${LEVEL_IMGS[lv.lv]||LEVEL_IMGS[0]}' alt='${lv.name}' style='width:56px;height:56px;object-fit:contain;border-radius:10px;'>`;
-  document.getElementById('lv-name').textContent=lv.name;
-  document.getElementById('lv-desc').textContent=lv.lv<LEVELS.length-1?`${xp-lv.min} / ${next.min-lv.min} XP para ${next.name}`:'Nível máximo! 👑';
-  document.getElementById('lv-xp-label').textContent=`XP total: ${xp}`;document.getElementById('lv-xp-val').textContent=`Nível ${lv.lv+1}`;
-  document.getElementById('lv-bar').style.width=pct+'%';document.getElementById('lv-bar').style.background=lv.bar;
-}
-function renderToday(){const k=todayKey();const acts=getActsForDay(k);document.getElementById('today-label').textContent=fmtToday();document.getElementById('today-section-label').textContent=acts.length?`Hoje · ${acts.filter(a=>isChecked(k,a.id)).length}/${acts.length} feitas`:'Hoje · Descanso';const el=document.getElementById('today-acts');el.innerHTML='';if(!acts.length){el.innerHTML='<div class="empty-day">🌿 Sem atividades hoje</div>';return;}acts.forEach(act=>{const done=isChecked(k,act.id);const card=document.createElement('div');card.className='act-card'+(done?' done':'');card.innerHTML=`<div class="act-check"></div><div class="act-body"><div class="act-name" style="color:${act.color||'var(--text)'}">${act.name}</div><div class="act-meta">${act.meta||''}</div></div><div class="act-tag" style="background:${act.tagBg};color:${act.tagColor}">${act.tag}</div>`;card.onclick=()=>toggle(k,act.id);el.appendChild(card);});}
-function renderTimerSessions(){const k=todayKey();const sessions=(getDayData(k).sessions||[]);const box=document.getElementById('sessions-box');const list=document.getElementById('sessions-list');if(!sessions.length){box.classList.add('hidden');return;}box.classList.remove('hidden');list.innerHTML='';sessions.forEach((s,i)=>{const row=document.createElement('div');row.className='session-row';let timeDetail='';if(s.intervals&&s.intervals.length){const first=s.intervals[0];const last=s.intervals[s.intervals.length-1];timeDetail=` · ${fmtHHMM(first.startEpoch)}–${fmtHHMM(last.endEpoch)}`;}row.innerHTML=`<span class="session-name">⏱ ${s.task||'Estudo'}${timeDetail}</span><span class="session-time">${fmtHM(s.sec||0)}</span><button class="session-del" onclick="deleteSession('${k}',${i})">×</button>`;list.appendChild(row);});}
-function render(){renderLevel();renderToday();renderNextDay();renderCal();renderXPHistory();renderDetail();renderTimerSessions();updateTimerDayTotal();}
-function exportPDF(){const allDays=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('rdd_day:'+currentUser+':')){allDays.push(k.replace('rdd_day:'+currentUser+':',''));}}allDays.sort();if(!allDays.length){alert('Nenhum dado salvo ainda.');return;}const byMonth={};allDays.forEach(k=>{const ym=k.slice(0,7);if(!byMonth[ym])byMonth[ym]=[];byMonth[ym].push(k);});const xp=currentProfile.totalXP||0;const lv=getLevel(xp);const perfect=allDays.filter(k=>getDayPct(k)===100).length;let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Regras do Dia – ${currentUser}</title><style>body{font-family:Arial,sans-serif;color:#1a1a2e;padding:32px;max-width:800px;margin:0 auto;font-size:13px;}h1{font-size:22px;}.sub{color:#666;font-size:12px;margin-bottom:24px;}.stats{display:flex;gap:20px;margin-bottom:28px;flex-wrap:wrap;}.stat{background:#f5f5f5;border-radius:10px;padding:12px 18px;text-align:center;}.stat-num{font-size:22px;font-weight:700;color:#1D9E75;}.stat-lbl{font-size:11px;color:#666;}h2{font-size:15px;margin:20px 0 10px;border-bottom:2px solid #1D9E75;padding-bottom:6px;color:#1D9E75;}table{width:100%;border-collapse:collapse;}th{text-align:left;font-size:11px;color:#999;padding:4px 8px;border-bottom:1px solid #eee;text-transform:uppercase;}td{padding:6px 8px;border-bottom:1px solid #f0f0f0;font-size:12px;}.done{color:#1D9E75;font-weight:600;}.miss{color:#ccc;}.pct-badge{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:600;}.p100{background:#d4f5ea;color:#1D9E75;}.pmid{background:#fff3d4;color:#E2A84B;}.plow{background:#f5f5f5;color:#999;}</style></head><body><h1>📋 Regras do Dia</h1><div class="sub">Usuário: <strong>${currentUser}</strong> · Nível: ${lv.icon} ${lv.name} · ${new Date().toLocaleDateString('pt-BR')}</div><div class="stats"><div class="stat"><div class="stat-num">${xp}</div><div class="stat-lbl">XP Total</div></div><div class="stat"><div class="stat-num">${lv.lv+1}</div><div class="stat-lbl">Nível</div></div><div class="stat"><div class="stat-num">${allDays.length}</div><div class="stat-lbl">Dias</div></div><div class="stat"><div class="stat-num">${perfect}</div><div class="stat-lbl">Dias 100%</div></div></div>`;Object.keys(byMonth).sort().forEach(ym=>{const[y,m]=ym.split('-');html+=`<h2>${monthNames[parseInt(m)-1]} ${y}</h2><table><tr><th>Data</th><th>Dia</th><th>Atividades</th><th>Estudo</th><th>%</th></tr>`;byMonth[ym].forEach(k=>{const acts=getActsForDay(k);const data=getDayData(k);const checks=data.checks||{};const pct=getDayPct(k);const actSum=acts.map(a=>`<span class="${checks[a.id]?'done':'miss'}">${checks[a.id]?'✓':'✗'} ${a.name}</span>`).join(' ');const pb=pct===100?'p100':pct>0?'pmid':'plow';html+=`<tr><td>${new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}</td><td>${dayFull[dayOfWeek(k)]}</td><td>${acts.length?actSum:'Descanso'}</td><td>${data.timerSec>0?fmtHM(data.timerSec)+'<br>'+(data.sessions||[]).map(s=>(s.manual?'📝':'⏱')+' '+(s.task||'Estudo')+': '+fmtHM(s.sec||0)).join('<br>'):'—'}</td><td>${acts.length?`<span class="pct-badge ${pb}">${pct}%</span>`:'—'}</td></tr>`;});html+='</table>';});html+='</body></html>';const w=window.open('','_blank');w.document.write(html);w.document.close();setTimeout(()=>w.print(),500);}
-function showStats(){const allDays=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('rdd_day:'+currentUser+':')){allDays.push(k.replace('rdd_day:'+currentUser+':',''));}}if(!allDays.length){alert('Nenhum dado ainda.');return;}const perfect=allDays.filter(k=>getDayPct(k)===100).length;const withActs=allDays.filter(k=>getDayPct(k)>=0);const avgPct=withActs.length?Math.round(withActs.reduce((s,k)=>s+getDayPct(k),0)/withActs.length):0;const totalSec=allDays.reduce((s,k)=>s+(getDayData(k).timerSec||0),0);const xp=currentProfile.totalXP||0;const lv=getLevel(xp);alert(`📊 Estatísticas de ${currentUser}\n\n🏆 Nível: ${lv.icon} ${lv.name} (${xp} XP)\n📅 Dias: ${allDays.length}\n✅ Dias 100%: ${perfect} (${allDays.length?Math.round(perfect/allDays.length*100):0}%)\n📈 Média: ${avgPct}%\n⏱ Total estudado: ${fmtHM(totalSec)}`);}
+
+/* ═══════════════════════════════════════════════
+   SETUP
+═══════════════════════════════════════════════ */
+const APPS_SCRIPT_CODE=document.getElementById('apps-script-code').textContent;
+function copyScript(){navigator.clipboard.writeText(APPS_SCRIPT_CODE).then(()=>{const btn=document.querySelector('.copy-btn');btn.textContent='✅ Copiado!';setTimeout(()=>btn.textContent='📋 Copiar código',2000);});}
+function showSetup(){document.getElementById('login-screen').style.display='none';document.getElementById('app-screen').style.display='none';document.getElementById('setup-screen').style.display='flex';}
+async function skipSetup(){const url=document.getElementById('inp-skip-url').value.trim();const id=document.getElementById('inp-skip-id').value.trim();const msg=document.getElementById('skip-msg');if(!url||!url.startsWith('https://script.google.com')){msg.textContent='⚠️ URL inválida.';msg.className='login-msg err';return;}if(!id){msg.textContent='⚠️ ID em branco.';msg.className='login-msg err';return;}msg.textContent='Testando conexão...';msg.className='login-msg ok';try{const r=await fetch(`${url}?sheetId=${encodeURIComponent(id)}&user=__ping__`);await r.json();}catch(e){msg.textContent='❌ Não conectou.';msg.className='login-msg err';return;}lsSet('rdd_script_url',url);lsSet('rdd_sheet_id',id);SCRIPT_URL=url;SHEET_ID=id;msg.textContent='✅ Conectado!';setTimeout(()=>{document.getElementById('setup-screen').style.display='none';document.getElementById('login-screen').style.display='flex';},700);}
+async function saveSetup(){const url=document.getElementById('inp-script-url').value.trim();const id=document.getElementById('inp-sheet-id').value.trim();const msg=document.getElementById('setup-msg');if(!url||!url.startsWith('https://script.google.com')){msg.textContent='⚠️ URL inválida.';return;}if(!id){msg.textContent='⚠️ ID em branco.';return;}msg.textContent='Testando...';try{const r=await fetch(`${url}?sheetId=${encodeURIComponent(id)}&user=__test__`);await r.json();}catch(e){msg.textContent='❌ Não conectou.';return;}lsSet('rdd_script_url',url);lsSet('rdd_sheet_id',id);SCRIPT_URL=url;SHEET_ID=id;msg.textContent='✅ Configurado!';setTimeout(()=>{document.getElementById('setup-screen').style.display='none';document.getElementById('login-screen').style.display='flex';},700);}
+
+/* ═══════════════════════════════════════════════
+   EXPORT / STATS
+═══════════════════════════════════════════════ */
+function exportPDF(){const allDays=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('rdd_day:'+currentUser+':')){allDays.push(k.replace('rdd_day:'+currentUser+':',''));}}allDays.sort();if(!allDays.length){alert('Nenhum dado salvo ainda.');return;}const xp=currentProfile.totalXP||0;const lv=getLevel(xp);const perfect=allDays.filter(k=>getDayPct(k)===100).length;const cfg=getMetasConfig();let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Regras do Dia – ${currentUser}</title><style>body{font-family:Arial,sans-serif;color:#1a1a2e;padding:32px;max-width:800px;margin:0 auto;font-size:13px;}h1{font-size:22px;}.sub{color:#666;font-size:12px;margin-bottom:24px;}.stats{display:flex;gap:20px;margin-bottom:28px;flex-wrap:wrap;}.stat{background:#f5f5f5;border-radius:10px;padding:12px 18px;text-align:center;}.stat-num{font-size:22px;font-weight:700;color:#1D9E75;}.stat-lbl{font-size:11px;color:#666;}h2{font-size:15px;margin:20px 0 10px;border-bottom:2px solid #1D9E75;padding-bottom:6px;color:#1D9E75;}table{width:100%;border-collapse:collapse;}th{text-align:left;font-size:11px;color:#999;padding:4px 8px;border-bottom:1px solid #eee;text-transform:uppercase;}td{padding:6px 8px;border-bottom:1px solid #f0f0f0;font-size:12px;}.done{color:#1D9E75;font-weight:600;}.miss{color:#ccc;}</style></head><body><h1>📋 Regras do Dia + Metas de Questões</h1><div class="sub">Usuário: <strong>${currentUser}</strong> · Nível: ${lv.name} · ${new Date().toLocaleDateString('pt-BR')}</div><div class="stats"><div class="stat"><div class="stat-num">${xp}</div><div class="stat-lbl">XP Total</div></div><div class="stat"><div class="stat-num">${LEVELS.indexOf(lv)+1}</div><div class="stat-lbl">Nível</div></div><div class="stat"><div class="stat-num">${allDays.length}</div><div class="stat-lbl">Dias</div></div><div class="stat"><div class="stat-num">${perfect}</div><div class="stat-lbl">Dias 100%</div></div></div>`;html+='<h2>Histórico de Questões por Matéria</h2><table><tr><th>Data</th>';cfg.forEach(m=>html+=`<th>${m.nome} (meta:${m.metaDiaria})</th>`);html+='<th>XP Metas</th></tr>';allDays.forEach(k=>{const md=getMetasDayData(k);const xpM=calcMetasXP(k);html+=`<tr><td>${new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}</td>`;cfg.forEach(m=>{const a=md[m.id];if(a===undefined){html+=`<td style="color:#ccc">—</td>`;}else{const ok=a>=m.metaDiaria;html+=`<td class="${ok?'done':'miss'}">${a}/${m.metaDiaria}</td>`;}});html+=`<td style="color:${xpM>=0?'#1D9E75':'#E24B4A'};font-weight:600;">${xpM>=0?'+':''}${xpM}</td></tr>`;});html+='</table></body></html>';const w=window.open('','_blank');w.document.write(html);w.document.close();setTimeout(()=>w.print(),500);}
+function showStats(){const allDays=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('rdd_day:'+currentUser+':')){allDays.push(k.replace('rdd_day:'+currentUser+':',''));}}const cfg=getMetasConfig();const totais={};cfg.forEach(m=>totais[m.id]={acertos:0,dias:0,meta100:0});allDays.forEach(k=>{const md=getMetasDayData(k);cfg.forEach(m=>{if(md[m.id]!==undefined){totais[m.id].acertos+=md[m.id];totais[m.id].dias++;if(md[m.id]>=m.metaDiaria)totais[m.id].meta100++;}});});const xp=currentProfile.totalXP||0;const lv=getLevel(xp);let msg=`📊 Estatísticas de ${currentUser}\n\n🏆 Nível: ${lv.name} (${xp} XP)\n📅 Dias: ${allDays.length}\n\n📚 Questões por matéria:\n`;cfg.forEach(m=>{const t=totais[m.id];msg+=`• ${m.nome}: ${t.acertos} acertos em ${t.dias} dias (meta cumprida: ${t.meta100}x)\n`;});alert(msg);}
+
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&timerRunning)timerSaveLocal();});
+window.addEventListener('beforeunload',()=>{if(timerRunning)timerSaveLocal();});
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
 (async function init(){
   SCRIPT_URL=lsGet('rdd_script_url')||'';
   SHEET_ID=lsGet('rdd_sheet_id')||'';
