@@ -6,6 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Regras do Dia</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 :root{
   --bg:#0f1117;--bg2:#181c27;--bg3:#1f2433;
@@ -499,6 +500,38 @@ const err_= m => ContentService.createTextOutput(JSON.stringify({ok:false,error:
   </div>
   <div id="loose-list"></div>
 </div>
+<div class="today-card" id="study-stats-card">
+  <div class="section-header">
+    <div class="section-label">📊 Estatísticas de Estudo</div>
+    <button class="edit-day-btn" onclick="toggleStudyStats()">Expandir</button>
+  </div>
+  <div id="study-stats-body">
+
+    <!-- Métricas resumo -->
+    <div id="est-metrics-row" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px"></div>
+
+    <!-- Barras por dia da semana -->
+    <div class="section-label" style="margin-top:8px;margin-bottom:8px">Média por dia da semana</div>
+    <div id="est-dow-bars"></div>
+
+    <!-- Por matéria -->
+    <div class="section-label" style="margin-top:12px;margin-bottom:8px">Por matéria (total)</div>
+    <div id="est-subject-list"></div>
+
+    <!-- Gráfico diário -->
+    <div class="section-label" style="margin-top:12px;margin-bottom:8px">Horas por dia (últimos 14 dias)</div>
+    <div style="position:relative;width:100%;height:160px">
+      <canvas id="est-chart-dias" role="img" aria-label="Horas estudadas por dia nos últimos 14 dias"></canvas>
+    </div>
+
+    <!-- Gráfico semanal -->
+    <div class="section-label" style="margin-top:12px;margin-bottom:8px">Evolução semanal</div>
+    <div style="position:relative;width:100%;height:130px">
+      <canvas id="est-chart-weekly" role="img" aria-label="Evolução semanal de horas estudadas"></canvas>
+    </div>
+
+  </div>
+</div>
   <div class="tools-card">
     <div class="section-label">📦 Dados</div>
     <div class="tools-grid">
@@ -863,6 +896,158 @@ function renderTimerSessions(){const k=todayKey();const sessions=(getDayData(k).
 function render(){renderLevel();renderToday();renderNextDay();renderCal();renderXPHistory();renderDetail();renderTimerSessions();updateTimerDayTotal();}
 function exportPDF(){const allDays=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('rdd_day:'+currentUser+':')){allDays.push(k.replace('rdd_day:'+currentUser+':',''));}}allDays.sort();if(!allDays.length){alert('Nenhum dado salvo ainda.');return;}const byMonth={};allDays.forEach(k=>{const ym=k.slice(0,7);if(!byMonth[ym])byMonth[ym]=[];byMonth[ym].push(k);});const xp=currentProfile.totalXP||0;const lv=getLevel(xp);const perfect=allDays.filter(k=>getDayPct(k)===100).length;let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Regras do Dia – ${currentUser}</title><style>body{font-family:Arial,sans-serif;color:#1a1a2e;padding:32px;max-width:800px;margin:0 auto;font-size:13px;}h1{font-size:22px;}.sub{color:#666;font-size:12px;margin-bottom:24px;}.stats{display:flex;gap:20px;margin-bottom:28px;flex-wrap:wrap;}.stat{background:#f5f5f5;border-radius:10px;padding:12px 18px;text-align:center;}.stat-num{font-size:22px;font-weight:700;color:#1D9E75;}.stat-lbl{font-size:11px;color:#666;}h2{font-size:15px;margin:20px 0 10px;border-bottom:2px solid #1D9E75;padding-bottom:6px;color:#1D9E75;}table{width:100%;border-collapse:collapse;}th{text-align:left;font-size:11px;color:#999;padding:4px 8px;border-bottom:1px solid #eee;text-transform:uppercase;}td{padding:6px 8px;border-bottom:1px solid #f0f0f0;font-size:12px;}.done{color:#1D9E75;font-weight:600;}.miss{color:#ccc;}.pct-badge{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:600;}.p100{background:#d4f5ea;color:#1D9E75;}.pmid{background:#fff3d4;color:#E2A84B;}.plow{background:#f5f5f5;color:#999;}</style></head><body><h1>📋 Regras do Dia</h1><div class="sub">Usuário: <strong>${currentUser}</strong> · Nível: ${lv.icon} ${lv.name} · ${new Date().toLocaleDateString('pt-BR')}</div><div class="stats"><div class="stat"><div class="stat-num">${xp}</div><div class="stat-lbl">XP Total</div></div><div class="stat"><div class="stat-num">${lv.lv+1}</div><div class="stat-lbl">Nível</div></div><div class="stat"><div class="stat-num">${allDays.length}</div><div class="stat-lbl">Dias</div></div><div class="stat"><div class="stat-num">${perfect}</div><div class="stat-lbl">Dias 100%</div></div></div>`;Object.keys(byMonth).sort().forEach(ym=>{const[y,m]=ym.split('-');html+=`<h2>${monthNames[parseInt(m)-1]} ${y}</h2><table><tr><th>Data</th><th>Dia</th><th>Atividades</th><th>Estudo</th><th>%</th></tr>`;byMonth[ym].forEach(k=>{const acts=getActsForDay(k);const data=getDayData(k);const checks=data.checks||{};const pct=getDayPct(k);const actSum=acts.map(a=>`<span class="${checks[a.id]?'done':'miss'}">${checks[a.id]?'✓':'✗'} ${a.name}</span>`).join(' ');const pb=pct===100?'p100':pct>0?'pmid':'plow';html+=`<tr><td>${new Date(k+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}</td><td>${dayFull[dayOfWeek(k)]}</td><td>${acts.length?actSum:'Descanso'}</td><td>${data.timerSec>0?fmtHM(data.timerSec)+'<br>'+(data.sessions||[]).map(s=>(s.manual?'📝':'⏱')+' '+(s.task||'Estudo')+': '+fmtHM(s.sec||0)).join('<br>'):'—'}</td><td>${acts.length?`<span class="pct-badge ${pb}">${pct}%</span>`:'—'}</td></tr>`;});html+='</table>';});html+='</body></html>';const w=window.open('','_blank');w.document.write(html);w.document.close();setTimeout(()=>w.print(),500);}
 function showStats(){const allDays=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('rdd_day:'+currentUser+':')){allDays.push(k.replace('rdd_day:'+currentUser+':',''));}}if(!allDays.length){alert('Nenhum dado ainda.');return;}const perfect=allDays.filter(k=>getDayPct(k)===100).length;const withActs=allDays.filter(k=>getDayPct(k)>=0);const avgPct=withActs.length?Math.round(withActs.reduce((s,k)=>s+getDayPct(k),0)/withActs.length):0;const totalSec=allDays.reduce((s,k)=>s+(getDayData(k).timerSec||0),0);const xp=currentProfile.totalXP||0;const lv=getLevel(xp);alert(`📊 Estatísticas de ${currentUser}\n\n🏆 Nível: ${lv.icon} ${lv.name} (${xp} XP)\n📅 Dias: ${allDays.length}\n✅ Dias 100%: ${perfect} (${allDays.length?Math.round(perfect/allDays.length*100):0}%)\n📈 Média: ${avgPct}%\n⏱ Total estudado: ${fmtHM(totalSec)}`);}
+let studyStatsVisible = false;
+let studyChartDias = null, studyChartWeekly = null;
+
+function toggleStudyStats(){
+  studyStatsVisible = !studyStatsVisible;
+  const btn = document.querySelector('#study-stats-card .edit-day-btn');
+  if(btn) btn.textContent = studyStatsVisible ? 'Recolher' : 'Expandir';
+  if(studyStatsVisible) renderStudyStats();
+}
+
+function fmtStudyHM(s){
+  if(!s||s<=0) return '0h00';
+  const h=Math.floor(s/3600), m=Math.floor((s%3600)/60);
+  return h>0 ? `${h}h${String(m).padStart(2,'0')}` : `${m}min`;
+}
+
+function renderStudyStats(){
+  if(!currentUser) return;
+  const DOW_NAMES=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+  const today = todayKey();
+
+  // Coleta todos os dias do usuário
+  const allDayData=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!k||!k.startsWith('rdd_day:'+currentUser+':')) continue;
+    const date=k.replace('rdd_day:'+currentUser+':','');
+    const raw=lsGet(k.replace('rdd_day:'+currentUser+':','')); // fallback
+    const data=getDayData(date);
+    allDayData.push({date, data});
+  }
+  allDayData.sort((a,b)=>a.date.localeCompare(b.date));
+
+  const getSec = d => d.data.timerSec||0;
+  const totalSec = allDayData.reduce((s,d)=>s+getSec(d),0);
+  const daysStudied = allDayData.filter(d=>getSec(d)>0).length;
+  const avgSec = daysStudied>0 ? Math.round(totalSec/daysStudied) : 0;
+  const sessionsTotal = allDayData.reduce((s,d)=>s+(d.data.sessions?.length||0),0);
+
+  // Métricas
+  document.getElementById('est-metrics-row').innerHTML=`
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px">
+      <div style="font-size:18px;font-weight:600;color:var(--green)">${fmtStudyHM(totalSec)}</div>
+      <div style="font-size:11px;color:var(--text3)">Total acumulado</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px">
+      <div style="font-size:18px;font-weight:600;color:var(--blue)">${fmtStudyHM(avgSec)}</div>
+      <div style="font-size:11px;color:var(--text3)">Média por dia</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px">
+      <div style="font-size:18px;font-weight:600;color:var(--text)">${daysStudied}</div>
+      <div style="font-size:11px;color:var(--text3)">Dias estudados</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px">
+      <div style="font-size:18px;font-weight:600;color:var(--yellow)">${sessionsTotal}</div>
+      <div style="font-size:11px;color:var(--text3)">Sessões salvas</div>
+    </div>
+  `;
+
+  // Média por dia da semana
+  const dowSecs=[0,0,0,0,0,0,0], dowCounts=[0,0,0,0,0,0,0];
+  allDayData.forEach(d=>{
+    const dow=dayOfWeek(d.date);
+    if(getSec(d)>0){dowSecs[dow]+=getSec(d);dowCounts[dow]++;}
+  });
+  const dowAvg=dowSecs.map((s,i)=>dowCounts[i]>0?Math.round(s/dowCounts[i]):0);
+  const maxDow=Math.max(...dowAvg,1);
+  document.getElementById('est-dow-bars').innerHTML=DOW_NAMES.map((n,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <div style="font-size:11px;color:var(--text3);width:32px;text-align:right">${n}</div>
+      <div style="flex:1;height:7px;background:var(--bg3);border-radius:99px;overflow:hidden">
+        <div style="height:100%;width:${Math.round(dowAvg[i]/maxDow*100)}%;background:var(--green);border-radius:99px"></div>
+      </div>
+      <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);width:44px">${fmtStudyHM(dowAvg[i])}</div>
+    </div>
+  `).join('');
+
+  // Por matéria
+  const subjectMap={};
+  allDayData.forEach(d=>{
+    (d.data.sessions||[]).forEach(s=>{
+      const name=s.task||'Estudo';
+      subjectMap[name]=(subjectMap[name]||0)+(s.sec||0);
+    });
+  });
+  const subjectArr=Object.entries(subjectMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const maxSub=subjectArr.length?subjectArr[0][1]:1;
+  const subEl=document.getElementById('est-subject-list');
+  if(!subjectArr.length){
+    subEl.innerHTML='<div style="font-size:12px;color:var(--text3);padding:6px 0">Nenhuma sessão salva ainda</div>';
+  } else {
+    subEl.innerHTML=subjectArr.map(([name,sec])=>`
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)">
+        <div style="font-size:12px;color:var(--text2);flex:1">${name}</div>
+        <div style="width:80px;height:5px;background:var(--bg3);border-radius:99px;overflow:hidden">
+          <div style="height:100%;width:${Math.round(sec/maxSub*100)}%;background:var(--blue);border-radius:99px"></div>
+        </div>
+        <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--green);width:48px;text-align:right">${fmtStudyHM(sec)}</div>
+      </div>
+    `).join('');
+  }
+
+  // Gráfico diário (últimos 14 dias)
+  const last14=[];
+  for(let i=13;i>=0;i--){const d=new Date(today+'T12:00:00');d.setDate(d.getDate()-i);last14.push(d.toISOString().slice(0,10));}
+  const labDias=last14.map(k=>{const d=new Date(k+'T12:00:00');return`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;});
+  const dataDias=last14.map(k=>{const f=allDayData.find(d=>d.date===k);return f?+(getSec(f)/3600).toFixed(2):0;});
+  const colorsDias=last14.map(k=>{
+    const f=allDayData.find(d=>d.date===k);
+    if(!f||getSec(f)===0) return 'rgba(90,95,112,0.25)';
+    return f.data.sessions?.length>0?'#1D9E75':'#378ADD';
+  });
+  if(studyChartDias) studyChartDias.destroy();
+  studyChartDias = new Chart(document.getElementById('est-chart-dias'),{
+    type:'bar',
+    data:{labels:labDias,datasets:[{data:dataDias,backgroundColor:colorsDias,borderRadius:4}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${fmtStudyHM(ctx.parsed.y*3600)}`}}},
+      scales:{
+        x:{ticks:{color:'rgba(139,144,160,0.8)',font:{size:10},autoSkip:false,maxRotation:45},grid:{display:false}},
+        y:{ticks:{color:'rgba(139,144,160,0.8)',font:{size:10},callback:v=>v+'h'},grid:{color:'rgba(255,255,255,0.04)'},beginAtZero:true}
+      }
+    }
+  });
+
+  // Gráfico semanal
+  const weeklyMap={};
+  allDayData.forEach(d=>{
+    const dt=new Date(d.date+'T12:00:00');
+    const mon=new Date(dt);const dow=dt.getDay()===0?6:dt.getDay()-1;
+    mon.setDate(dt.getDate()-dow);
+    const wk=mon.toISOString().slice(0,10);
+    weeklyMap[wk]=(weeklyMap[wk]||0)+getSec(d);
+  });
+  const weekKeys=Object.keys(weeklyMap).sort().slice(-8);
+  const weekLabels=weekKeys.map(k=>{const d=new Date(k+'T12:00:00');return`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;});
+  const weekData=weekKeys.map(k=>+(weeklyMap[k]/3600).toFixed(1));
+  if(studyChartWeekly) studyChartWeekly.destroy();
+  studyChartWeekly = new Chart(document.getElementById('est-chart-weekly'),{
+    type:'line',
+    data:{labels:weekLabels,datasets:[{data:weekData,borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.1)',pointBackgroundColor:'#1D9E75',tension:.3,fill:true,pointRadius:4,borderWidth:2}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${fmtStudyHM(ctx.parsed.y*3600)}`}}},
+      scales:{
+        x:{ticks:{color:'rgba(139,144,160,0.8)',font:{size:10}},grid:{display:false}},
+        y:{ticks:{color:'rgba(139,144,160,0.8)',font:{size:10},callback:v=>v+'h'},grid:{color:'rgba(255,255,255,0.04)'},beginAtZero:true}
+      }
+    }
+  });
+}
 (async function init(){
   SCRIPT_URL=lsGet('rdd_script_url')||'';
   SHEET_ID=lsGet('rdd_sheet_id')||'';
